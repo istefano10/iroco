@@ -1,0 +1,179 @@
+<div class="container">
+  <mat-tab-group>
+    <mat-tab label="Expedientes" >
+      <ng-template mat-tab-label>
+        <mat-icon class="example-tab-icon"> thumb_up </mat-icon>
+          Expedientes
+      </ng-template>
+      <mat-toolbar>
+        <button (click)="onNew()" mat-raised-button>
+          Añadir<mat-icon>add</mat-icon>
+
+        </button>
+        <button (click)="remove()" mat-raised-button>
+          Borrar<mat-icon>delete</mat-icon>
+        </button>
+        <span class="example-spacer"></span>
+
+        <mat-form-field *ngIf="home">
+          <mat-label>Filtrar por cualquier columna</mat-label>
+          <input matInput (keyup)="applyFilter($event)" placeholder="Escribir cualquier valor" #input>
+        </mat-form-field>
+      </mat-toolbar>
+
+      <table *ngIf="home" mat-table [dataSource]="dataSource">
+
+        <ng-container matColumnDef="select">
+          <th mat-header-cell *matHeaderCellDef>
+            <mat-checkbox (change)="$event ? toggleAllRows() : null" [checked]="selection.hasValue() && isAllSelected()"
+              [indeterminate]="selection.hasValue() && !isAllSelected()">
+            </mat-checkbox>
+          </th>
+          <td mat-cell *matCellDef="let row">
+            <mat-checkbox (click)="$event.stopPropagation()" (change)="$event ? selection.toggle(row) : null"
+              [checked]="selection.isSelected(row)">
+            </mat-checkbox>
+          </td>
+        </ng-container>
+
+        <!-- nombre Column -->
+        <ng-container matColumnDef="nombre">
+          <th mat-header-cell *matHeaderCellDef> Nombre </th>
+          <td mat-cell *matCellDef="let element"> {{element.nombre}} </td>
+        </ng-container>
+
+        <!-- nif Column -->
+        <ng-container matColumnDef="nif">
+          <th mat-header-cell *matHeaderCellDef> NIF </th>
+          <td mat-cell *matCellDef="let element"> {{element.nif}} </td>
+        </ng-container>
+
+        <!-- direccion Column -->
+        <ng-container matColumnDef="direccion">
+          <th mat-header-cell *matHeaderCellDef> Direccion </th>
+          <td mat-cell *matCellDef="let element"> {{element.direccion}} </td>
+        </ng-container>
+
+        <!-- telefono Column -->
+        <ng-container matColumnDef="telefono">
+          <th mat-header-cell *matHeaderCellDef> Telefono </th>
+          <td mat-cell *matCellDef="let element"> {{element.telefono}} </td>
+        </ng-container>
+
+        <!-- movil Column -->
+        <ng-container matColumnDef="movil">
+          <th mat-header-cell *matHeaderCellDef> Movil </th>
+          <td mat-cell *matCellDef="let element"> {{element.movil}} </td>
+        </ng-container>
+
+        <!-- fecha Column -->
+        <ng-container matColumnDef="fecha">
+          <th mat-header-cell *matHeaderCellDef> Fecha Alta </th>
+          <td mat-cell *matCellDef="let element"> {{element.fecha | date :'dd-MM-yyyy'}} </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <!-- <tr mat-row *matRowDef="let row; columns: displayedColumns;"> -->
+        <tr mat-row *cdkRowDef="let row; columns: displayedColumns;"
+          [ngClass]="{'highlight': selectedRowIndex === row.id}" [routerLink]="['/detail']"
+          [queryParams]="{row: json.stringify(row)}">
+        </tr>
+      </table>
+
+      <mat-paginator [pageSize]=[10] [length]="dataSource.data.length" [pageSizeOptions]="[10]" [pageIndex]="0"
+        [hidePageSize]="false" showFirstLastButtons="true">
+      </mat-paginator>
+    </mat-tab>
+    <mat-tab label="Presupuestos">
+      <ng-template mat-tab-label>
+        <mat-icon class="example-tab-icon"> thumb_up </mat-icon>
+        Presupuestos
+      </ng-template>
+      <mat-toolbar>
+        <button (click)="onNew()" mat-raised-button>
+          Añadir<mat-icon>add</mat-icon>
+
+        </button>
+        <button (click)="remove()" mat-raised-button>
+          Borrar<mat-icon>delete</mat-icon>
+        </button>
+        <span class="example-spacer"></span>
+
+        <mat-form-field *ngIf="home">
+          <mat-label>Filtrar por cualquier columna</mat-label>
+          <input matInput (keyup)="applyFilter($event)" placeholder="Escribir cualquier valor" #input>
+        </mat-form-field>
+      </mat-toolbar>
+
+      <table *ngIf="home" mat-table [dataSource]="dataSource">
+
+        <ng-container matColumnDef="select">
+          <th mat-header-cell *matHeaderCellDef>
+            <mat-checkbox (change)="$event ? toggleAllRows() : null" [checked]="selection.hasValue() && isAllSelected()"
+              [indeterminate]="selection.hasValue() && !isAllSelected()">
+            </mat-checkbox>
+          </th>
+          <td mat-cell *matCellDef="let row">
+            <mat-checkbox (click)="$event.stopPropagation()" (change)="$event ? selection.toggle(row) : null"
+              [checked]="selection.isSelected(row)">
+            </mat-checkbox>
+          </td>
+        </ng-container>
+
+        <!-- nombre Column -->
+        <ng-container matColumnDef="nombre">
+          <th mat-header-cell *matHeaderCellDef> Nombre </th>
+          <td mat-cell *matCellDef="let element"> {{element.nombre}} </td>
+        </ng-container>
+
+        <!-- nif Column -->
+        <ng-container matColumnDef="nif">
+          <th mat-header-cell *matHeaderCellDef> NIF </th>
+          <td mat-cell *matCellDef="let element"> {{element.nif}} </td>
+        </ng-container>
+
+        <!-- direccion Column -->
+        <ng-container matColumnDef="direccion">
+          <th mat-header-cell *matHeaderCellDef> Direccion </th>
+          <td mat-cell *matCellDef="let element"> {{element.direccion}} </td>
+        </ng-container>
+
+        <!-- telefono Column -->
+        <ng-container matColumnDef="telefono">
+          <th mat-header-cell *matHeaderCellDef> Telefono </th>
+          <td mat-cell *matCellDef="let element"> {{element.telefono}} </td>
+        </ng-container>
+
+        <!-- movil Column -->
+        <ng-container matColumnDef="movil">
+          <th mat-header-cell *matHeaderCellDef> Movil </th>
+          <td mat-cell *matCellDef="let element"> {{element.movil}} </td>
+        </ng-container>
+
+        <!-- fecha Column -->
+        <ng-container matColumnDef="fecha">
+          <th mat-header-cell *matHeaderCellDef> Fecha Alta </th>
+          <td mat-cell *matCellDef="let element"> {{element.fecha | date :'dd-MM-yyyy'}} </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <!-- <tr mat-row *matRowDef="let row; columns: displayedColumns;"> -->
+        <tr mat-row *cdkRowDef="let row; columns: displayedColumns;"
+          [ngClass]="{'highlight': selectedRowIndex === row.id}" [routerLink]="['/detail']"
+          [queryParams]="{row: json.stringify(row)}">
+        </tr>
+      </table>
+
+      <mat-paginator [pageSize]=[10] [length]="dataSource.data.length" [pageSizeOptions]="[10]" [pageIndex]="0"
+        [hidePageSize]="false" showFirstLastButtons="true">
+      </mat-paginator>
+    </mat-tab>
+  </mat-tab-group>
+
+
+</div>
+
+
+<!-- Copyright 2023 Google LLC. All Rights Reserved.
+    Use of this source code is governed by an MIT-style license that
+    can be found in the LICENSE file at https://angular.io/license -->

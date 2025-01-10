@@ -1,0 +1,104 @@
+<div class="container">
+  <ng-container *ngIf="IsWait">
+    <div class="loading">
+      <mat-spinner></mat-spinner>
+    </div>
+  </ng-container>
+  <mat-toolbar>
+    <button (click)="onSubmit()" mat-raised-button>
+      Guardar<mat-icon>save</mat-icon>
+
+    </button>
+    <button (click)="onCancel()" mat-raised-button>
+      Cancelar<mat-icon>cancel</mat-icon>
+    </button>
+    <span class="example-spacer"></span>
+
+  </mat-toolbar>
+
+  <!-- Formulario -->
+  <form [formGroup]="detailForm">
+
+    <div class="container1">
+      <mat-form-field>
+        <mat-label for="nombre">Nombre</mat-label>
+        <input id="nombre" type="text" formControlName="nombre" matInput>
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label for="nif">NIF</mat-label>
+        <input id="nif" type="text" formControlName="nif" matInput>
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label for="direccion">Dirección</mat-label>
+        <input id="direccion" type="text" formControlName="direccion" matInput>
+      </mat-form-field>
+    </div>
+    <div class="container2">
+      <mat-form-field>
+        <mat-label for="movil">Movil</mat-label>
+        <input id="movil" type="text" formControlName="movil" matInput>
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label for="telefono">Telefono</mat-label>
+        <input id="telefono" type="text" formControlName="telefono" matInput>
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label for="area">Area de texto</mat-label>
+        <textarea id="area" type="text" formControlName="area" matInput></textarea>
+      </mat-form-field>
+    </div>
+  </form>
+  <button [disabled]="!detailForm.valid" (click)="scan()" mat-raised-button>
+    Escanear<mat-icon>add_to_queue</mat-icon>
+  </button>
+  <br>
+  <mat-table class="lessons-table mat-elevation-z8" [dataSource]="dataSource">
+
+    <ng-container matColumnDef="seqNo">
+      <mat-header-cell *matHeaderCellDef>#</mat-header-cell>
+      <mat-cell *matCellDef="let fichero">
+        <mat-icon>picture_as_pdf</mat-icon>
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="descripcion">
+      <mat-header-cell *matHeaderCellDef>Descripcion</mat-header-cell>
+      <mat-cell class="descripcion-cell" *matCellDef="let fichero" (click)="view(fichero.descripcion)">{{fichero.descripcion}}</mat-cell>
+
+    </ng-container>
+
+    <ng-container matColumnDef="fecha">
+      <mat-header-cell *matHeaderCellDef>Fecha</mat-header-cell>
+      <mat-cell class="duration-cell" *matCellDef="let fichero">{{fichero.fecha | date :'dd-MM-yyyy'}}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="action">
+      <mat-header-cell *matHeaderCellDef>test</mat-header-cell>
+      <mat-cell class="duration-cell" *matCellDef="let fichero">
+        <button mat-icon-button color="warn" aria-label="Borrar fichero" (click)="remove(fichero)">
+          <mat-icon>delete_forever</mat-icon>
+        </button>
+      </mat-cell>
+    </ng-container>
+
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+
+    <mat-row *cdkRowDef="let row; columns: displayedColumns;"[ngClass]="{'highlight': selectedRowIndex === row.fecha}" >
+    </mat-row>
+
+    <!-- <mat-row *matRowDef="let row; columns: displayedColumns;"
+
+            class="element-row"
+            [class.expanded]="expandedElement === row"
+            (click)="expandedElement = row"></mat-row>
+    <mat-row *matRowDef="let row; columns: ['expandedDetail']; when: isExpansionDetailRow"
+            [@detailExpand]="row.element === expandedElement ? 'expanded' : 'collapsed'"
+            style="overflow: hidden">
+    </mat-row>-->
+
+  </mat-table>
+</div>
