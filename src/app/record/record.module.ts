@@ -1,15 +1,15 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { DetailRoutingModule } from './detail-routing.module';
+import { RecordRoutingModule } from './record-routing.module';
 
-import { DetailComponent } from './detail.component';
+import { RecordComponent } from './record.component';
 import { SharedModule } from '../shared/shared.module';
 import {MatInputModule} from '@angular/material/input';
 import {MatFormFieldModule} from '@angular/material/form-field';
 
 @NgModule({
-  declarations: [DetailComponent],
-  imports: [CommonModule, SharedModule, DetailRoutingModule, MatInputModule, MatFormFieldModule]
+  declarations: [RecordComponent],
+  imports: [CommonModule, SharedModule, RecordRoutingModule, MatInputModule, MatFormFieldModule]
 })
-export class DetailModule {}
+export class RecordModule {}

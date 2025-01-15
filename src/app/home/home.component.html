@@ -7,7 +7,7 @@
       </ng-template>
       <mat-toolbar>
         <button (click)="onNew()" mat-raised-button>
-          Añadir<mat-icon>add</mat-icon>
+          Añadir expediente<mat-icon>add</mat-icon>
 
         </button>
         <button (click)="remove()" mat-raised-button>
@@ -37,45 +37,27 @@
         </ng-container>
 
         <!-- nombre Column -->
-        <ng-container matColumnDef="nombre">
-          <th mat-header-cell *matHeaderCellDef> Nombre </th>
+        <ng-container matColumnDef="idRef">
+          <th mat-header-cell *matHeaderCellDef> Id de referencia </th>
           <td mat-cell *matCellDef="let element"> {{element.nombre}} </td>
         </ng-container>
 
-        <!-- nif Column -->
-        <ng-container matColumnDef="nif">
-          <th mat-header-cell *matHeaderCellDef> NIF </th>
-          <td mat-cell *matCellDef="let element"> {{element.nif}} </td>
-        </ng-container>
-
-        <!-- direccion Column -->
-        <ng-container matColumnDef="direccion">
-          <th mat-header-cell *matHeaderCellDef> Direccion </th>
-          <td mat-cell *matCellDef="let element"> {{element.direccion}} </td>
-        </ng-container>
-
-        <!-- telefono Column -->
-        <ng-container matColumnDef="telefono">
-          <th mat-header-cell *matHeaderCellDef> Telefono </th>
-          <td mat-cell *matCellDef="let element"> {{element.telefono}} </td>
-        </ng-container>
-
-        <!-- movil Column -->
-        <ng-container matColumnDef="movil">
-          <th mat-header-cell *matHeaderCellDef> Movil </th>
-          <td mat-cell *matCellDef="let element"> {{element.movil}} </td>
-        </ng-container>
-
         <!-- fecha Column -->
-        <ng-container matColumnDef="fecha">
-          <th mat-header-cell *matHeaderCellDef> Fecha Alta </th>
+        <ng-container matColumnDef="fechaCre">
+          <th mat-header-cell *matHeaderCellDef> Fecha de Creación </th>
           <td mat-cell *matCellDef="let element"> {{element.fecha | date :'dd-MM-yyyy'}} </td>
+        </ng-container>
+
+        <!-- nif Column -->
+        <ng-container matColumnDef="idGrupo">
+          <th mat-header-cell *matHeaderCellDef> Id del grupo </th>
+          <td mat-cell *matCellDef="let element"> {{element.nif}} </td>
         </ng-container>
 
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
         <!-- <tr mat-row *matRowDef="let row; columns: displayedColumns;"> -->
         <tr mat-row *cdkRowDef="let row; columns: displayedColumns;"
-          [ngClass]="{'highlight': selectedRowIndex === row.id}" [routerLink]="['/detail']"
+          [ngClass]="{'highlight': selectedRowIndex === row.id}" [routerLink]="['/records']"
           [queryParams]="{row: json.stringify(row)}">
         </tr>
       </table>
@@ -91,7 +73,7 @@
       </ng-template>
       <mat-toolbar>
         <button (click)="onNew()" mat-raised-button>
-          Añadir<mat-icon>add</mat-icon>
+          Añadir presupuesto<mat-icon>add</mat-icon>
 
         </button>
         <button (click)="remove()" mat-raised-button>
@@ -121,40 +103,25 @@
         </ng-container>
 
         <!-- nombre Column -->
-        <ng-container matColumnDef="nombre">
-          <th mat-header-cell *matHeaderCellDef> Nombre </th>
+        <ng-container matColumnDef="idRef">
+          <th mat-header-cell *matHeaderCellDef> Id de referencia </th>
           <td mat-cell *matCellDef="let element"> {{element.nombre}} </td>
         </ng-container>
 
+        <!-- fecha Column -->
+        <ng-container matColumnDef="fechaCre">
+          <th mat-header-cell *matHeaderCellDef> Fecha de Creación </th>
+          <td mat-cell *matCellDef="let element"> {{element.fecha | date :'dd-MM-yyyy'}} </td>
+        </ng-container>
+
         <!-- nif Column -->
-        <ng-container matColumnDef="nif">
-          <th mat-header-cell *matHeaderCellDef> NIF </th>
+        <ng-container matColumnDef="idGrupo">
+          <th mat-header-cell *matHeaderCellDef> Id del grupo </th>
           <td mat-cell *matCellDef="let element"> {{element.nif}} </td>
         </ng-container>
 
-        <!-- direccion Column -->
-        <ng-container matColumnDef="direccion">
-          <th mat-header-cell *matHeaderCellDef> Direccion </th>
-          <td mat-cell *matCellDef="let element"> {{element.direccion}} </td>
-        </ng-container>
 
-        <!-- telefono Column -->
-        <ng-container matColumnDef="telefono">
-          <th mat-header-cell *matHeaderCellDef> Telefono </th>
-          <td mat-cell *matCellDef="let element"> {{element.telefono}} </td>
-        </ng-container>
 
-        <!-- movil Column -->
-        <ng-container matColumnDef="movil">
-          <th mat-header-cell *matHeaderCellDef> Movil </th>
-          <td mat-cell *matCellDef="let element"> {{element.movil}} </td>
-        </ng-container>
-
-        <!-- fecha Column -->
-        <ng-container matColumnDef="fecha">
-          <th mat-header-cell *matHeaderCellDef> Fecha Alta </th>
-          <td mat-cell *matCellDef="let element"> {{element.fecha | date :'dd-MM-yyyy'}} </td>
-        </ng-container>
 
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
         <!-- <tr mat-row *matRowDef="let row; columns: displayedColumns;"> -->

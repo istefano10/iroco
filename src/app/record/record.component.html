@@ -1,0 +1,162 @@
+<div class="container">
+  <ng-container *ngIf="IsWait">
+    <div class="loading">
+      <mat-spinner></mat-spinner>
+    </div>
+  </ng-container>
+  <mat-toolbar>
+
+
+    <span class="example-spacer">Expediente: </span>
+    <div>
+      <button (click)="onSubmit()" mat-raised-button>
+        Guardar<mat-icon>save</mat-icon>
+
+      </button>
+      <button (click)="onCancel()" mat-raised-button>
+        Volver<mat-icon>arrow_back</mat-icon>
+      </button>
+    </div>
+
+  </mat-toolbar>
+
+  <!-- Formulario -->
+  <form [formGroup]="recordForm">
+
+    <div class="container1">
+      <mat-form-field>
+        <mat-label for="nombre">Nombre</mat-label>
+        <input id="nombre" type="text" formControlName="nombre" matInput>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label for="apellidos">Apellidos</mat-label>
+        <input id="apellidos" type="text" formControlName="apellidos" matInput>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label for="fechaNac">Fecha de nacimiento</mat-label>
+        <input id="fechaNac" type="text" formControlName="fechaNac" matInput>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label for="nif">DNI</mat-label>
+        <input id="nif" type="text" formControlName="nif" matInput>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label for="pasaporte">Pasaporte</mat-label>
+        <input id="pasaporte" type="text" formControlName="pasaporte" matInput>
+      </mat-form-field>
+    </div>
+
+    <div class="container2">
+      <mat-form-field>
+        <mat-label for="direccion">Calle y número</mat-label>
+        <input id="direccion" type="text" formControlName="direccion" matInput>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label for="ciudad">Ciudad o población</mat-label>
+        <input id="ciudad" type="text" formControlName="ciudad" matInput>
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label for="codPostal">Código postal</mat-label>
+        <input id="codPostal" type="text" formControlName="codPostal" matInput>
+      </mat-form-field>
+
+    </div>
+    <div class="container3">
+
+
+      <mat-form-field>
+        <mat-label for="telefono">Telefono</mat-label>
+        <input id="telefono" type="text" formControlName="telefono" matInput>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label for="email">Email</mat-label>
+        <input id="email" type="text" formControlName="email" matInput>
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label for="firma">Firma</mat-label>
+        <input id="firma" type="text" formControlName="firma" matInput>
+      </mat-form-field>
+    </div>
+  </form>
+  <!-- <button [disabled]="!recordForm.valid" (click)="scan()" mat-raised-button>
+    Escanear<mat-icon>add_to_queue</mat-icon>
+  </button> -->
+  <br>
+  <mat-table class="lessons-table mat-elevation-z8" [dataSource]="dataSource">
+
+    <ng-container matColumnDef="nombre">
+      <mat-header-cell *matHeaderCellDef>Nombre</mat-header-cell>
+      <mat-cell *matCellDef="let fichero">
+        <mat-icon>picture_as_pdf</mat-icon>
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="apellidos">
+      <mat-header-cell *matHeaderCellDef>Id de referencia</mat-header-cell>
+      <mat-cell class="descripcion-cell" *matCellDef="let fichero" (click)="view(fichero.descripcion)">{{fichero.descripcion}}</mat-cell>
+
+    </ng-container>
+
+    <ng-container matColumnDef="fecha de nacimiento">
+      <mat-header-cell *matHeaderCellDef>Fecha de creación</mat-header-cell>
+      <mat-cell class="duration-cell" *matCellDef="let fichero">{{fichero.fecha | date :'dd-MM-yyyy'}}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="dni">
+      <mat-header-cell *matHeaderCellDef>Dni</mat-header-cell>
+      <mat-cell class="duration-cell" *matCellDef="let fichero">111111</mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="pasaporte">
+      <mat-header-cell *matHeaderCellDef>Pasaporte</mat-header-cell>
+      <mat-cell class="duration-cell" *matCellDef="let fichero">111111</mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="ciudad">
+      <mat-header-cell *matHeaderCellDef>Ciudad</mat-header-cell>
+      <mat-cell class="duration-cell" *matCellDef="let fichero">111111</mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="direccion">
+      <mat-header-cell *matHeaderCellDef>Dirección</mat-header-cell>
+      <mat-cell class="duration-cell" *matCellDef="let fichero">111111</mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="codPostal">
+      <mat-header-cell *matHeaderCellDef>Código postal</mat-header-cell>
+      <mat-cell class="duration-cell" *matCellDef="let fichero">111111</mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="telefono">
+      <mat-header-cell *matHeaderCellDef>Telefono</mat-header-cell>
+      <mat-cell class="duration-cell" *matCellDef="let fichero">111111</mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="email">
+      <mat-header-cell *matHeaderCellDef>Email</mat-header-cell>
+      <mat-cell class="duration-cell" *matCellDef="let fichero">111111</mat-cell>
+    </ng-container>
+
+
+    <ng-container matColumnDef="action">
+      <mat-header-cell *matHeaderCellDef></mat-header-cell>
+      <mat-cell class="duration-cell" *matCellDef="let fichero">
+        <button mat-icon-button color="warn" aria-label="Borrar fichero" (click)="remove(fichero)">
+          <mat-icon>delete_forever</mat-icon>
+        </button>
+      </mat-cell>
+    </ng-container>
+
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+
+    <mat-row *cdkRowDef="let row; columns: displayedColumns;"[ngClass]="{'highlight': selectedRowIndex === row.fecha}" >
+    </mat-row>
+
+    <!-- <mat-row *matRowDef="let row; columns: displayedColumns;"
+
+            class="element-row"
+            [class.expanded]="expandedElement === row"
+            (click)="expandedElement = row"></mat-row>
+    <mat-row *matRowDef="let row; columns: ['expandedDetail']; when: isExpansionDetailRow"
+            [@detailExpand]="row.element === expandedElement ? 'expanded' : 'collapsed'"
+            style="overflow: hidden">
+    </mat-row>-->
+
+  </mat-table>
+</div>

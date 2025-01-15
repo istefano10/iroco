@@ -8,27 +8,33 @@ import { IpcService } from '../core/services';
 import { PeriodicElement } from '../home/home.component';
 
 @Component({
-  selector: 'app-detail',
-  templateUrl: './detail.component.html',
-  styleUrls: ['./detail.component.scss'],
+  selector: 'app-record',
+  templateUrl: './record.component.html',
+  styleUrls: ['./record.component.scss'],
 })
-export class DetailComponent implements OnInit {
-  displayedColumns = ['seqNo', 'descripcion', 'fecha', 'action'];
+export class RecordComponent implements OnInit {
+  displayedColumns = ['nombre', 'apellidos', 'fecha de nacimiento','dni','pasaporte','ciudad','direccion','codPostal',
+    'telefono','email', 'action'];
   dataSource = new MatTableDataSource<any>([]);
 
   // eslint-disable-next-line no-prototype-builtins, @typescript-eslint/no-unsafe-return
-  // isExpansionDetailRow = (i: number, row: any) => row.hasOwnProperty('detailRow');
+  // isExpansionrecordRow = (i: number, row: any) => row.hasOwnProperty('recordRow');
   // expandedElement: any;
 
   crear = false;
   IsWait = false;
-  detailForm = new FormGroup({
+  recordForm = new FormGroup({
     nif: new FormControl('', Validators.required),
     nombre: new FormControl('', Validators.required),
+    apellidos: new FormControl('', Validators.required),
+    fechaNac: new FormControl('', Validators.required),
+    pasaporte: new FormControl('', Validators.required),
     direccion: new FormControl(''),
-    movil: new FormControl(''),
+    email: new FormControl(''),
     telefono: new FormControl(''),
-    area: new FormControl(''),
+    firma: new FormControl(''),
+    ciudad: new FormControl(''),
+    codPostal: new FormControl(''),
   });
   userData = {};
   constructor(
@@ -41,24 +47,23 @@ export class DetailComponent implements OnInit {
   ngOnInit(): void {
     // console.log(this.route.snapshot.queryParams.row);
     if (this.route.snapshot.queryParams.row) {
-      this.detailForm.controls.nif.disable();
+      this.recordForm.controls.nif.disable();
       const data = JSON.parse(
         this.route.snapshot.queryParams.row
       ) as PeriodicElement;
-      // console.log(data);
       this.userData = data;
-      this.detailForm.patchValue(data);
+      this.recordForm.patchValue(data);
       this.dataSource.data = data.pdfs;
       this.crear = false;
     } else {
       this.crear = true;
-      this.detailForm.reset();
-      this.detailForm.patchValue({
+      this.recordForm.reset();
+      this.recordForm.patchValue({
         nombre: '',
         direccion: '',
-        movil: '',
+        email: '',
         telefono: '',
-        area: '',
+        firma: '',
         nif: '',
       });
     }
@@ -66,9 +71,9 @@ export class DetailComponent implements OnInit {
 
   onSubmit() {
     if (this.crear) {
-      this.detailForm.value['fecha'] = new Date();
-      this.detailForm.value['pdfs'] = [];
-      this.ipcService.send('product:new', this.detailForm.value);
+      this.recordForm.value['fecha'] = new Date();
+      this.recordForm.value['pdfs'] = [];
+      this.ipcService.send('product:new', this.recordForm.value);
       this.ipcService.on('new:reply', (event: any, arg: any) => {
         // console.log('res', arg);
         if (!arg) {
@@ -76,8 +81,8 @@ export class DetailComponent implements OnInit {
         }
       });
     } else {
-      this.detailForm.value['nif'] = this.userData['nif'];
-      this.ipcService.send('product:update', this.detailForm.value);
+      this.recordForm.value['nif'] = this.userData['nif'];
+      this.ipcService.send('product:update', this.recordForm.value);
       void this.router.navigate(['/', 'home']);
     }
   }
@@ -89,7 +94,7 @@ export class DetailComponent implements OnInit {
   remove(row) {
     // console.log('remove ', row);
     const requestData = {
-      nif: this.crear ? this.detailForm.value.nif : this.userData['nif'],
+      nif: this.crear ? this.recordForm.value.nif : this.userData['nif'],
       descripcion: row.descripcion,
     };
     this.ipcService.send('file:remove', requestData);
@@ -105,7 +110,7 @@ export class DetailComponent implements OnInit {
 
   view(descripcion) {
     this.ipcService.send('file:view', {
-      nif: this.detailForm.value.nif,
+      nif: this.recordForm.value.nif,
       descripcion,
     });
     // this.ipcService.on('fileview:reply', (event: any, arg: PeriodicElement) => {
@@ -117,12 +122,12 @@ export class DetailComponent implements OnInit {
     this.IsWait = true;
     this.cdRef.detectChanges();
     if (!this.crear) {
-      this.detailForm.value['nif'] = this.userData['nif'];
+      this.recordForm.value['nif'] = this.userData['nif'];
     }
-    this.detailForm.value['fecha'] = new Date();
-    this.detailForm.value['pdfs'] = [];
-    // console.log(this.detailForm.value);
-    this.ipcService.send('scan:new', this.detailForm.value);
+    this.recordForm.value['fecha'] = new Date();
+    this.recordForm.value['pdfs'] = [];
+    // console.log(this.ecordForm.value);
+    this.ipcService.send('scan:new', this.recordForm.value);
     this.ipcService.on('scan:reply', (event: any, arg: PeriodicElement) => {
       this.IsWait = false;
       // console.log('escaneado', arg);

@@ -1,0 +1,56 @@
+<div class="container">
+  <ng-container *ngIf="IsWait">
+    <div class="loading">
+      <mat-spinner></mat-spinner>
+    </div>
+  </ng-container>
+
+  <div>
+    <h2>
+      Crear expediente
+    </h2>
+  </div>
+  <!-- Formulario -->
+  <form [formGroup]="addRecordForm">
+
+    <div class="container1">
+      <mat-form-field>
+        <mat-label for="idRef">Id Referencia</mat-label>
+        <input id="idRef" type="text" formControlName="idRef" matInput>
+      </mat-form-field>
+
+
+
+
+    </div>
+    <div class="container2">
+      <mat-form-field>
+        <mat-label for="fechaCre">Fecha de creación</mat-label>
+        <input id="fechaCre" type="text" formControlName="fechaCre" matInput>
+      </mat-form-field>
+    </div>
+
+    <div class="container3">
+      <mat-form-field>
+        <mat-label for="idGrupo">Id del grupo</mat-label>
+        <input id="idGrupo" type="text" formControlName="idGrupo" matInput>
+      </mat-form-field>
+    </div>
+
+  </form>
+  <mat-toolbar>
+    <button (click)="onSubmit()" style="margin-right: 1rem;" mat-raised-button>
+      Guardar<mat-icon>save</mat-icon>
+
+    </button>
+    <button (click)="onCancel()" mat-raised-button style="margin-left: 1rem;">
+      Cancelar<mat-icon>cancel</mat-icon>
+    </button>
+
+  </mat-toolbar>
+  <!-- <button [disabled]="!detailForm.valid" (click)="scan()" mat-raised-button>
+    Escanear<mat-icon>add_to_queue</mat-icon>
+  </button> -->
+  <br>
+
+</div>

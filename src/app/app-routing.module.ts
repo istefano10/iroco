@@ -3,7 +3,9 @@ import { Routes, RouterModule } from '@angular/router';
 import { PageNotFoundComponent } from './shared/components';
 
 import { HomeRoutingModule } from './home/home-routing.module';
-import { DetailRoutingModule } from './detail/detail-routing.module';
+import { RecordModule } from './record/record.module';
+import { AddRecordModule } from './addRecord/add-record.module';
+import { AddRecordRoutingModule } from './addRecord/add-record-routing.module';
 
 const routes: Routes = [
   {
@@ -21,7 +23,9 @@ const routes: Routes = [
   imports: [
     RouterModule.forRoot(routes, {}),
     HomeRoutingModule,
-    DetailRoutingModule
+    AddRecordModule,
+    AddRecordRoutingModule,
+    RecordModule
   ],
   exports: [RouterModule]
 })

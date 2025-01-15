@@ -6,13 +6,15 @@ import {
   ElementRef,
   OnInit,
 } from '@angular/core';
-import { AfterViewInit, ViewChild } from '@angular/core';
+import { AfterViewInit, ViewChild,ViewEncapsulation } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
 import { IpcService } from '../core/services';
 
 @Component({
+  encapsulation: ViewEncapsulation.None
+,
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss'],
@@ -20,14 +22,21 @@ import { IpcService } from '../core/services';
 export class HomeComponent implements OnInit, AfterViewInit {
   home = true;
 
+  // displayedColumns: string[] = [
+  //   'select',
+  //   'nombre',
+  //   'nif',
+  //   'direccion',
+  //   'telefono',
+  //   'movil',
+  //   'fecha',
+  // ];
   displayedColumns: string[] = [
     'select',
-    'nombre',
-    'nif',
-    'direccion',
-    'telefono',
-    'movil',
-    'fecha',
+    'idRef',
+    'fechaCre',
+    'idGrupo',
+
   ];
   dataSource = new MatTableDataSource<PeriodicElement>([]);
   clickedRows = new Set<PeriodicElement>();
@@ -61,7 +70,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
   }
 
   onNew() {
-    void this.router.navigate(['/', 'detail']);
+    void this.router.navigate(['/', 'addRecord']);
   }
 
   applyFilter(event: Event) {
