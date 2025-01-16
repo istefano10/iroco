@@ -22,23 +22,23 @@ import { IpcService } from '../core/services';
 export class HomeComponent implements OnInit, AfterViewInit {
   home = true;
 
-  // displayedColumns: string[] = [
-  //   'select',
-  //   'nombre',
-  //   'nif',
-  //   'direccion',
-  //   'telefono',
-  //   'movil',
-  //   'fecha',
-  // ];
   displayedColumns: string[] = [
     'select',
-    'idRef',
-    'fechaCre',
+    'id',
+    'ref',
+    'fecha',
     'idGrupo',
-
   ];
+
+  displayedColumnsPres: string[] = [
+    'select',
+    'id',
+    'ref',
+    'fecha',
+  ];
+
   dataSource = new MatTableDataSource<PeriodicElement>([]);
+  dataSourcePres = new MatTableDataSource<PeriodicElement>([]);
   clickedRows = new Set<PeriodicElement>();
   @ViewChild('filter') filter: ElementRef;
 
@@ -57,7 +57,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
   ) {}
 
   ngAfterViewInit() {
-    this.ipcService.on('list:reply', (event: any, arg: PeriodicElement[]) => {
+    this.ipcService.on('expedientes:listreply', (event: any, arg: PeriodicElement[]) => {
+      console.log(arg)
       this.dataSource.data = arg;
       this.dataSource.paginator = this.paginator;
       this.cdRef.detectChanges();
@@ -65,7 +66,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
   }
   ngOnInit(): void {
     this.dataSource.paginator = this.paginator;
-    this.ipcService.send('product:list', {});
+    this.ipcService.send('expedientes:list', {});
     // console.log('HomeComponent INIT');
   }
 

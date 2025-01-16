@@ -1,9 +1,9 @@
 <div class="container">
   <mat-tab-group>
-    <mat-tab label="Expedientes" >
+    <mat-tab label="Expedientes">
       <ng-template mat-tab-label>
         <mat-icon class="example-tab-icon"> thumb_up </mat-icon>
-          Expedientes
+        Expedientes
       </ng-template>
       <mat-toolbar>
         <button (click)="onNew()" mat-raised-button>
@@ -35,23 +35,28 @@
             </mat-checkbox>
           </td>
         </ng-container>
+        <!-- id Column -->
+        <ng-container matColumnDef="id">
+          <th mat-header-cell *matHeaderCellDef> ID</th>
+          <td mat-cell *matCellDef="let element"> {{element.$loki}} </td>
+        </ng-container>
 
-        <!-- nombre Column -->
-        <ng-container matColumnDef="idRef">
-          <th mat-header-cell *matHeaderCellDef> Id de referencia </th>
-          <td mat-cell *matCellDef="let element"> {{element.nombre}} </td>
+        <!-- ref Column -->
+        <ng-container matColumnDef="ref">
+          <th mat-header-cell *matHeaderCellDef> Referencia </th>
+          <td mat-cell *matCellDef="let element"> {{element.ref}} </td>
         </ng-container>
 
         <!-- fecha Column -->
-        <ng-container matColumnDef="fechaCre">
+        <ng-container matColumnDef="fecha">
           <th mat-header-cell *matHeaderCellDef> Fecha de Creación </th>
           <td mat-cell *matCellDef="let element"> {{element.fecha | date :'dd-MM-yyyy'}} </td>
         </ng-container>
 
-        <!-- nif Column -->
+        <!-- idGrupo Column -->
         <ng-container matColumnDef="idGrupo">
           <th mat-header-cell *matHeaderCellDef> Id del grupo </th>
-          <td mat-cell *matCellDef="let element"> {{element.nif}} </td>
+          <td mat-cell *matCellDef="let element"> {{element.idGrupo}} </td>
         </ng-container>
 
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
@@ -81,13 +86,13 @@
         </button>
         <span class="example-spacer"></span>
 
-        <mat-form-field *ngIf="home">
+        <!-- <mat-form-field *ngIf="home">
           <mat-label>Filtrar por cualquier columna</mat-label>
           <input matInput (keyup)="applyFilter($event)" placeholder="Escribir cualquier valor" #input>
-        </mat-form-field>
+        </mat-form-field> -->
       </mat-toolbar>
 
-      <table *ngIf="home" mat-table [dataSource]="dataSource">
+      <table *ngIf="home" mat-table [dataSource]="dataSourcePres">
 
         <ng-container matColumnDef="select">
           <th mat-header-cell *matHeaderCellDef>
@@ -101,31 +106,27 @@
             </mat-checkbox>
           </td>
         </ng-container>
+        <!-- id Column -->
+        <ng-container matColumnDef="id">
+          <th mat-header-cell *matHeaderCellDef> ID</th>
+          <td mat-cell *matCellDef="let element"> {{element.$loki}} </td>
+        </ng-container>
 
-        <!-- nombre Column -->
-        <ng-container matColumnDef="idRef">
+        <!-- ref Column -->
+        <ng-container matColumnDef="ref">
           <th mat-header-cell *matHeaderCellDef> Id de referencia </th>
           <td mat-cell *matCellDef="let element"> {{element.nombre}} </td>
         </ng-container>
 
         <!-- fecha Column -->
-        <ng-container matColumnDef="fechaCre">
+        <ng-container matColumnDef="fecha">
           <th mat-header-cell *matHeaderCellDef> Fecha de Creación </th>
           <td mat-cell *matCellDef="let element"> {{element.fecha | date :'dd-MM-yyyy'}} </td>
         </ng-container>
 
-        <!-- nif Column -->
-        <ng-container matColumnDef="idGrupo">
-          <th mat-header-cell *matHeaderCellDef> Id del grupo </th>
-          <td mat-cell *matCellDef="let element"> {{element.nif}} </td>
-        </ng-container>
-
-
-
-
-        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-        <!-- <tr mat-row *matRowDef="let row; columns: displayedColumns;"> -->
-        <tr mat-row *cdkRowDef="let row; columns: displayedColumns;"
+        <tr mat-header-row *matHeaderRowDef="displayedColumnsPres"></tr>
+        <!-- <tr mat-row *matRowDef="let row; columns: displayedColumnsPres;"> -->
+        <tr mat-row *cdkRowDef="let row; columns: displayedColumnsPres;"
           [ngClass]="{'highlight': selectedRowIndex === row.id}" [routerLink]="['/detail']"
           [queryParams]="{row: json.stringify(row)}">
         </tr>

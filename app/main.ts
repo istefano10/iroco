@@ -2,6 +2,9 @@ import { app, BrowserWindow, ipcMain, screen, dialog } from 'electron';
 
 const PDFWindow = require('electron-pdf-window');
 import * as path from 'path';
+const os = require('os');
+const desktopDir = path.join(os.homedir(), 'Desktop');
+
 import * as fs from 'fs';
 const loki = require('lokijs');
 const { execFile } = require('child_process');
@@ -11,7 +14,7 @@ const args = process.argv.slice(1),
   serve = args.some((val) => val === '--serve');
 
 // We will use autoload (one time load at instantiation), and autosave  with 4 sec interval.
-const db = new loki('pacientes.json', {
+const db = new loki('iroco.json', {
   autoload: true,
   autoloadCallback: databaseInitialize,
   autosave: true,
@@ -19,9 +22,17 @@ const db = new loki('pacientes.json', {
 });
 
 function databaseInitialize() {
-  const pacientes = db.getCollection('pacientes');
-  if (pacientes === null) {
-    db.addCollection('pacientes', { unique: 'nif' });
+  const clientes = db.getCollection('clientes');
+  if (clientes === null) {
+    db.addCollection('clientes', { unique: 'nif' });
+  }
+  const expedientes = db.getCollection('expedientes');
+  if (expedientes === null) {
+    db.addCollection('expedientes', { unique: 'ref' });
+  }
+  const presupuestos = db.getCollection('presupuestos');
+  if (presupuestos === null) {
+    db.addCollection('presupuestos', { unique: 'ref' });
   }
 }
 
@@ -74,39 +85,39 @@ function createWindow(): BrowserWindow {
 }
 
 // Escanear
-ipcMain.on('scan:new', (e, newProduct) => {
-  const pacientes = db.getCollection('pacientes');
-  let doc = pacientes.by('nif', newProduct.nif); //select the doc first to be updated
+ipcMain.on('scan:new', (e, newClient) => {
+  const clientes = db.getCollection('clientes');
+  let doc = clientes.by('nif', newClient.nif); //select the doc first to be updated
   // console.log(doc);
-  const nombreFichero = `${newProduct.nif}-${Math.floor(
+  const nombreFichero = `${newClient.nif}-${Math.floor(
     10000 + Math.random() * 90000
   )}`;
-  // const nombreFichero = `${newProduct.nombre}-${newProduct.nif}-${
+  // const nombreFichero = `${newClient.nombre}-${newClient.nif}-${
   //   doc ? doc.pdfs.length + 1 : 1
   // }`;
   // scanAndSavePDF(
   //   doc && doc.pdfs && doc.pdfs.length < 1 ? false : true, //create folder
-  //   doc ? doc.nombre : newProduct.nombre,
+  //   doc ? doc.nombre : newClient.nombre,
   //   nombreFichero
   // );
   const createFoler = doc && doc.pdfs && doc.pdfs.length < 1 ? false : true;
-  const folder = doc ? doc.nombre : newProduct.nombre;
+  const folder = doc ? doc.nombre : newClient.nombre;
 
   if (createFoler) {
-    fs.mkdir(`./pacientes/${folder}`, { recursive: true }, (err) => {
+    fs.mkdir(`./clientes/${folder}`, { recursive: true }, (err) => {
       if (err) throw err;
     });
   }
   execFile(
     'C:/Program Files/NAPS2/NAPS2.Console.exe',
-    ['-o', `./pacientes/${folder}/${nombreFichero}.pdf`],
+    ['-o', `./clientes/${folder}/${nombreFichero}.pdf`],
     (error, stdout, stderr) => {
       if (error) {
         e.reply('scan:reply', error);
 
         throw error;
       }
-      const result = pacientes.by('nif', newProduct.nif);
+      const result = clientes.by('nif', newClient.nif);
       e.reply('scan:reply', result);
       console.log(stdout);
     }
@@ -114,22 +125,94 @@ ipcMain.on('scan:new', (e, newProduct) => {
 
   if (doc) {
     doc.pdfs.push({
-      descripcion: `./pacientes/${newProduct.nombre}/${nombreFichero}.pdf`,
+      descripcion: `./clientes/${newClient.nombre}/${nombreFichero}.pdf`,
       fecha: new Date(),
     }); //update its values
-    pacientes.update(doc); //update the collection
+    clientes.update(doc); //update the collection
   } else {
-    newProduct.pdfs.push({
-      descripcion: `./pacientes/${newProduct.nombre}/${nombreFichero}.pdf`,
+    newClient.pdfs.push({
+      descripcion: `./clientes/${newClient.nombre}/${nombreFichero}.pdf`,
       fecha: new Date(),
     }); //update its values
-    pacientes.insert(newProduct);
+    clientes.insert(newClient);
   }
 });
 
-// Nuevo paciente
-ipcMain.on('product:new', (e, newProduct) => {
-  if (!newProduct.nif || !newProduct.nombre) {
+// Nuevo expediente
+ipcMain.on('expediente:new', (e, newExpediente) => {
+  console.log(
+    'desktopDir =>>>>>>>>>> ',
+    desktopDir + `\\expedientes\\${newExpediente.ref}`
+  );
+
+  if (!newExpediente.ref) {
+    dialog.showErrorBox(
+      'Error',
+      `Los campos 'Id de referencia' y 'NIF' son obligatorios`
+    );
+    e.reply('newExpediente:reply', { error: 1 });
+    return;
+  }
+  const expedientes = db.getCollection('expedientes');
+  let doc = expedientes.by('ref', newExpediente.ref);
+  if (doc) {
+    dialog.showErrorBox(
+      'Error',
+      `El expediente con referencia: ${newExpediente.ref} ya existe`
+    );
+    e.reply('newExpediente:reply', { error: 2 });
+  } else {
+    expedientes.insert(newExpediente);
+    const folderNames = [
+      'Reserva de hoteles',
+      'Notas',
+      'Información general operativa',
+    ];
+    folderNames.forEach((folder) => {
+      fs.mkdir(
+        desktopDir + `\\Expedientes\\${newExpediente.ref}\\${folder}`,
+        { recursive: true },
+        (err) => {
+          if (err) throw err;
+        }
+      );
+    });
+    e.reply('newExpediente:reply', doc);
+  }
+});
+
+// Listar expedientes
+ipcMain.on('expedientes:list', (e, p) => {
+  const expedientes = db.getCollection('expedientes');
+  const result = expedientes.find({});
+  e.reply('expedientes:listreply', result);
+});
+
+// ediar expediente
+ipcMain.on('expediente:update', (e, newExpediente) => {
+  const expedientes = db.getCollection('expedientes');
+  let doc = expedientes.by('ref', newExpediente.ref);
+  // console.log(doc, newClient);
+  // if (doc && doc.pdfs && doc.pdfs.length > 0) {
+  //   fs.renameSync(
+  //     './clientes/' + doc.nombre,
+  //     './clientes/' + newClient.nombre
+  //   );
+  //   doc.pdfs = updateAlPdfsUrl(doc.pdfs, doc.nombre, newClient.nombre);
+  // }
+
+  doc.ref = newExpediente.ref;
+  doc.idGrupo = newExpediente.idGrupo;
+
+  expedientes.update(doc);
+  e.reply('expediente:updatereply', doc);
+});
+
+// Nuevo cliente
+ipcMain.on('product:new', (e, newClient) => {
+  console.log('desktopDir =>>>>>>>>>> ', desktopDir);
+
+  if (!newClient.nif || !newClient.nombre) {
     dialog.showErrorBox(
       'Error',
       `Los campos 'Nombre' y 'NIF' son obligatorios`
@@ -137,89 +220,97 @@ ipcMain.on('product:new', (e, newProduct) => {
     e.reply('new:reply', { error: 1 });
     return;
   }
-  const pacientes = db.getCollection('pacientes');
-  let doc = pacientes.by('nif', newProduct.nif);
+  const clientes = db.getCollection('clientes');
+  let doc = clientes.by('nif', newClient.nif);
   if (doc) {
     dialog.showErrorBox(
       'Error',
-      `El usuario con NIF: ${newProduct.nif} ya existe`
+      `El usuario con NIF: ${newClient.nif} ya existe`
     );
     e.reply('new:reply', { error: 2 });
   } else {
-    pacientes.insert(newProduct);
+    clientes.insert(newClient);
     e.reply('new:reply', doc);
   }
 });
 
-function updateAlPdfsUrl(pdfs, oldname, newname) {
-  for (var i in pdfs) {
-    pdfs[i].descripcion = pdfs[i].descripcion.replace(oldname, newname);
-  }
-  return pdfs;
-}
+// function updateAlPdfsUrl(pdfs, oldname, newname) {
+//   for (var i in pdfs) {
+//     pdfs[i].descripcion = pdfs[i].descripcion.replace(oldname, newname);
+//   }
+//   return pdfs;
+// }
 
-// Listar pacientes
+// Listar clientes
 ipcMain.on('product:list', (e, p) => {
-  const pacientes = db.getCollection('pacientes');
-  const result = pacientes.find({});
+  const clientes = db.getCollection('clientes');
+  const result = clientes.find({});
   e.reply('list:reply', result);
 });
 
-// ediar paciente
-ipcMain.on('product:update', (e, newProduct) => {
-  const pacientes = db.getCollection('pacientes');
-  let doc = pacientes.by('nif', newProduct.nif);
-  // console.log(doc, newProduct);
-  if (doc && doc.pdfs && doc.pdfs.length > 0) {
-    fs.renameSync(
-      './pacientes/' + doc.nombre,
-      './pacientes/' + newProduct.nombre
-    );
-    doc.pdfs = updateAlPdfsUrl(doc.pdfs, doc.nombre, newProduct.nombre);
-  }
-  doc.nombre = newProduct.nombre;
-  doc.direccion = newProduct.direccion;
-  doc.telefono = newProduct.telefono;
-  doc.movil = newProduct.movil;
-  doc.area = newProduct.area;
-  pacientes.update(doc);
+// ediar cliente
+ipcMain.on('product:update', (e, newClient) => {
+  const clientes = db.getCollection('clientes');
+  let doc = clientes.by('nif', newClient.nif);
+  // console.log(doc, newClient);
+  // if (doc && doc.pdfs && doc.pdfs.length > 0) {
+  //   fs.renameSync(
+  //     './clientes/' + doc.nombre,
+  //     './clientes/' + newClient.nombre
+  //   );
+  //   doc.pdfs = updateAlPdfsUrl(doc.pdfs, doc.nombre, newClient.nombre);
+  // }
+
+  doc.nif = newClient.nif;
+  doc.nombre = newClient.nombre;
+  doc.apellidos = newClient.apellidos;
+  doc.fechaNac = newClient.fechaNac;
+  doc.pasaporte = newClient.pasaporte;
+  doc.direccion = newClient.direccion;
+  doc.email = newClient.email;
+  doc.telefono = newClient.telefono;
+  doc.firma = newClient.firma;
+  doc.ciudad = newClient.ciudad;
+  doc.codPostal = newClient.codPostal;
+
+  clientes.update(doc);
   e.reply('update:reply', doc);
 });
 
-// borrar pacientes
+// borrar clientes
 ipcMain.on('product:remove', (e, data) => {
   dialog
     .showMessageBox(win, {
       type: 'question',
       title: 'Confirmación',
-      message: '¿Quieres borrar el paciente: ' + data.nif + ' ?',
+      message: '¿Quieres borrar el cliente: ' + data.nif + ' ?',
       buttons: ['Si', 'No '],
     })
     // Dialog returns a promise so let's handle it correctly
     .then((result) => {
-      let pacientes = db.getCollection('pacientes');
+      let clientes = db.getCollection('clientes');
       if (result.response !== 0) {
-        // const resultF = pacientes.find({});
+        // const resultF = clientes.find({});
         // e.reply('remove:reply', resultF);
         return;
       }
 
       // Testing.
       if (result.response === 0) {
-        const paciente = pacientes.find(data);
-        if (paciente.length > 0) {
-          pacientes.chain().find(data).remove();
+        const cliente = clientes.find(data);
+        if (cliente.length > 0) {
+          clientes.chain().find(data).remove();
         }
-        // pacientes = pacientes.filter(function (obj) {
+        // clientes = clientes.filter(function (obj) {
         //   return obj.nif !== data.nif;
         // });
-        const resultF = pacientes.find({});
+        const resultF = clientes.find({});
         e.reply('remove:reply', resultF);
       }
     });
 });
 
-// borrar fichero de paciente
+// borrar fichero de cliente
 ipcMain.on('file:remove', (e, request) => {
   const filename = request.descripcion.replace(/^.*[\\/]/, '');
   dialog
@@ -238,8 +329,8 @@ ipcMain.on('file:remove', (e, request) => {
 
       // Testing.
       if (result.response === 0) {
-        const pacientes = db.getCollection('pacientes');
-        let doc = pacientes.by('nif', request.nif);
+        const clientes = db.getCollection('clientes');
+        let doc = clientes.by('nif', request.nif);
         doc.pdfs = doc.pdfs.filter(function (obj) {
           return obj.descripcion !== request.descripcion;
         });
@@ -259,17 +350,17 @@ ipcMain.on('file:remove', (e, request) => {
         } else {
           dialog.showErrorBox(
             'Error',
-            'Este fichero no existe en la carpeta del paciente'
+            'Este fichero no existe en la carpeta del cliente'
           );
         }
       }
     });
 });
 
-// ver fichero de paciente
+// ver fichero de cliente
 ipcMain.on('file:view', (e, request) => {
-  // const pacientes = db.getCollection('pacientes');
-  // let doc = pacientes.by('nif', request.nif);
+  // const clientes = db.getCollection('clientes');
+  // let doc = clientes.by('nif', request.nif);
   // console.log('asda', doc)
   // console.log(
   //   'Current directory:',

@@ -23,10 +23,8 @@ export class AddRecordComponent implements OnInit {
   crear = false;
   IsWait = false;
   addRecordForm = new FormGroup({
-    idRef: new FormControl('', Validators.required),
-    fechaCre: new FormControl('', Validators.required),
+    ref: new FormControl('', Validators.required),
     idGrupo: new FormControl(''),
-
   });
   userData = {};
   constructor(
@@ -52,8 +50,7 @@ export class AddRecordComponent implements OnInit {
       this.crear = true;
       this.addRecordForm.reset();
       this.addRecordForm.patchValue({
-        idRef: '',
-        fechaCre: '',
+        ref: '',
         idGrupo: '',
 
       });
@@ -63,9 +60,8 @@ export class AddRecordComponent implements OnInit {
   onSubmit() {
     if (this.crear) {
       this.addRecordForm.value['fecha'] = new Date();
-      this.addRecordForm.value['pdfs'] = [];
-      this.ipcService.send('product:new', this.addRecordForm.value);
-      this.ipcService.on('new:reply', (event: any, arg: any) => {
+      this.ipcService.send('expediente:new', this.addRecordForm.value);
+      this.ipcService.on('newExpediente:reply', (event: any, arg: any) => {
         // console.log('res', arg);
         if (!arg) {
           void this.router.navigate(['/', 'home']);
@@ -73,7 +69,7 @@ export class AddRecordComponent implements OnInit {
       });
     } else {
       this.addRecordForm.value['nif'] = this.userData['nif'];
-      this.ipcService.send('product:update', this.addRecordForm.value);
+      this.ipcService.send('expediente:update', this.addRecordForm.value);
       void this.router.navigate(['/', 'home']);
     }
   }
