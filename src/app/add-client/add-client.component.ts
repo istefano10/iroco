@@ -72,16 +72,15 @@ export class AddClientComponent implements OnInit {
   onSubmit() {
     if (this.crear) {
       this.recordForm.value['fecha'] = new Date();
-      this.recordForm.value['pdfs'] = [];
-      this.ipcService.send('product:new', this.recordForm.value);
-      this.ipcService.on('new:reply', (event: any, arg: any) => {
+      this.ipcService.send('cliente:new', this.recordForm.value);
+      this.ipcService.on('newCliente:reply', (event: any, arg: any) => {
         if (!arg) {
           void this.router.navigate(['/', 'records']);
         }
       });
     } else {
       this.recordForm.value['nif'] = this.userData['nif'];
-      this.ipcService.send('product:update', this.recordForm.value);
+      this.ipcService.send('cliente:update', this.recordForm.value);
       void this.router.navigate(['/', 'records']);
     }
   }
@@ -91,14 +90,14 @@ export class AddClientComponent implements OnInit {
   }
 
   remove(row) {
-    // console.log('remove ', row);
+    console.log('remove ', row);
     const requestData = {
       nif: this.crear ? this.recordForm.value.nif : this.userData['nif'],
       descripcion: row.descripcion,
     };
-    this.ipcService.send('file:remove', requestData);
+    this.ipcService.send('cliente:remove', requestData);
     this.ipcService.on(
-      'fileremove:reply',
+      'cliente:removereplyxx',
       (event: any, arg: PeriodicElement) => {
         // console.log('borrado', arg);
         this.dataSource.data = arg.pdfs;

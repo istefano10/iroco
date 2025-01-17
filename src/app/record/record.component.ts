@@ -50,7 +50,7 @@ export class RecordComponent implements OnInit, AfterViewInit{
   ) {}
 
   ngOnInit(): void {
-    this.ipcService.send('product:list', {});
+    this.ipcService.send('clientes:list', {});
 
     if (this.route.snapshot.queryParams.row) {
       this.recordForm.controls.nif.disable();
@@ -77,7 +77,7 @@ export class RecordComponent implements OnInit, AfterViewInit{
   }
 
   ngAfterViewInit() {
-    this.ipcService.on('list:reply', (event: any, arg: PeriodicElement[]) => {
+    this.ipcService.on('clientes:listreply', (event: any, arg: PeriodicElement[]) => {
       console.log(arg)
       this.dataSource.data = arg;
       this.dataSource.paginator = this.paginator;
@@ -89,8 +89,8 @@ export class RecordComponent implements OnInit, AfterViewInit{
     if (this.crear) {
       this.recordForm.value['fecha'] = new Date();
       this.recordForm.value['pdfs'] = [];
-      this.ipcService.send('product:new', this.recordForm.value);
-      this.ipcService.on('new:reply', (event: any, arg: any) => {
+      this.ipcService.send('cliente:new', this.recordForm.value);
+      this.ipcService.on('cliente:newreply', (event: any, arg: any) => {
         // console.log('res', arg);
         if (!arg) {
           void this.router.navigate(['/', 'home']);
@@ -98,7 +98,7 @@ export class RecordComponent implements OnInit, AfterViewInit{
       });
     } else {
       this.recordForm.value['nif'] = this.userData['nif'];
-      this.ipcService.send('product:update', this.recordForm.value);
+      this.ipcService.send('cliente:update', this.recordForm.value);
       void this.router.navigate(['/', 'home']);
     }
   }
@@ -114,14 +114,13 @@ export class RecordComponent implements OnInit, AfterViewInit{
   remove(row) {
     // console.log('remove ', row);
     const requestData = {
-      nif: this.crear ? this.recordForm.value.nif : this.userData['nif'],
-      descripcion: row.descripcion,
+      nif: row.nif
     };
-    this.ipcService.send('file:remove', requestData);
+    this.ipcService.send('cliente:remove', requestData);
     this.ipcService.on(
-      'fileremove:reply',
+      'cliente:removereply',
       (event: any, arg: PeriodicElement) => {
-        // console.log('borrado', arg);
+        console.log('borrado', arg);
         this.dataSource.data = arg.pdfs;
         this.cdRef.detectChanges();
       }

@@ -82,9 +82,9 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
   remove() {
     this.selection.selected.forEach((item) => {
-      this.ipcService.send('product:remove', { nif: item.nif });
+      this.ipcService.send('expediente:remove', { ref: item.ref });
     });
-    this.ipcService.on('remove:reply', (event: any, arg: PeriodicElement[]) => {
+    this.ipcService.on('expediente:removereply', (event: any, arg: PeriodicElement[]) => {
       this.dataSource.data = arg;
       this.dataSource.paginator = this.paginator;
       this.cdRef.detectChanges();

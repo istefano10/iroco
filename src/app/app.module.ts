@@ -12,7 +12,7 @@ import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 
 import { HomeModule } from './home/home.module';
-import { AddRecordModule } from './addRecord/add-record.module';
+import { AddRecordModule } from './add-record/add-record.module';
 
 import { AppComponent } from './app.component';
 

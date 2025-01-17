@@ -88,9 +88,9 @@ export class AddRecordComponent implements OnInit {
       // nif: this.crear ? this.addRecordForm.value.nif : this.userData['nif'],
       descripcion: row.descripcion,
     };
-    this.ipcService.send('file:remove', requestData);
+    this.ipcService.send('cliente:remove', requestData);
     this.ipcService.on(
-      'fileremove:reply',
+      'cliente:removereply',
       (event: any, arg: PeriodicElement) => {
         // console.log('borrado', arg);
         this.dataSource.data = arg.pdfs;

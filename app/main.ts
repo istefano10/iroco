@@ -140,10 +140,6 @@ ipcMain.on('scan:new', (e, newClient) => {
 
 // Nuevo expediente
 ipcMain.on('expediente:new', (e, newExpediente) => {
-  console.log(
-    'desktopDir =>>>>>>>>>> ',
-    desktopDir + `\\expedientes\\${newExpediente.ref}`
-  );
 
   if (!newExpediente.ref) {
     dialog.showErrorBox(
@@ -208,16 +204,43 @@ ipcMain.on('expediente:update', (e, newExpediente) => {
   e.reply('expediente:updatereply', doc);
 });
 
+// borrar expediente
+ipcMain.on('expediente:remove', (e, data) => {
+  dialog
+    .showMessageBox(win, {
+      type: 'question',
+      title: 'Confirmación',
+      message: '¿Quieres borrar el expediente: ' + data.ref + ' ?',
+      buttons: ['Si', 'No '],
+    })
+    // Dialog returns a promise so let's handle it correctly
+    .then((result) => {
+      let expedientes = db.getCollection('expedientes');
+      if (result.response !== 0) {
+        return;
+      }
+
+      // Testing.
+      if (result.response === 0) {
+        const cliente = expedientes.find(data);
+        if (cliente.length > 0) {
+          expedientes.chain().find(data).remove();
+        }
+        const resultF = expedientes.find({});
+        e.reply('expediente:removereply', resultF);
+      }
+    });
+});
+
 // Nuevo cliente
-ipcMain.on('product:new', (e, newClient) => {
-  console.log('desktopDir =>>>>>>>>>> ', desktopDir);
+ipcMain.on('cliente:new', (e, newClient) => {
 
   if (!newClient.nif || !newClient.nombre) {
     dialog.showErrorBox(
       'Error',
       `Los campos 'Nombre' y 'NIF' son obligatorios`
     );
-    e.reply('new:reply', { error: 1 });
+    e.reply('newCliente:reply', { error: 1 });
     return;
   }
   const clientes = db.getCollection('clientes');
@@ -227,29 +250,22 @@ ipcMain.on('product:new', (e, newClient) => {
       'Error',
       `El usuario con NIF: ${newClient.nif} ya existe`
     );
-    e.reply('new:reply', { error: 2 });
+    e.reply('newCliente:reply', { error: 2 });
   } else {
     clientes.insert(newClient);
-    e.reply('new:reply', doc);
+    e.reply('newCliente:reply', doc);
   }
 });
 
-// function updateAlPdfsUrl(pdfs, oldname, newname) {
-//   for (var i in pdfs) {
-//     pdfs[i].descripcion = pdfs[i].descripcion.replace(oldname, newname);
-//   }
-//   return pdfs;
-// }
-
 // Listar clientes
-ipcMain.on('product:list', (e, p) => {
+ipcMain.on('clientes:list', (e, p) => {
   const clientes = db.getCollection('clientes');
   const result = clientes.find({});
-  e.reply('list:reply', result);
+  e.reply('clientes:listreply', result);
 });
 
 // ediar cliente
-ipcMain.on('product:update', (e, newClient) => {
+ipcMain.on('cliente:update', (e, newClient) => {
   const clientes = db.getCollection('clientes');
   let doc = clientes.by('nif', newClient.nif);
   // console.log(doc, newClient);
@@ -274,11 +290,12 @@ ipcMain.on('product:update', (e, newClient) => {
   doc.codPostal = newClient.codPostal;
 
   clientes.update(doc);
-  e.reply('update:reply', doc);
+  e.reply('cliente:updatereply', doc);
 });
 
 // borrar clientes
-ipcMain.on('product:remove', (e, data) => {
+ipcMain.on('cliente:remove', (e, data) => {
+  console.log(data)
   dialog
     .showMessageBox(win, {
       type: 'question',
@@ -290,22 +307,16 @@ ipcMain.on('product:remove', (e, data) => {
     .then((result) => {
       let clientes = db.getCollection('clientes');
       if (result.response !== 0) {
-        // const resultF = clientes.find({});
-        // e.reply('remove:reply', resultF);
         return;
       }
-
       // Testing.
       if (result.response === 0) {
         const cliente = clientes.find(data);
         if (cliente.length > 0) {
           clientes.chain().find(data).remove();
         }
-        // clientes = clientes.filter(function (obj) {
-        //   return obj.nif !== data.nif;
-        // });
         const resultF = clientes.find({});
-        e.reply('remove:reply', resultF);
+        e.reply('cliente:removereply', resultF);
       }
     });
 });
@@ -353,6 +364,85 @@ ipcMain.on('file:remove', (e, request) => {
             'Este fichero no existe en la carpeta del cliente'
           );
         }
+      }
+    });
+});
+
+// Nuevo presupuesto
+ipcMain.on('presupuesto:new', (e, newPresupuesto) => {
+
+  if (!newPresupuesto.ref) {
+    dialog.showErrorBox(
+      'Error',
+      `Los campos 'Referencia' es obligatorio`
+    );
+    e.reply('newPresupuesto:reply', { error: 1 });
+    return;
+  }
+  const presupuestos = db.getCollection('presupuestos');
+  let doc = presupuestos.by('ref', newPresupuesto.ref);
+  if (doc) {
+    dialog.showErrorBox(
+      'Error',
+      `El presupuesto con referencia: ${newPresupuesto.ref} ya existe`
+    );
+    e.reply('newPresupuesto:reply', { error: 2 });
+  } else {
+    presupuestos.insert(newPresupuesto);
+
+    //   fs.mkdir(
+    //     desktopDir + `\\Presupuestos`,
+    //     { recursive: true },
+    //     (err) => {
+    //       if (err) throw err;
+    //     }
+    //   );
+    e.reply('newPresupuesto:reply', doc);
+  }
+});
+
+// Listar presupuestos
+ipcMain.on('presupuestos:list', (e, p) => {
+  const presupuestos = db.getCollection('presupuestos');
+  const result = presupuestos.find({});
+  e.reply('presupuestos:listreply', result);
+});
+
+// ediar presupuesto
+ipcMain.on('presupuesto:update', (e, newPresupuesto) => {
+  const presupuestos = db.getCollection('presupuestos');
+  let doc = presupuestos.by('ref', newPresupuesto.ref);
+
+  doc.ref = newPresupuesto.ref;
+
+  presupuestos.update(doc);
+  e.reply('presupuesto:updatereply', doc);
+});
+
+// borrar presupuesto
+ipcMain.on('presupuesto:remove', (e, data) => {
+  dialog
+    .showMessageBox(win, {
+      type: 'question',
+      title: 'Confirmación',
+      message: '¿Quieres borrar el presupuesto: ' + data.ref + ' ?',
+      buttons: ['Si', 'No '],
+    })
+    // Dialog returns a promise so let's handle it correctly
+    .then((result) => {
+      let presupuestos = db.getCollection('presupuestos');
+      if (result.response !== 0) {
+        return;
+      }
+
+      // Testing.
+      if (result.response === 0) {
+        const cliente = presupuestos.find(data);
+        if (cliente.length > 0) {
+          presupuestos.chain().find(data).remove();
+        }
+        const resultF = presupuestos.find({});
+        e.reply('presupuesto:removereply', resultF);
       }
     });
 });
