@@ -28,7 +28,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
     'ref',
     'fecha',
     'idGrupo',
-  ];
+    'edit'
+    ];
 
   displayedColumnsPres: string[] = [
     'select',
@@ -70,8 +71,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
     // console.log('HomeComponent INIT');
   }
 
-  onNew() {
-    void this.router.navigate(['/', 'addRecord']);
+  onNew(isEdit=false) {
+    void this.router.navigate(['/', 'addRecord'],{queryParams:{isEdit}});
   }
 
   applyFilter(event: Event) {
@@ -108,6 +109,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
 }
 
 export interface PeriodicElement {
+  ref:string,
   nombre: string;
   nif: string;
   direccion: string;

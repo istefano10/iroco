@@ -6,6 +6,7 @@ import { HomeRoutingModule } from './home/home-routing.module';
 import { RecordModule } from './record/record.module';
 import { AddRecordModule } from './addRecord/add-record.module';
 import { AddRecordRoutingModule } from './addRecord/add-record-routing.module';
+import { AddClientModule } from './add-client/add-client.module';
 
 const routes: Routes = [
   {
@@ -25,7 +26,8 @@ const routes: Routes = [
     HomeRoutingModule,
     AddRecordModule,
     AddRecordRoutingModule,
-    RecordModule
+    RecordModule,
+    AddClientModule
   ],
   exports: [RouterModule]
 })

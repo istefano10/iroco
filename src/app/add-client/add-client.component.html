@@ -4,20 +4,13 @@
       <mat-spinner></mat-spinner>
     </div>
   </ng-container>
-  <mat-toolbar>
-    <span class="example-spacer">Expediente: {{ titleRecord }}</span>
-    <div class="buttons-add-client">
-      <button (click)="addClient()" mat-raised-button>
-        Añadir cliente<mat-icon>add</mat-icon>
-      </button>
-      <button (click)="onCancel()" mat-raised-button>
-        Volver<mat-icon>arrow_back</mat-icon>
-      </button>
-    </div>
-  </mat-toolbar>
-
+  <div>
+    <h2>
+      Añadir cliente
+    </h2>
+  </div>
   <!-- Formulario -->
-  <!-- <form [formGroup]="recordForm">
+  <form [formGroup]="recordForm">
 
     <div class="container1">
       <mat-form-field>
@@ -76,12 +69,22 @@
         <input id="firma" type="text" formControlName="firma" matInput>
       </mat-form-field>
     </div>
-  </form> -->
+  </form>
+  <div class="buttons__add__client">
+    <button (click)="onSubmit()" mat-raised-button>
+      Guardar<mat-icon>save</mat-icon>
+
+    </button>
+    <button (click)="onCancel()" mat-raised-button>
+      Cancelar<mat-icon>arrow_back</mat-icon>
+    </button>
+  </div>
   <!-- <button [disabled]="!recordForm.valid" (click)="scan()" mat-raised-button>
     Escanear<mat-icon>add_to_queue</mat-icon>
   </button> -->
-  <br />
-  <mat-table class="lessons-table mat-elevation-z8" [dataSource]="dataSource">
+  <br>
+  <!-- <mat-table class="lessons-table mat-elevation-z8" [dataSource]="dataSource">
+
     <ng-container matColumnDef="nombre">
       <mat-header-cell *matHeaderCellDef>Nombre</mat-header-cell>
       <mat-cell *matCellDef="let fichero">
@@ -91,73 +94,49 @@
 
     <ng-container matColumnDef="apellidos">
       <mat-header-cell *matHeaderCellDef>Id de referencia</mat-header-cell>
-      <mat-cell
-        class="descripcion-cell"
-        *matCellDef="let fichero"
-        (click)="view(fichero.descripcion)"
-        >{{ fichero.descripcion }}</mat-cell
-      >
+      <mat-cell class="descripcion-cell" *matCellDef="let fichero" (click)="view(fichero.descripcion)">{{fichero.descripcion}}</mat-cell>
+
     </ng-container>
 
     <ng-container matColumnDef="fecha de nacimiento">
       <mat-header-cell *matHeaderCellDef>Fecha de creación</mat-header-cell>
-      <mat-cell class="duration-cell" *matCellDef="let fichero">{{
-        fichero.fecha | date : "dd-MM-yyyy"
-      }}</mat-cell>
+      <mat-cell class="duration-cell" *matCellDef="let fichero">{{fichero.fecha | date :'dd-MM-yyyy'}}</mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="dni">
       <mat-header-cell *matHeaderCellDef>Dni</mat-header-cell>
-      <mat-cell class="duration-cell" *matCellDef="let fichero"
-        >111111</mat-cell
-      >
+      <mat-cell class="duration-cell" *matCellDef="let fichero">111111</mat-cell>
     </ng-container>
     <ng-container matColumnDef="pasaporte">
       <mat-header-cell *matHeaderCellDef>Pasaporte</mat-header-cell>
-      <mat-cell class="duration-cell" *matCellDef="let fichero"
-        >111111</mat-cell
-      >
+      <mat-cell class="duration-cell" *matCellDef="let fichero">111111</mat-cell>
     </ng-container>
     <ng-container matColumnDef="ciudad">
       <mat-header-cell *matHeaderCellDef>Ciudad</mat-header-cell>
-      <mat-cell class="duration-cell" *matCellDef="let fichero"
-        >111111</mat-cell
-      >
+      <mat-cell class="duration-cell" *matCellDef="let fichero">111111</mat-cell>
     </ng-container>
     <ng-container matColumnDef="direccion">
       <mat-header-cell *matHeaderCellDef>Dirección</mat-header-cell>
-      <mat-cell class="duration-cell" *matCellDef="let fichero"
-        >111111</mat-cell
-      >
+      <mat-cell class="duration-cell" *matCellDef="let fichero">111111</mat-cell>
     </ng-container>
     <ng-container matColumnDef="codPostal">
       <mat-header-cell *matHeaderCellDef>Código postal</mat-header-cell>
-      <mat-cell class="duration-cell" *matCellDef="let fichero"
-        >111111</mat-cell
-      >
+      <mat-cell class="duration-cell" *matCellDef="let fichero">111111</mat-cell>
     </ng-container>
     <ng-container matColumnDef="telefono">
       <mat-header-cell *matHeaderCellDef>Telefono</mat-header-cell>
-      <mat-cell class="duration-cell" *matCellDef="let fichero"
-        >111111</mat-cell
-      >
+      <mat-cell class="duration-cell" *matCellDef="let fichero">111111</mat-cell>
     </ng-container>
     <ng-container matColumnDef="email">
       <mat-header-cell *matHeaderCellDef>Email</mat-header-cell>
-      <mat-cell class="duration-cell" *matCellDef="let fichero"
-        >111111</mat-cell
-      >
+      <mat-cell class="duration-cell" *matCellDef="let fichero">111111</mat-cell>
     </ng-container>
+
 
     <ng-container matColumnDef="action">
       <mat-header-cell *matHeaderCellDef></mat-header-cell>
       <mat-cell class="duration-cell" *matCellDef="let fichero">
-        <button
-          mat-icon-button
-          color="warn"
-          aria-label="Borrar fichero"
-          (click)="remove(fichero)"
-        >
+        <button mat-icon-button color="warn" aria-label="Borrar fichero" (click)="remove(fichero)">
           <mat-icon>delete_forever</mat-icon>
         </button>
       </mat-cell>
@@ -165,30 +144,7 @@
 
     <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
 
-    <mat-row
-      *cdkRowDef="let row; columns: displayedColumns"
-      [ngClass]="{ highlight: selectedRowIndex === row.fecha }"
-    >
+    <mat-row *cdkRowDef="let row; columns: displayedColumns;"[ngClass]="{'highlight': selectedRowIndex === row.fecha}" >
     </mat-row>
-
-    <!-- <mat-row *matRowDef="let row; columns: displayedColumns;"
-
-            class="element-row"
-            [class.expanded]="expandedElement === row"
-            (click)="expandedElement = row"></mat-row>
-    <mat-row *matRowDef="let row; columns: ['expandedDetail']; when: isExpansionDetailRow"
-            [@detailExpand]="row.element === expandedElement ? 'expanded' : 'collapsed'"
-            style="overflow: hidden">
-    </mat-row>-->
-  </mat-table>
-  
-  <mat-paginator
-    [pageSize]="[10]"
-    [length]="dataSource.data.length"
-    [pageSizeOptions]="[10]"
-    [pageIndex]="0"
-    [hidePageSize]="false"
-    showFirstLastButtons="true"
-  >
-  </mat-paginator>
+  </mat-table> -->
 </div>

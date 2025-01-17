@@ -8,26 +8,34 @@ import { IpcService } from '../core/services';
 import { PeriodicElement } from '../home/home.component';
 
 @Component({
-  selector: 'app-add-record',
-  templateUrl: './add-record.component.html',
-  styleUrls: ['./add-record.component.scss'],
+  selector: 'app-add-client',
+  templateUrl: './add-client.component.html',
+  styleUrls: ['./add-client.component.scss'],
 })
-export class AddRecordComponent implements OnInit {
-  displayedColumns = ['seqNo', 'descripcion', 'fecha', 'action'];
+export class AddClientComponent implements OnInit {
+  displayedColumns = ['nombre', 'apellidos', 'fecha de nacimiento','dni','pasaporte','ciudad','direccion','codPostal',
+    'telefono','email', 'action'];
   dataSource = new MatTableDataSource<any>([]);
-  public isEdit = 'false';
 
   // eslint-disable-next-line no-prototype-builtins, @typescript-eslint/no-unsafe-return
-  // isExpansionDetailRow = (i: number, row: any) => row.hasOwnProperty('detailRow');
+  // isExpansionrecordRow = (i: number, row: any) => row.hasOwnProperty('recordRow');
   // expandedElement: any;
 
   crear = false;
   IsWait = false;
-  addRecordForm = new FormGroup({
-    ref: new FormControl('', Validators.required),
-    idGrupo: new FormControl(''),
+  recordForm = new FormGroup({
+    nif: new FormControl('', Validators.required),
+    nombre: new FormControl('', Validators.required),
+    apellidos: new FormControl('', Validators.required),
+    fechaNac: new FormControl('', Validators.required),
+    pasaporte: new FormControl('', Validators.required),
+    direccion: new FormControl(''),
+    email: new FormControl(''),
+    telefono: new FormControl(''),
+    firma: new FormControl(''),
+    ciudad: new FormControl(''),
+    codPostal: new FormControl(''),
   });
-
   userData = {};
   constructor(
     private route: ActivatedRoute,
@@ -38,54 +46,54 @@ export class AddRecordComponent implements OnInit {
 
   ngOnInit(): void {
     // console.log(this.route.snapshot.queryParams.row);
-
-    this.isEdit = this.route.snapshot.queryParams.isEdit;
     if (this.route.snapshot.queryParams.row) {
-      console.log(this.route.snapshot.queryParams);
-      // this.addRecordForm.controls.nif.disable();
+      this.recordForm.controls.nif.disable();
       const data = JSON.parse(
         this.route.snapshot.queryParams.row
       ) as PeriodicElement;
-      // console.log(data);
       this.userData = data;
-      // this.addRecordForm.patchValue(data);
+      this.recordForm.patchValue(data);
       this.dataSource.data = data.pdfs;
       this.crear = false;
     } else {
       this.crear = true;
-      this.addRecordForm.reset();
-      this.addRecordForm.patchValue({
-        ref: '',
-        idGrupo: '',
+      this.recordForm.reset();
+      this.recordForm.patchValue({
+        nombre: '',
+        direccion: '',
+        email: '',
+        telefono: '',
+        firma: '',
+        nif: '',
       });
     }
   }
 
   onSubmit() {
     if (this.crear) {
-      this.addRecordForm.value['fecha'] = new Date();
-      this.ipcService.send('expediente:new', this.addRecordForm.value);
-      this.ipcService.on('newExpediente:reply', (event: any, arg: any) => {
-        // console.log('res', arg);
+      this.recordForm.value['fecha'] = new Date();
+      this.recordForm.value['pdfs'] = [];
+      this.ipcService.send('product:new', this.recordForm.value);
+      this.ipcService.on('new:reply', (event: any, arg: any) => {
         if (!arg) {
-          void this.router.navigate(['/', 'home']);
+          void this.router.navigate(['/', 'records']);
         }
       });
     } else {
-      this.addRecordForm.value['nif'] = this.userData['nif'];
-      this.ipcService.send('expediente:update', this.addRecordForm.value);
-      void this.router.navigate(['/', 'home']);
+      this.recordForm.value['nif'] = this.userData['nif'];
+      this.ipcService.send('product:update', this.recordForm.value);
+      void this.router.navigate(['/', 'records']);
     }
   }
 
   onCancel() {
-    void this.router.navigate(['/', 'home']);
+    void this.router.navigate(['/', 'records']);
   }
 
   remove(row) {
     // console.log('remove ', row);
     const requestData = {
-      // nif: this.crear ? this.addRecordForm.value.nif : this.userData['nif'],
+      nif: this.crear ? this.recordForm.value.nif : this.userData['nif'],
       descripcion: row.descripcion,
     };
     this.ipcService.send('file:remove', requestData);
@@ -101,7 +109,7 @@ export class AddRecordComponent implements OnInit {
 
   view(descripcion) {
     this.ipcService.send('file:view', {
-      // nif: this.addRecordForm.value.nif,
+      nif: this.recordForm.value.nif,
       descripcion,
     });
     // this.ipcService.on('fileview:reply', (event: any, arg: PeriodicElement) => {
@@ -113,16 +121,16 @@ export class AddRecordComponent implements OnInit {
     this.IsWait = true;
     this.cdRef.detectChanges();
     if (!this.crear) {
-      this.addRecordForm.value['nif'] = this.userData['nif'];
+      this.recordForm.value['nif'] = this.userData['nif'];
     }
-    this.addRecordForm.value['fecha'] = new Date();
-    this.addRecordForm.value['pdfs'] = [];
-    // console.log(this.addRecordForm.value);
-    this.ipcService.send('scan:new', this.addRecordForm.value);
+    this.recordForm.value['fecha'] = new Date();
+    this.recordForm.value['pdfs'] = [];
+    // console.log(this.ecordForm.value);
+    this.ipcService.send('scan:new', this.recordForm.value);
     this.ipcService.on('scan:reply', (event: any, arg: PeriodicElement) => {
       this.IsWait = false;
       // console.log('escaneado', arg);
-      this.dataSource.data = arg.pdfs ? arg.pdfs : this.dataSource.data;
+      this.dataSource.data = arg.pdfs ? arg.pdfs: this.dataSource.data;
       this.cdRef.detectChanges();
     });
   }

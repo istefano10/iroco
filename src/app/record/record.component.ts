@@ -1,21 +1,25 @@
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
 /* eslint-disable @typescript-eslint/unbound-method */
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute, Router } from '@angular/router';
 import { IpcService } from '../core/services';
 import { PeriodicElement } from '../home/home.component';
+import { MatPaginator } from '@angular/material/paginator';
 
 @Component({
   selector: 'app-record',
   templateUrl: './record.component.html',
   styleUrls: ['./record.component.scss'],
 })
-export class RecordComponent implements OnInit {
+export class RecordComponent implements OnInit, AfterViewInit{
   displayedColumns = ['nombre', 'apellidos', 'fecha de nacimiento','dni','pasaporte','ciudad','direccion','codPostal',
     'telefono','email', 'action'];
   dataSource = new MatTableDataSource<any>([]);
+
+  @ViewChild(MatPaginator)
+    paginator: MatPaginator;
 
   // eslint-disable-next-line no-prototype-builtins, @typescript-eslint/no-unsafe-return
   // isExpansionrecordRow = (i: number, row: any) => row.hasOwnProperty('recordRow');
@@ -36,6 +40,7 @@ export class RecordComponent implements OnInit {
     ciudad: new FormControl(''),
     codPostal: new FormControl(''),
   });
+  public titleRecord=''
   userData = {};
   constructor(
     private route: ActivatedRoute,
@@ -45,12 +50,14 @@ export class RecordComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    // console.log(this.route.snapshot.queryParams.row);
+    this.ipcService.send('product:list', {});
+
     if (this.route.snapshot.queryParams.row) {
       this.recordForm.controls.nif.disable();
       const data = JSON.parse(
         this.route.snapshot.queryParams.row
       ) as PeriodicElement;
+      this.titleRecord=data.ref
       this.userData = data;
       this.recordForm.patchValue(data);
       this.dataSource.data = data.pdfs;
@@ -69,6 +76,15 @@ export class RecordComponent implements OnInit {
     }
   }
 
+  ngAfterViewInit() {
+    this.ipcService.on('list:reply', (event: any, arg: PeriodicElement[]) => {
+      console.log(arg)
+      this.dataSource.data = arg;
+      this.dataSource.paginator = this.paginator;
+      this.cdRef.detectChanges();
+    });
+  }
+
   onSubmit() {
     if (this.crear) {
       this.recordForm.value['fecha'] = new Date();
@@ -85,6 +101,10 @@ export class RecordComponent implements OnInit {
       this.ipcService.send('product:update', this.recordForm.value);
       void this.router.navigate(['/', 'home']);
     }
+  }
+  addClient(){
+    void this.router.navigate(['/', 'add-client']);
+
   }
 
   onCancel() {

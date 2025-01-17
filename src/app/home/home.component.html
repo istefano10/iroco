@@ -8,7 +8,6 @@
       <mat-toolbar>
         <button (click)="onNew()" mat-raised-button>
           Añadir expediente<mat-icon>add</mat-icon>
-
         </button>
         <button (click)="remove()" mat-raised-button>
           Borrar<mat-icon>delete</mat-icon>
@@ -17,58 +16,93 @@
 
         <mat-form-field *ngIf="home">
           <mat-label>Filtrar por cualquier columna</mat-label>
-          <input matInput (keyup)="applyFilter($event)" placeholder="Escribir cualquier valor" #input>
+          <input
+            matInput
+            (keyup)="applyFilter($event)"
+            placeholder="Escribir cualquier valor"
+            #input
+          />
         </mat-form-field>
       </mat-toolbar>
 
       <table *ngIf="home" mat-table [dataSource]="dataSource">
-
         <ng-container matColumnDef="select">
           <th mat-header-cell *matHeaderCellDef>
-            <mat-checkbox (change)="$event ? toggleAllRows() : null" [checked]="selection.hasValue() && isAllSelected()"
-              [indeterminate]="selection.hasValue() && !isAllSelected()">
+            <mat-checkbox
+              (change)="$event ? toggleAllRows() : null"
+              [checked]="selection.hasValue() && isAllSelected()"
+              [indeterminate]="selection.hasValue() && !isAllSelected()"
+            >
             </mat-checkbox>
           </th>
           <td mat-cell *matCellDef="let row">
-            <mat-checkbox (click)="$event.stopPropagation()" (change)="$event ? selection.toggle(row) : null"
-              [checked]="selection.isSelected(row)">
+            <mat-checkbox
+              (click)="$event.stopPropagation()"
+              (change)="$event ? selection.toggle(row) : null"
+              [checked]="selection.isSelected(row)"
+            >
             </mat-checkbox>
           </td>
         </ng-container>
         <!-- id Column -->
         <ng-container matColumnDef="id">
-          <th mat-header-cell *matHeaderCellDef> ID</th>
-          <td mat-cell *matCellDef="let element"> {{element.$loki}} </td>
+          <th mat-header-cell *matHeaderCellDef>ID</th>
+          <td mat-cell *matCellDef="let element">{{ element.$loki }}</td>
         </ng-container>
 
         <!-- ref Column -->
         <ng-container matColumnDef="ref">
-          <th mat-header-cell *matHeaderCellDef> Referencia </th>
-          <td mat-cell *matCellDef="let element"> {{element.ref}} </td>
+          <th mat-header-cell *matHeaderCellDef>Referencia</th>
+          <td mat-cell *matCellDef="let element">{{ element.ref }}</td>
         </ng-container>
 
         <!-- fecha Column -->
         <ng-container matColumnDef="fecha">
-          <th mat-header-cell *matHeaderCellDef> Fecha de Creación </th>
-          <td mat-cell *matCellDef="let element"> {{element.fecha | date :'dd-MM-yyyy'}} </td>
+          <th mat-header-cell *matHeaderCellDef>Fecha de Creación</th>
+          <td mat-cell *matCellDef="let element">
+            {{ element.fecha | date : "dd-MM-yyyy" }}
+          </td>
         </ng-container>
 
         <!-- idGrupo Column -->
         <ng-container matColumnDef="idGrupo">
-          <th mat-header-cell *matHeaderCellDef> Id del grupo </th>
-          <td mat-cell *matCellDef="let element"> {{element.idGrupo}} </td>
+          <th mat-header-cell *matHeaderCellDef>Id del grupo</th>
+          <td mat-cell *matCellDef="let element">{{ element.idGrupo }}</td>
         </ng-container>
+
+        <ng-container matColumnDef="edit">
+          <mat-header-cell *matHeaderCellDef></mat-header-cell>
+          <mat-cell class="duration-cell" *matCellDef="let fichero">
+            <button
+              mat-icon-button
+              aria-label="Editar fichero"
+              (click)="onNew(true)"
+            >
+              <mat-icon>edit</mat-icon>
+            </button>
+          </mat-cell>
+        </ng-container>
+
 
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
         <!-- <tr mat-row *matRowDef="let row; columns: displayedColumns;"> -->
-        <tr mat-row *cdkRowDef="let row; columns: displayedColumns;"
-          [ngClass]="{'highlight': selectedRowIndex === row.id}" [routerLink]="['/records']"
-          [queryParams]="{row: json.stringify(row)}">
-        </tr>
+        <tr
+          mat-row
+          *cdkRowDef="let row; columns: displayedColumns"
+          [ngClass]="{ highlight: selectedRowIndex === row.id }"
+          [routerLink]="['/records']"
+          [queryParams]="{ row: json.stringify(row) }"
+        ></tr>
       </table>
 
-      <mat-paginator [pageSize]=[10] [length]="dataSource.data.length" [pageSizeOptions]="[10]" [pageIndex]="0"
-        [hidePageSize]="false" showFirstLastButtons="true">
+      <mat-paginator
+        [pageSize]="[10]"
+        [length]="dataSource.data.length"
+        [pageSizeOptions]="[10]"
+        [pageIndex]="0"
+        [hidePageSize]="false"
+        showFirstLastButtons="true"
+      >
       </mat-paginator>
     </mat-tab>
     <mat-tab label="Presupuestos">
@@ -79,7 +113,6 @@
       <mat-toolbar>
         <button (click)="onNew()" mat-raised-button>
           Añadir presupuesto<mat-icon>add</mat-icon>
-
         </button>
         <button (click)="remove()" mat-raised-button>
           Borrar<mat-icon>delete</mat-icon>
@@ -93,54 +126,67 @@
       </mat-toolbar>
 
       <table *ngIf="home" mat-table [dataSource]="dataSourcePres">
-
         <ng-container matColumnDef="select">
           <th mat-header-cell *matHeaderCellDef>
-            <mat-checkbox (change)="$event ? toggleAllRows() : null" [checked]="selection.hasValue() && isAllSelected()"
-              [indeterminate]="selection.hasValue() && !isAllSelected()">
+            <mat-checkbox
+              (change)="$event ? toggleAllRows() : null"
+              [checked]="selection.hasValue() && isAllSelected()"
+              [indeterminate]="selection.hasValue() && !isAllSelected()"
+            >
             </mat-checkbox>
           </th>
           <td mat-cell *matCellDef="let row">
-            <mat-checkbox (click)="$event.stopPropagation()" (change)="$event ? selection.toggle(row) : null"
-              [checked]="selection.isSelected(row)">
+            <mat-checkbox
+              (click)="$event.stopPropagation()"
+              (change)="$event ? selection.toggle(row) : null"
+              [checked]="selection.isSelected(row)"
+            >
             </mat-checkbox>
           </td>
         </ng-container>
         <!-- id Column -->
         <ng-container matColumnDef="id">
-          <th mat-header-cell *matHeaderCellDef> ID</th>
-          <td mat-cell *matCellDef="let element"> {{element.$loki}} </td>
+          <th mat-header-cell *matHeaderCellDef>ID</th>
+          <td mat-cell *matCellDef="let element">{{ element.$loki }}</td>
         </ng-container>
 
         <!-- ref Column -->
         <ng-container matColumnDef="ref">
-          <th mat-header-cell *matHeaderCellDef> Id de referencia </th>
-          <td mat-cell *matCellDef="let element"> {{element.nombre}} </td>
+          <th mat-header-cell *matHeaderCellDef>Id de referencia</th>
+          <td mat-cell *matCellDef="let element">{{ element.nombre }}</td>
         </ng-container>
 
         <!-- fecha Column -->
         <ng-container matColumnDef="fecha">
-          <th mat-header-cell *matHeaderCellDef> Fecha de Creación </th>
-          <td mat-cell *matCellDef="let element"> {{element.fecha | date :'dd-MM-yyyy'}} </td>
+          <th mat-header-cell *matHeaderCellDef>Fecha de Creación</th>
+          <td mat-cell *matCellDef="let element">
+            {{ element.fecha | date : "dd-MM-yyyy" }}
+          </td>
         </ng-container>
 
         <tr mat-header-row *matHeaderRowDef="displayedColumnsPres"></tr>
         <!-- <tr mat-row *matRowDef="let row; columns: displayedColumnsPres;"> -->
-        <tr mat-row *cdkRowDef="let row; columns: displayedColumnsPres;"
-          [ngClass]="{'highlight': selectedRowIndex === row.id}" [routerLink]="['/detail']"
-          [queryParams]="{row: json.stringify(row)}">
-        </tr>
+        <tr
+          mat-row
+          *cdkRowDef="let row; columns: displayedColumnsPres"
+          [ngClass]="{ highlight: selectedRowIndex === row.id }"
+          [routerLink]="['/detail']"
+          [queryParams]="{ row: json.stringify(row) }"
+        ></tr>
       </table>
 
-      <mat-paginator [pageSize]=[10] [length]="dataSource.data.length" [pageSizeOptions]="[10]" [pageIndex]="0"
-        [hidePageSize]="false" showFirstLastButtons="true">
+      <mat-paginator
+        [pageSize]="[10]"
+        [length]="dataSource.data.length"
+        [pageSizeOptions]="[10]"
+        [pageIndex]="0"
+        [hidePageSize]="false"
+        showFirstLastButtons="true"
+      >
       </mat-paginator>
     </mat-tab>
   </mat-tab-group>
-
-
 </div>
-
 
 <!-- Copyright 2023 Google LLC. All Rights Reserved.
     Use of this source code is governed by an MIT-style license that
