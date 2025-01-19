@@ -15,6 +15,7 @@ import { HomeModule } from './home/home.module';
 import { AddRecordModule } from './add-record/add-record.module';
 
 import { AppComponent } from './app.component';
+import { AddBudgetModule } from './add-budget/add-budget.module';
 
 // AoT requires an exported function for factories
 const httpLoaderFactory = (http: HttpClient): TranslateHttpLoader =>  new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -29,6 +30,7 @@ const httpLoaderFactory = (http: HttpClient): TranslateHttpLoader =>  new Transl
     SharedModule,
     HomeModule,
     AddRecordModule,
+    AddBudgetModule,
     AppRoutingModule,
     TranslateModule.forRoot({
       loader: {

@@ -322,51 +322,6 @@ ipcMain.on('cliente:remove', (e, data) => {
 });
 
 // borrar fichero de cliente
-ipcMain.on('file:remove', (e, request) => {
-  const filename = request.descripcion.replace(/^.*[\\/]/, '');
-  dialog
-    .showMessageBox(win, {
-      type: 'question',
-      title: 'Confirmación',
-      message: '¿Quieres borrar el fichero: ' + filename + ' ?',
-      buttons: ['Si', 'No '],
-    })
-    // Dialog returns a promise so let's handle it correctly
-    .then((result) => {
-      // Bail if the user pressed "No" or escaped (ESC) from the dialog box
-      if (result.response !== 0) {
-        return;
-      }
-
-      // Testing.
-      if (result.response === 0) {
-        const clientes = db.getCollection('clientes');
-        let doc = clientes.by('nif', request.nif);
-        doc.pdfs = doc.pdfs.filter(function (obj) {
-          return obj.descripcion !== request.descripcion;
-        });
-        e.reply('fileremove:reply', doc);
-        if (fs.existsSync(request.descripcion)) {
-          fs.unlink(request.descripcion, (err) => {
-            if (err) {
-              console.log(err);
-              dialog.showErrorBox(
-                'Error',
-                'Ha ocurrido un eror actualizando el fichero ' + err.message
-              );
-              return;
-            }
-            console.log('File succesfully deleted');
-          });
-        } else {
-          dialog.showErrorBox(
-            'Error',
-            'Este fichero no existe en la carpeta del cliente'
-          );
-        }
-      }
-    });
-});
 
 // Nuevo presupuesto
 ipcMain.on('presupuesto:new', (e, newPresupuesto) => {
@@ -447,20 +402,6 @@ ipcMain.on('presupuesto:remove', (e, data) => {
     });
 });
 
-// ver fichero de cliente
-ipcMain.on('file:view', (e, request) => {
-  // const clientes = db.getCollection('clientes');
-  // let doc = clientes.by('nif', request.nif);
-  // console.log('asda', doc)
-  // console.log(
-  //   'Current directory:',
-  //   __dirname + '\\.' + request.descripcion.replaceAll('/', '\\')
-  // );
-  const win = new BrowserWindow({ width: 800, height: 600 });
-  PDFWindow.addSupport(win);
-  win.loadURL(__dirname + '\\.' + request.descripcion.replaceAll('/', '\\'));
-  // e.reply('fileview:reply', 'viendo');
-});
 
 try {
   // This method will be called when Electron has finished

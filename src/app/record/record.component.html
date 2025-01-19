@@ -84,68 +84,68 @@
   <mat-table class="lessons-table mat-elevation-z8" [dataSource]="dataSource">
     <ng-container matColumnDef="nombre">
       <mat-header-cell *matHeaderCellDef>Nombre</mat-header-cell>
-      <mat-cell *matCellDef="let fichero">
-        <mat-icon>picture_as_pdf</mat-icon>
+      <mat-cell *matCellDef="let fichero">{{fichero.nombre}}
+        <!-- <mat-icon>picture_as_pdf</mat-icon> -->
       </mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="apellidos">
-      <mat-header-cell *matHeaderCellDef>Id de referencia</mat-header-cell>
+      <mat-header-cell *matHeaderCellDef>Apellidos</mat-header-cell>
       <mat-cell
         class="descripcion-cell"
         *matCellDef="let fichero"
-        (click)="view(fichero.descripcion)"
-        >{{ fichero.descripcion }}</mat-cell
+        >{{ fichero.apellidos }}</mat-cell
       >
     </ng-container>
 
     <ng-container matColumnDef="fecha de nacimiento">
-      <mat-header-cell *matHeaderCellDef>Fecha de creación</mat-header-cell>
+      <mat-header-cell *matHeaderCellDef>Fecha de nacimiento</mat-header-cell>
       <mat-cell class="duration-cell" *matCellDef="let fichero">{{
-        fichero.fecha | date : "dd-MM-yyyy"
+        fichero.fechaNac | date : "dd-MM-yyyy"
       }}</mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="dni">
       <mat-header-cell *matHeaderCellDef>Dni</mat-header-cell>
       <mat-cell class="duration-cell" *matCellDef="let fichero"
-        >111111</mat-cell
+        >{{fichero.nif}}</mat-cell
       >
     </ng-container>
     <ng-container matColumnDef="pasaporte">
       <mat-header-cell *matHeaderCellDef>Pasaporte</mat-header-cell>
       <mat-cell class="duration-cell" *matCellDef="let fichero"
-        >111111</mat-cell
+        >{{fichero.pasaporte}}</mat-cell
       >
     </ng-container>
-    <ng-container matColumnDef="ciudad">
+    <!-- <ng-container matColumnDef="ciudad">
       <mat-header-cell *matHeaderCellDef>Ciudad</mat-header-cell>
       <mat-cell class="duration-cell" *matCellDef="let fichero"
-        >111111</mat-cell
+        >{{fichero.ciudad}}</mat-cell
       >
-    </ng-container>
+    </ng-container> -->
     <ng-container matColumnDef="direccion">
       <mat-header-cell *matHeaderCellDef>Dirección</mat-header-cell>
       <mat-cell class="duration-cell" *matCellDef="let fichero"
-        >111111</mat-cell
+        >{{fichero.direccion}}, {{fichero.ciudad}}, {{fichero.codPostal}}</mat-cell
       >
     </ng-container>
-    <ng-container matColumnDef="codPostal">
+    <!-- <ng-container matColumnDef="codPostal">
       <mat-header-cell *matHeaderCellDef>Código postal</mat-header-cell>
       <mat-cell class="duration-cell" *matCellDef="let fichero"
-        >111111</mat-cell
+        >{{fichero.codPostal}}</mat-cell
       >
-    </ng-container>
+    </ng-container> -->
+
     <ng-container matColumnDef="telefono">
       <mat-header-cell *matHeaderCellDef>Telefono</mat-header-cell>
       <mat-cell class="duration-cell" *matCellDef="let fichero"
-        >111111</mat-cell
+        >{{fichero.telefono}}</mat-cell
       >
     </ng-container>
     <ng-container matColumnDef="email">
       <mat-header-cell *matHeaderCellDef>Email</mat-header-cell>
       <mat-cell class="duration-cell" *matCellDef="let fichero"
-        >111111</mat-cell
+        >{{fichero.email}}</mat-cell
       >
     </ng-container>
 
@@ -154,9 +154,22 @@
       <mat-cell class="duration-cell" *matCellDef="let fichero">
         <button
           mat-icon-button
-          color="warn"
-          aria-label="Borrar fichero"
-          (click)="remove(fichero)"
+          aria-label="Editar cliente"
+          (click)="edit(true,fichero)"
+        >
+          <mat-icon>edit</mat-icon>
+        </button>
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="remove">
+      <mat-header-cell *matHeaderCellDef></mat-header-cell>
+      <mat-cell class="duration-cell" *matCellDef="let fichero">
+        <button
+          mat-icon-button
+        color="warn"
+          aria-label="Delete cliente"
+          (click)="remove()"
         >
           <mat-icon>delete_forever</mat-icon>
         </button>
@@ -181,7 +194,7 @@
             style="overflow: hidden">
     </mat-row>-->
   </mat-table>
-  
+
   <mat-paginator
     [pageSize]="[10]"
     [length]="dataSource.data.length"
