@@ -5,7 +5,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute, Router } from '@angular/router';
 import { IpcService } from '../core/services';
-import { PeriodicElement } from '../home/home.component';
+import { Client } from '../interfaces/client.interface';
 import { Record } from '../interfaces/record.interface';
 
 @Component({
@@ -80,28 +80,5 @@ export class AddRecordComponent implements OnInit {
     this.ngZone.run(() => {
       void this.router.navigate(['/', 'home']);
     });
-  }
-
-  remove(row) {
-    const requestData = {
-      descripcion: row.descripcion,
-    };
-    this.ipcService.send('cliente:remove', requestData);
-    this.ipcService.on(
-      'cliente:removereply',
-      (event: any, arg: PeriodicElement) => {
-        this.dataSource.data = arg.pdfs;
-        this.cdRef.detectChanges();
-      }
-    );
-  }
-
-  view(descripcion) {
-    this.ipcService.send('file:view', {
-      // nif: this.addRecordForm.value.nif,
-      descripcion,
-    });
-    // this.ipcService.on('fileview:reply', (event: any, arg: PeriodicElement) => {
-    // });
   }
 }

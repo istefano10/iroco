@@ -5,7 +5,6 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute, Router } from '@angular/router';
 import { IpcService } from '../core/services';
-import { PeriodicElement } from '../home/home.component';
 import { Client } from '../interfaces/client.interface';
 
 @Component({
@@ -27,7 +26,7 @@ export class AddClientComponent implements OnInit {
     'email',
     'action',
   ];
-  dataSource = new MatTableDataSource<any>([]);
+  dataSource = new MatTableDataSource<Client>([]);
 
   // eslint-disable-next-line no-prototype-builtins, @typescript-eslint/no-unsafe-return
   // isExpansionrecordRow = (i: number, row: any) => row.hasOwnProperty('recordRow');

@@ -1,4 +1,5 @@
 import { app, BrowserWindow, ipcMain, screen, dialog } from 'electron';
+import JsExcelTemplate from "js-excel-template";
 
 const PDFWindow = require('electron-pdf-window');
 import * as path from 'path';
@@ -321,7 +322,6 @@ ipcMain.on('cliente:remove', (e, data) => {
     });
 });
 
-// borrar fichero de cliente
 
 // Nuevo presupuesto
 ipcMain.on('presupuesto:new', (e, newPresupuesto) => {
@@ -400,6 +400,17 @@ ipcMain.on('presupuesto:remove', (e, data) => {
         e.reply('presupuesto:removereply', resultF);
       }
     });
+});
+
+
+ipcMain.on('doc:new', async (e, doc) => {
+  const dir = desktopDir + `\\Expedientes\\${doc.ref}\\out.xlsx`;
+  const excelTemplate = await JsExcelTemplate.fromFile("templates/plantilla1.xlsx");
+  fs.createWriteStream(dir);
+  excelTemplate.set("name", doc.nombre);
+  excelTemplate.set("age", doc.fechaNac);
+  await excelTemplate.saveAs(dir);
+  e.reply('doc:newreply', {});
 });
 
 

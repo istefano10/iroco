@@ -44,7 +44,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
   dataSource = new MatTableDataSource<Record>([]);
   dataSourceBudget = new MatTableDataSource<Budget>([]);
-  clickedRows = new Set<PeriodicElement>();
+  clickedRows = new Set<Record>();
   @ViewChild('filter') filter: ElementRef;
 
   @ViewChild(MatPaginator)
@@ -152,18 +152,18 @@ export class HomeComponent implements OnInit, AfterViewInit {
   json: any = JSON;
 }
 
-export interface PeriodicElement {
-  ref:string,
-  nombre: string;
-  nif: string;
-  direccion: string;
-  telefono: string;
-  movil: string;
-  fecha: string;
-  area: string;
-  $loki: number;
-  pdfs: [Pdf];
-}
+// export interface PeriodicElement {
+//   ref:string,
+//   nombre: string;
+//   nif: string;
+//   direccion: string;
+//   telefono: string;
+//   movil: string;
+//   fecha: string;
+//   area: string;
+//   $loki: number;
+//   pdfs: [Pdf];
+// }
 
 export interface Pdf {
   descripcion: string;

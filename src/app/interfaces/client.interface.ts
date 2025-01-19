@@ -11,5 +11,5 @@ export interface Client {
   Direccion: string;
   telefono: string;
   email: string;
-  Firma?: string;
+  firma?: string;
 }

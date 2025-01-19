@@ -18,15 +18,10 @@ export class AddBudgetComponent implements OnInit {
   dataSource = new MatTableDataSource<any>([]);
   public isEdit = 'false';
 
-  // eslint-disable-next-line no-prototype-builtins, @typescript-eslint/no-unsafe-return
-  // isExpansionDetailRow = (i: number, row: any) => row.hasOwnProperty('detailRow');
-  // expandedElement: any;
-
   crear = false;
   IsWait = false;
   addBudgetForm = new FormGroup({
     ref: new FormControl('', Validators.required),
-    idGrupo: new FormControl(''),
   });
 
   userData = {};
@@ -44,7 +39,6 @@ export class AddBudgetComponent implements OnInit {
       const data = JSON.parse(
         this.route.snapshot.queryParams.budgetString
       ) as Budget;
-      console.log(data)
       this.addBudgetForm.patchValue(data);
       this.crear = false;
     } else {
@@ -52,14 +46,12 @@ export class AddBudgetComponent implements OnInit {
       this.addBudgetForm.reset();
       this.addBudgetForm.patchValue({
         ref: '',
-        idGrupo: '',
       });
     }
   }
 
   onSubmit() {
     if (this.crear) {
-      this.addBudgetForm.value['fecha'] = new Date();
       this.ipcService.send('presupuesto:new', this.addBudgetForm.value);
       this.ipcService.on('newPresupuesto:reply', (event: any, arg: any) => {
         if (!arg) {
@@ -69,7 +61,6 @@ export class AddBudgetComponent implements OnInit {
         }
       });
     } else {
-      this.addBudgetForm.value['nif'] = this.userData['nif'];
       this.ipcService.send('presupuesto:update', this.addBudgetForm.value);
       this.ngZone.run(() => {
         void this.router.navigate(['/', 'home']);

@@ -60,6 +60,7 @@
     "electron-packager": "17.1.2",
     "electron-pdf-window": "1.0.12",
     "fs": "0.0.1-security",
+    "js-excel-template": "3.0.2",
     "lokijs": "1.5.12",
     "rxjs": "7.8.1",
     "scanner": "0.0.7",
