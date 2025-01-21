@@ -18,6 +18,9 @@ import { CdkTableModule } from '@angular/cdk/table';
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {MatTabsModule} from '@angular/material/tabs';
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import {MatNativeDateModule} from '@angular/material/core';
+
 
 
 
@@ -32,12 +35,15 @@ import {MatTabsModule} from '@angular/material/tabs';
     MatButtonModule,
     BrowserAnimationsModule,
     MatFormFieldModule,
-    MatInputModule,
     MatIconModule,
     CdkTableModule,
     MatCheckboxModule,
     MatProgressSpinnerModule,
-    
+    MatInputModule,
+    MatDatepickerModule,
+    MatNativeDateModule
+
+
   ],
   exports: [
     TranslateModule,
@@ -55,6 +61,8 @@ import {MatTabsModule} from '@angular/material/tabs';
     ReactiveFormsModule,
     MatProgressSpinnerModule,
     MatTabsModule,
+    MatDatepickerModule,
+    MatNativeDateModule
   ],
 })
 export class SharedModule {}

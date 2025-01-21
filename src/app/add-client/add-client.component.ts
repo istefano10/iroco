@@ -33,6 +33,11 @@ export class AddClientComponent implements OnInit {
   // isExpansionrecordRow = (i: number, row: any) => row.hasOwnProperty('recordRow');
   // expandedElement: any;
 
+
+  private readonly _currentYear = new Date().getFullYear();
+  readonly minDate = new Date(this._currentYear - 20, 0, 1);
+  readonly maxDate = new Date(this._currentYear + 1, 11, 31);
+
   isEdit = 'false';
   nombre = '';
   apellidos = '';

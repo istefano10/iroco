@@ -5,7 +5,6 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute, Router } from '@angular/router';
 import { IpcService } from '../core/services';
-import { Record } from '../interfaces/record.interface';
 import { Budget } from '../interfaces/budget.interface';
 
 @Component({
@@ -17,10 +16,6 @@ export class AddBudgetComponent implements OnInit {
   displayedColumns = ['seqNo', 'descripcion', 'fecha', 'action'];
   dataSource = new MatTableDataSource<any>([]);
   public isEdit = 'false';
-
-  // eslint-disable-next-line no-prototype-builtins, @typescript-eslint/no-unsafe-return
-  // isExpansionDetailRow = (i: number, row: any) => row.hasOwnProperty('detailRow');
-  // expandedElement: any;
 
   crear = false;
   IsWait = false;
@@ -44,7 +39,6 @@ export class AddBudgetComponent implements OnInit {
       const data = JSON.parse(
         this.route.snapshot.queryParams.budgetString
       ) as Budget;
-      console.log(data)
       this.addBudgetForm.patchValue(data);
       this.crear = false;
     } else {
@@ -69,7 +63,6 @@ export class AddBudgetComponent implements OnInit {
         }
       });
     } else {
-      this.addBudgetForm.value['nif'] = this.userData['nif'];
       this.ipcService.send('presupuesto:update', this.addBudgetForm.value);
       this.ngZone.run(() => {
         void this.router.navigate(['/', 'home']);

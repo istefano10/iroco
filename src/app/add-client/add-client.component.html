@@ -5,80 +5,153 @@
     </div>
   </ng-container>
   <div>
-
-      <h2>
-      {{isEdit==='true'?'Editar cliente':'Añadir cliente'}}
-      </h2>
-
-
+    <h2>
+      {{ isEdit === "true" ? "Editar cliente" : "Añadir cliente" }}
+    </h2>
   </div>
   <!-- Formulario -->
   <form [formGroup]="recordForm">
-
     <div class="container1">
       <mat-form-field>
         <mat-label for="nombre" appearance="standard">Nombre</mat-label>
-        <input id="nombre" placeholder="Nombre" type="text" formControlName="nombre" matInput>
+        <input
+          id="nombre"
+          placeholder="Nombre"
+          type="text"
+          formControlName="nombre"
+          matInput
+        />
       </mat-form-field>
       <mat-form-field>
         <mat-label for="apellidos" appearance="standard">Apellidos</mat-label>
-        <input id="apellidos" placeholder="Apellidos" type="text" formControlName="apellidos" matInput>
+        <input
+          id="apellidos"
+          placeholder="Apellidos"
+          type="text"
+          formControlName="apellidos"
+          matInput
+        />
       </mat-form-field>
       <mat-form-field>
-        <mat-label for="fechaNac" appearance="standard">Fecha de nacimiento</mat-label>
-        <input id="fechaNac" placeholder="Fecha de nacimiento" type="date" formControlName="fechaNac" matInput>
-      </mat-form-field>
-      <mat-form-field>
-        <mat-label for="nif" floatLabel="always">DNI</mat-label >
-        <input id="nif" placeholder="DNI" type="text" formControlName="nif" matInput>
+        <mat-label for="fechaNac" appearance="standard"
+          >Fecha de nacimiento</mat-label
+        >
+        <input
+          matInput
+          [matDatepicker]="picker"
+          id="fechaNac"
+          placeholder="Fecha de nacimiento"
+          formControlName="fechaNac"
+        />
+        <mat-datepicker-toggle
+          matIconSuffix
+          [for]="picker"
+        ></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
       </mat-form-field>
 
+      <mat-form-field>
+        <mat-label for="nif" floatLabel="always">DNI</mat-label>
+        <input
+          id="nif"
+          placeholder="DNI"
+          type="text"
+          formControlName="nif"
+          matInput
+        />
+      </mat-form-field>
     </div>
     <mat-form-field>
-      <mat-label  floatLabel="always">Example</mat-label >
-      <input  placeholder="example" type="text" formControlName="nif" matInput>
+      <mat-label floatLabel="always">Example</mat-label>
+      <input placeholder="example" type="text" formControlName="nif" matInput />
     </mat-form-field>
 
     <div class="container2">
       <mat-form-field>
         <mat-label for="pasaporte" appearance="standard">Pasaporte</mat-label>
-        <input id="pasaporte" placeholder="pasaporte" type="text" formControlName="pasaporte" matInput>
+        <input
+          id="pasaporte"
+          placeholder="pasaporte"
+          type="text"
+          formControlName="pasaporte"
+          matInput
+        />
       </mat-form-field>
       <mat-form-field>
-        <mat-label for="direccion" appearance="standard">Calle y número</mat-label>
-        <input id="direccion" placeholder="Calle y número" type="text" formControlName="direccion" matInput>
+        <mat-label for="direccion" appearance="standard"
+          >Calle y número</mat-label
+        >
+        <input
+          id="direccion"
+          placeholder="Calle y número"
+          type="text"
+          formControlName="direccion"
+          matInput
+        />
       </mat-form-field>
       <mat-form-field>
-        <mat-label for="ciudad" appearance="standard">Ciudad o población</mat-label>
-        <input id="ciudad" placeholder="Ciudad o población" type="text" formControlName="ciudad" matInput>
+        <mat-label for="ciudad" appearance="standard"
+          >Ciudad o población</mat-label
+        >
+        <input
+          id="ciudad"
+          placeholder="Ciudad o población"
+          type="text"
+          formControlName="ciudad"
+          matInput
+        />
       </mat-form-field>
 
       <mat-form-field>
-        <mat-label for="codPostal" appearance="standard">Código postal</mat-label>
-        <input id="codPostal" placeholder="Código postal" type="text" formControlName="codPostal" matInput>
+        <mat-label for="codPostal" appearance="standard"
+          >Código postal</mat-label
+        >
+        <input
+          id="codPostal"
+          placeholder="Código postal"
+          type="text"
+          formControlName="codPostal"
+          matInput
+        />
       </mat-form-field>
-
     </div>
     <div class="container3">
       <mat-form-field>
         <mat-label for="telefono" appearance="standard">Telefono</mat-label>
-        <input id="telefono" type="text" placeholder="Telefono" formControlName="telefono" matInput>
+        <input
+          id="telefono"
+          type="text"
+          placeholder="Telefono"
+          formControlName="telefono"
+          matInput
+        />
       </mat-form-field>
       <mat-form-field>
         <mat-label for="email" appearance="standard">Email</mat-label>
-        <input id="email" placeholder="Email" type="text" formControlName="email" matInput>
+        <input
+          id="email"
+          placeholder="Email"
+          type="text"
+          formControlName="email"
+          matInput
+        />
       </mat-form-field>
 
       <mat-form-field>
         <mat-label appearance="standard">Firma</mat-label>
-        <input  matInput id="firma" placeholder="Firma" type="text" formControlName="firma" >
+        <input
+          matInput
+          id="firma"
+          placeholder="Firma"
+          type="text"
+          formControlName="firma"
+        />
       </mat-form-field>
     </div>
   </form>
   <div class="buttons__add__client">
     <button (click)="onSubmit()" mat-raised-button>
       Guardar<mat-icon>save</mat-icon>
-
     </button>
     <button (click)="onCancel()" mat-raised-button>
       Cancelar<mat-icon>cancel</mat-icon>
@@ -87,7 +160,7 @@
   <!-- <button [disabled]="!recordForm.valid" (click)="scan()" mat-raised-button>
     Escanear<mat-icon>add_to_queue</mat-icon>
   </button> -->
-  <br>
+  <br />
   <!-- <mat-table class="lessons-table mat-elevation-z8" [dataSource]="dataSource">
 
     <ng-container matColumnDef="nombre">
