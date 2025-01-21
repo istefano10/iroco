@@ -50,8 +50,10 @@ export class AddClientComponent implements OnInit {
     firma: new FormControl(''),
     ciudad: new FormControl(''),
     codPostal: new FormControl(''),
+    expId: new FormControl(new Number()),
   });
   userData = {};
+  expId;
   constructor(
     private route: ActivatedRoute,
     private ipcService: IpcService,
@@ -61,6 +63,7 @@ export class AddClientComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.expId = Number(this.route.snapshot.queryParams.id);
     this.isEdit = this.route.snapshot.queryParams.isEdit;
     if (this.isEdit === 'true') {
       this.nombre = this.route.snapshot.queryParams.nombre;
@@ -92,14 +95,20 @@ export class AddClientComponent implements OnInit {
   }
 
   onSubmit() {
+    const client = JSON.stringify({
+      ...this.recordForm.value,
+      ref: this.titleRecord,
+      $loki: this.recordForm.value.expId || this.expId,
+    });
     if (this.crear) {
+      this.recordForm.value['expId'] = this.expId;
       this.recordForm.value['fecha'] = new Date();
       this.ipcService.send('cliente:new', this.recordForm.value);
       this.ipcService.on('newCliente:reply', (event: any, arg: any) => {
-        if (!arg) {
+        if (!arg.error) {
           this.ngZone.run(() => {
             void this.router.navigate(['/', 'records'], {
-              queryParams: { titleRecord: this.titleRecord },
+              queryParams: { row: client },
             });
           });
         }
@@ -109,17 +118,21 @@ export class AddClientComponent implements OnInit {
       this.ipcService.send('cliente:update', this.recordForm.value);
       this.ngZone.run(() => {
         void this.router.navigate(['/', 'records'], {
-          queryParams: { titleRecord: this.titleRecord },
+          queryParams: { row: client },
         });
       });
-
     }
   }
 
   onCancel() {
+    const client = JSON.stringify({
+      ...this.recordForm.value,
+      ref: this.titleRecord,
+      $loki: this.expId,
+    });
     this.ngZone.run(() => {
       void this.router.navigate(['/', 'records'], {
-        queryParams: { titleRecord: this.titleRecord },
+        queryParams: { row: client },
       });
     });
   }

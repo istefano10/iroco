@@ -110,7 +110,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
   remove() {
     this.selection.selected.forEach((item) => {
-      this.ipcService.send('expediente:remove', { ref: item.ref });
+      this.ipcService.send('expediente:remove', { $loki: item.$loki });
     });
     this.ipcService.on('expediente:removereply', (event: any, arg: Record[]) => {
       this.dataSource.data = arg;
@@ -150,22 +150,4 @@ export class HomeComponent implements OnInit, AfterViewInit {
       : this.dataSource.data.forEach((row) => this.selectionBudget.select(row));
   }
   json: any = JSON;
-}
-
-// export interface PeriodicElement {
-//   ref:string,
-//   nombre: string;
-//   nif: string;
-//   direccion: string;
-//   telefono: string;
-//   movil: string;
-//   fecha: string;
-//   area: string;
-//   $loki: number;
-//   pdfs: [Pdf];
-// }
-
-export interface Pdf {
-  descripcion: string;
-  fecha: string;
 }

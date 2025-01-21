@@ -60,6 +60,7 @@ export class RecordComponent implements OnInit, AfterViewInit {
   });
   public titleRecord = '';
   userData = {};
+  expData;
   constructor(
     private route: ActivatedRoute,
     private ipcService: IpcService,
@@ -69,14 +70,14 @@ export class RecordComponent implements OnInit, AfterViewInit {
   ) {}
 
   ngOnInit(): void {
-    this.ipcService.send('clientes:list', {});
     if (this.route.snapshot.queryParams.titleRecord) {
       this.titleRecord = this.route.snapshot.queryParams.titleRecord;
     }
     if (this.route.snapshot.queryParams.row) {
-      const data = JSON.parse(this.route.snapshot.queryParams.row) as Record;
-      this.titleRecord = data.ref;
+      this.expData = JSON.parse(this.route.snapshot.queryParams.row) as Record;
+      this.titleRecord = this.expData.ref;
     }
+    this.ipcService.send('clientes:list', {expId: this.expData.$loki});
   }
 
   ngAfterViewInit() {
@@ -90,7 +91,11 @@ export class RecordComponent implements OnInit, AfterViewInit {
   addClient() {
     this.ngZone.run(() => {
       void this.router.navigate(['/', 'add-client'], {
-        queryParams: { isEdit: false, titleRecord: this.titleRecord },
+        queryParams: {
+          isEdit: false,
+          titleRecord: this.titleRecord,
+          id: this.expData.$loki,
+        },
       });
     });
   }

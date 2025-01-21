@@ -1,5 +1,5 @@
 import { app, BrowserWindow, ipcMain, screen, dialog } from 'electron';
-import JsExcelTemplate from "js-excel-template";
+import JsExcelTemplate from 'js-excel-template';
 
 const PDFWindow = require('electron-pdf-window');
 import * as path from 'path';
@@ -25,7 +25,7 @@ const db = new loki('iroco.json', {
 function databaseInitialize() {
   const clientes = db.getCollection('clientes');
   if (clientes === null) {
-    db.addCollection('clientes', { unique: 'nif' });
+    db.addCollection('clientes');
   }
   const expedientes = db.getCollection('expedientes');
   if (expedientes === null) {
@@ -85,68 +85,10 @@ function createWindow(): BrowserWindow {
   return win;
 }
 
-// Escanear
-ipcMain.on('scan:new', (e, newClient) => {
-  const clientes = db.getCollection('clientes');
-  let doc = clientes.by('nif', newClient.nif); //select the doc first to be updated
-  // console.log(doc);
-  const nombreFichero = `${newClient.nif}-${Math.floor(
-    10000 + Math.random() * 90000
-  )}`;
-  // const nombreFichero = `${newClient.nombre}-${newClient.nif}-${
-  //   doc ? doc.pdfs.length + 1 : 1
-  // }`;
-  // scanAndSavePDF(
-  //   doc && doc.pdfs && doc.pdfs.length < 1 ? false : true, //create folder
-  //   doc ? doc.nombre : newClient.nombre,
-  //   nombreFichero
-  // );
-  const createFoler = doc && doc.pdfs && doc.pdfs.length < 1 ? false : true;
-  const folder = doc ? doc.nombre : newClient.nombre;
-
-  if (createFoler) {
-    fs.mkdir(`./clientes/${folder}`, { recursive: true }, (err) => {
-      if (err) throw err;
-    });
-  }
-  execFile(
-    'C:/Program Files/NAPS2/NAPS2.Console.exe',
-    ['-o', `./clientes/${folder}/${nombreFichero}.pdf`],
-    (error, stdout, stderr) => {
-      if (error) {
-        e.reply('scan:reply', error);
-
-        throw error;
-      }
-      const result = clientes.by('nif', newClient.nif);
-      e.reply('scan:reply', result);
-      console.log(stdout);
-    }
-  );
-
-  if (doc) {
-    doc.pdfs.push({
-      descripcion: `./clientes/${newClient.nombre}/${nombreFichero}.pdf`,
-      fecha: new Date(),
-    }); //update its values
-    clientes.update(doc); //update the collection
-  } else {
-    newClient.pdfs.push({
-      descripcion: `./clientes/${newClient.nombre}/${nombreFichero}.pdf`,
-      fecha: new Date(),
-    }); //update its values
-    clientes.insert(newClient);
-  }
-});
-
 // Nuevo expediente
 ipcMain.on('expediente:new', (e, newExpediente) => {
-
   if (!newExpediente.ref) {
-    dialog.showErrorBox(
-      'Error',
-      `Los campos 'Id de referencia' y 'NIF' son obligatorios`
-    );
+    dialog.showErrorBox('Error', `El campo 'Referencia' es obligatorio`);
     e.reply('newExpediente:reply', { error: 1 });
     return;
   }
@@ -188,15 +130,7 @@ ipcMain.on('expedientes:list', (e, p) => {
 // ediar expediente
 ipcMain.on('expediente:update', (e, newExpediente) => {
   const expedientes = db.getCollection('expedientes');
-  let doc = expedientes.by('ref', newExpediente.ref);
-  // console.log(doc, newClient);
-  // if (doc && doc.pdfs && doc.pdfs.length > 0) {
-  //   fs.renameSync(
-  //     './clientes/' + doc.nombre,
-  //     './clientes/' + newClient.nombre
-  //   );
-  //   doc.pdfs = updateAlPdfsUrl(doc.pdfs, doc.nombre, newClient.nombre);
-  // }
+  let doc = expedientes.by('$loki', newExpediente.$loki);
 
   doc.ref = newExpediente.ref;
   doc.idGrupo = newExpediente.idGrupo;
@@ -211,7 +145,7 @@ ipcMain.on('expediente:remove', (e, data) => {
     .showMessageBox(win, {
       type: 'question',
       title: 'Confirmación',
-      message: '¿Quieres borrar el expediente: ' + data.ref + ' ?',
+      message: '¿Quieres borrar el expediente: ' + data.$loki + ' ?',
       buttons: ['Si', 'No '],
     })
     // Dialog returns a promise so let's handle it correctly
@@ -235,7 +169,6 @@ ipcMain.on('expediente:remove', (e, data) => {
 
 // Nuevo cliente
 ipcMain.on('cliente:new', (e, newClient) => {
-
   if (!newClient.nif || !newClient.nombre) {
     dialog.showErrorBox(
       'Error',
@@ -245,8 +178,9 @@ ipcMain.on('cliente:new', (e, newClient) => {
     return;
   }
   const clientes = db.getCollection('clientes');
-  let doc = clientes.by('nif', newClient.nif);
-  if (doc) {
+  // let doc = clientes.by('nif', newClient.nif);
+  let doc = clientes.find({ expId: newClient.expId, nif: newClient.nif });
+  if (doc.length > 0) {
     dialog.showErrorBox(
       'Error',
       `El usuario con NIF: ${newClient.nif} ya existe`
@@ -254,14 +188,14 @@ ipcMain.on('cliente:new', (e, newClient) => {
     e.reply('newCliente:reply', { error: 2 });
   } else {
     clientes.insert(newClient);
-    e.reply('newCliente:reply', doc);
+    e.reply('newCliente:reply', newClient);
   }
 });
 
 // Listar clientes
 ipcMain.on('clientes:list', (e, p) => {
   const clientes = db.getCollection('clientes');
-  const result = clientes.find({});
+  const result = clientes.find({ expId: p.expId });
   e.reply('clientes:listreply', result);
 });
 
@@ -269,14 +203,6 @@ ipcMain.on('clientes:list', (e, p) => {
 ipcMain.on('cliente:update', (e, newClient) => {
   const clientes = db.getCollection('clientes');
   let doc = clientes.by('nif', newClient.nif);
-  // console.log(doc, newClient);
-  // if (doc && doc.pdfs && doc.pdfs.length > 0) {
-  //   fs.renameSync(
-  //     './clientes/' + doc.nombre,
-  //     './clientes/' + newClient.nombre
-  //   );
-  //   doc.pdfs = updateAlPdfsUrl(doc.pdfs, doc.nombre, newClient.nombre);
-  // }
 
   doc.nif = newClient.nif;
   doc.nombre = newClient.nombre;
@@ -296,7 +222,7 @@ ipcMain.on('cliente:update', (e, newClient) => {
 
 // borrar clientes
 ipcMain.on('cliente:remove', (e, data) => {
-  console.log(data)
+  console.log(data);
   dialog
     .showMessageBox(win, {
       type: 'question',
@@ -322,15 +248,10 @@ ipcMain.on('cliente:remove', (e, data) => {
     });
 });
 
-
 // Nuevo presupuesto
 ipcMain.on('presupuesto:new', (e, newPresupuesto) => {
-
   if (!newPresupuesto.ref) {
-    dialog.showErrorBox(
-      'Error',
-      `Los campos 'Referencia' es obligatorio`
-    );
+    dialog.showErrorBox('Error', `Los campos 'Referencia' es obligatorio`);
     e.reply('newPresupuesto:reply', { error: 1 });
     return;
   }
@@ -402,17 +323,17 @@ ipcMain.on('presupuesto:remove', (e, data) => {
     });
 });
 
-
 ipcMain.on('doc:new', async (e, doc) => {
   const dir = desktopDir + `\\Expedientes\\${doc.ref}\\out.xlsx`;
-  const excelTemplate = await JsExcelTemplate.fromFile("templates/plantilla1.xlsx");
+  const excelTemplate = await JsExcelTemplate.fromFile(
+    'templates/plantilla1.xlsx'
+  );
   fs.createWriteStream(dir);
-  excelTemplate.set("name", doc.nombre);
-  excelTemplate.set("age", doc.fechaNac);
+  excelTemplate.set('name', doc.nombre);
+  excelTemplate.set('age', doc.fechaNac);
   await excelTemplate.saveAs(dir);
   e.reply('doc:newreply', {});
 });
-
 
 try {
   // This method will be called when Electron has finished

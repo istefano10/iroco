@@ -1,11 +1,10 @@
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
 /* eslint-disable @typescript-eslint/unbound-method */
-import { ChangeDetectorRef, Component, NgZone, OnInit } from '@angular/core';
+import { Component, NgZone, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute, Router } from '@angular/router';
 import { IpcService } from '../core/services';
-import { Client } from '../interfaces/client.interface';
 import { Record } from '../interfaces/record.interface';
 
 @Component({
@@ -25,6 +24,7 @@ export class AddRecordComponent implements OnInit {
   crear = false;
   IsWait = false;
   addRecordForm = new FormGroup({
+    $loki :new FormControl(''),
     ref: new FormControl('', Validators.required),
     idGrupo: new FormControl(''),
   });
@@ -34,7 +34,6 @@ export class AddRecordComponent implements OnInit {
     private route: ActivatedRoute,
     private ipcService: IpcService,
     private router: Router,
-    private cdRef: ChangeDetectorRef,
     private ngZone: NgZone
   ) {}
 
@@ -59,6 +58,7 @@ export class AddRecordComponent implements OnInit {
   onSubmit() {
     if (this.crear) {
       this.addRecordForm.value['fecha'] = new Date();
+      delete this.addRecordForm.value.$loki
       this.ipcService.send('expediente:new', this.addRecordForm.value);
       this.ipcService.on('newExpediente:reply', (event: any, arg: any) => {
         if (!arg) {
@@ -68,7 +68,6 @@ export class AddRecordComponent implements OnInit {
         }
       });
     } else {
-      this.addRecordForm.value['nif'] = this.userData['nif'];
       this.ipcService.send('expediente:update', this.addRecordForm.value);
       this.ngZone.run(() => {
         void this.router.navigate(['/', 'home']);

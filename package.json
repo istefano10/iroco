@@ -43,7 +43,7 @@
     "e2e:show-trace": "playwright show-trace e2e/tracing/trace.zip",
     "version": "conventional-changelog -i CHANGELOG.md -s -r 0 && git add CHANGELOG.md",
     "lint": "ng lint",
-    "pack": "electron-packager ./ pacientes-app --platform=win32 --overwrite"
+    "pack": "electron-packager ./ iroco-app --platform=win32 --overwrite"
   },
   "dependencies": {
     "@angular/animations": "16.1.3",
