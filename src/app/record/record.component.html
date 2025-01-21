@@ -6,6 +6,14 @@
   </ng-container>
   <mat-toolbar>
     <span class="example-spacer">Expediente: {{ titleRecord }}</span>
+
+    <div class="buttons">
+      <button class="btnstyle2" (click)="doc()" mat-mini-fab aria-label="Example icon button with a menu icon">
+        <mat-icon><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="26px" fill="#5f6368"><path d="M446.67-240h66.66v-40h53.34q14.16 0 23.75-9.58 9.58-9.59 9.58-23.75V-440q0-14.17-9.58-23.75-9.59-9.58-23.75-9.58h-140v-60H600V-600h-86.67v-40h-66.66v40h-53.34q-14.16 0-23.75 9.58-9.58 9.59-9.58 23.75V-440q0 14.17 9.58 23.75 9.59 9.58 23.75 9.58h140v60H360V-280h86.67v40Zm-220 160q-27 0-46.84-19.83Q160-119.67 160-146.67v-666.66q0-27 19.83-46.84Q199.67-880 226.67-880h334L800-640.67v494q0 27-19.83 46.84Q760.33-80 733.33-80H226.67Zm0-66.67h506.66v-464.66l-202-202H226.67v666.66Zm0 0v-666.66 666.66Z"/></svg></mat-icon>
+      </button>
+
+    </div>
+
     <div class="buttons-add-client">
       <button (click)="addClient()" mat-raised-button>
         Añadir cliente<mat-icon>add</mat-icon>
@@ -16,75 +24,11 @@
     </div>
   </mat-toolbar>
 
-  <!-- Formulario -->
-  <!-- <form [formGroup]="recordForm">
-
-    <div class="container1">
-      <mat-form-field>
-        <mat-label for="nombre">Nombre</mat-label>
-        <input id="nombre" type="text" formControlName="nombre" matInput>
-      </mat-form-field>
-      <mat-form-field>
-        <mat-label for="apellidos">Apellidos</mat-label>
-        <input id="apellidos" type="text" formControlName="apellidos" matInput>
-      </mat-form-field>
-      <mat-form-field>
-        <mat-label for="fechaNac">Fecha de nacimiento</mat-label>
-        <input id="fechaNac" type="date" formControlName="fechaNac" matInput>
-      </mat-form-field>
-      <mat-form-field>
-        <mat-label for="nif">DNI</mat-label>
-        <input id="nif" type="text" formControlName="nif" matInput>
-      </mat-form-field>
-
-    </div>
-
-    <div class="container2">
-      <mat-form-field>
-        <mat-label for="pasaporte">Pasaporte</mat-label>
-        <input id="pasaporte" type="text" formControlName="pasaporte" matInput>
-      </mat-form-field>
-      <mat-form-field>
-        <mat-label for="direccion">Calle y número</mat-label>
-        <input id="direccion" type="text" formControlName="direccion" matInput>
-      </mat-form-field>
-      <mat-form-field>
-        <mat-label for="ciudad">Ciudad o población</mat-label>
-        <input id="ciudad" type="text" formControlName="ciudad" matInput>
-      </mat-form-field>
-
-      <mat-form-field>
-        <mat-label for="codPostal">Código postal</mat-label>
-        <input id="codPostal" type="text" formControlName="codPostal" matInput>
-      </mat-form-field>
-
-    </div>
-    <div class="container3">
-
-
-      <mat-form-field>
-        <mat-label for="telefono">Telefono</mat-label>
-        <input id="telefono" type="text" formControlName="telefono" matInput>
-      </mat-form-field>
-      <mat-form-field>
-        <mat-label for="email">Email</mat-label>
-        <input id="email" type="text" formControlName="email" matInput>
-      </mat-form-field>
-
-      <mat-form-field>
-        <mat-label for="firma">Firma</mat-label>
-        <input id="firma" type="text" formControlName="firma" matInput>
-      </mat-form-field>
-    </div>
-  </form> -->
-  <!-- <button [disabled]="!recordForm.valid" (click)="scan()" mat-raised-button>
-    Escanear<mat-icon>add_to_queue</mat-icon>
-  </button> -->
   <br />
   <mat-table class="lessons-table mat-elevation-z8" [dataSource]="dataSource">
     <ng-container matColumnDef="nombre">
       <mat-header-cell *matHeaderCellDef>Nombre</mat-header-cell>
-      <mat-cell *matCellDef="let fichero">{{fichero.nombre}}
+      <mat-cell *matCellDef="let cliente">{{cliente.nombre}}
         <!-- <mat-icon>picture_as_pdf</mat-icon> -->
       </mat-cell>
     </ng-container>
@@ -93,69 +37,69 @@
       <mat-header-cell *matHeaderCellDef>Apellidos</mat-header-cell>
       <mat-cell
         class="descripcion-cell"
-        *matCellDef="let fichero"
-        >{{ fichero.apellidos }}</mat-cell
+        *matCellDef="let cliente"
+        >{{ cliente.apellidos }}</mat-cell
       >
     </ng-container>
 
     <ng-container matColumnDef="fecha de nacimiento">
       <mat-header-cell *matHeaderCellDef>Fecha de nacimiento</mat-header-cell>
-      <mat-cell class="duration-cell" *matCellDef="let fichero">{{
-        fichero.fechaNac | date : "dd-MM-yyyy"
+      <mat-cell class="duration-cell" *matCellDef="let cliente">{{
+        cliente.fechaNac | date : "dd-MM-yyyy"
       }}</mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="dni">
       <mat-header-cell *matHeaderCellDef>Dni</mat-header-cell>
-      <mat-cell class="duration-cell" *matCellDef="let fichero"
-        >{{fichero.nif}}</mat-cell
+      <mat-cell class="duration-cell" *matCellDef="let cliente"
+        >{{cliente.nif}}</mat-cell
       >
     </ng-container>
     <ng-container matColumnDef="pasaporte">
       <mat-header-cell *matHeaderCellDef>Pasaporte</mat-header-cell>
-      <mat-cell class="duration-cell" *matCellDef="let fichero"
-        >{{fichero.pasaporte}}</mat-cell
+      <mat-cell class="duration-cell" *matCellDef="let cliente"
+        >{{cliente.pasaporte}}</mat-cell
       >
     </ng-container>
     <!-- <ng-container matColumnDef="ciudad">
       <mat-header-cell *matHeaderCellDef>Ciudad</mat-header-cell>
-      <mat-cell class="duration-cell" *matCellDef="let fichero"
-        >{{fichero.ciudad}}</mat-cell
+      <mat-cell class="duration-cell" *matCellDef="let cliente"
+        >{{cliente.ciudad}}</mat-cell
       >
     </ng-container> -->
     <ng-container matColumnDef="direccion">
       <mat-header-cell *matHeaderCellDef>Dirección</mat-header-cell>
-      <mat-cell class="duration-cell" *matCellDef="let fichero"
-        >{{fichero.direccion}}, {{fichero.ciudad}}, {{fichero.codPostal}}</mat-cell
+      <mat-cell class="duration-cell" *matCellDef="let cliente"
+        >{{cliente.direccion}}, {{cliente.ciudad}}, {{cliente.codPostal}}</mat-cell
       >
     </ng-container>
     <!-- <ng-container matColumnDef="codPostal">
       <mat-header-cell *matHeaderCellDef>Código postal</mat-header-cell>
-      <mat-cell class="duration-cell" *matCellDef="let fichero"
-        >{{fichero.codPostal}}</mat-cell
+      <mat-cell class="duration-cell" *matCellDef="let cliente"
+        >{{cliente.codPostal}}</mat-cell
       >
     </ng-container> -->
 
     <ng-container matColumnDef="telefono">
       <mat-header-cell *matHeaderCellDef>Telefono</mat-header-cell>
-      <mat-cell class="duration-cell" *matCellDef="let fichero"
-        >{{fichero.telefono}}</mat-cell
+      <mat-cell class="duration-cell" *matCellDef="let cliente"
+        >{{cliente.telefono}}</mat-cell
       >
     </ng-container>
     <ng-container matColumnDef="email">
       <mat-header-cell *matHeaderCellDef>Email</mat-header-cell>
-      <mat-cell class="duration-cell" *matCellDef="let fichero"
-        >{{fichero.email}}</mat-cell
+      <mat-cell class="duration-cell" *matCellDef="let cliente"
+        >{{cliente.email}}</mat-cell
       >
     </ng-container>
 
     <ng-container matColumnDef="action">
       <mat-header-cell *matHeaderCellDef></mat-header-cell>
-      <mat-cell class="duration-cell" *matCellDef="let fichero">
+      <mat-cell class="duration-cell" *matCellDef="let cliente">
         <button
           mat-icon-button
           aria-label="Editar cliente"
-          (click)="edit(true,fichero)"
+          (click)="edit(true,cliente)"
         >
           <mat-icon>edit</mat-icon>
         </button>
@@ -164,12 +108,12 @@
 
     <ng-container matColumnDef="remove">
       <mat-header-cell *matHeaderCellDef></mat-header-cell>
-      <mat-cell class="duration-cell" *matCellDef="let fichero">
+      <mat-cell class="duration-cell" *matCellDef="let cliente">
         <button
           mat-icon-button
         color="warn"
           aria-label="Delete cliente"
-          (click)="remove()"
+          (click)="remove(cliente)"
         >
           <mat-icon>delete_forever</mat-icon>
         </button>

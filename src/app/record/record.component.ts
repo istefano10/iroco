@@ -12,7 +12,6 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute, Router } from '@angular/router';
 import { IpcService } from '../core/services';
-import { PeriodicElement } from '../home/home.component';
 import { MatPaginator } from '@angular/material/paginator';
 import { Client } from '../interfaces/client.interface';
 import { Record } from '../interfaces/record.interface';
@@ -35,7 +34,7 @@ export class RecordComponent implements OnInit, AfterViewInit {
     'action',
     'remove',
   ];
-  dataSource = new MatTableDataSource<any>([]);
+  dataSource = new MatTableDataSource<Client>([]);
 
   @ViewChild(MatPaginator)
   paginator: MatPaginator;
@@ -61,6 +60,7 @@ export class RecordComponent implements OnInit, AfterViewInit {
   });
   public titleRecord = '';
   userData = {};
+  expData;
   constructor(
     private route: ActivatedRoute,
     private ipcService: IpcService,
@@ -70,14 +70,14 @@ export class RecordComponent implements OnInit, AfterViewInit {
   ) {}
 
   ngOnInit(): void {
-    this.ipcService.send('clientes:list', {});
     if (this.route.snapshot.queryParams.titleRecord) {
       this.titleRecord = this.route.snapshot.queryParams.titleRecord;
     }
     if (this.route.snapshot.queryParams.row) {
-      const data = JSON.parse(this.route.snapshot.queryParams.row) as Record;
-      this.titleRecord = data.ref;
+      this.expData = JSON.parse(this.route.snapshot.queryParams.row) as Record;
+      this.titleRecord = this.expData.ref;
     }
+    this.ipcService.send('clientes:list', {expId: this.expData.$loki});
   }
 
   ngAfterViewInit() {
@@ -91,7 +91,11 @@ export class RecordComponent implements OnInit, AfterViewInit {
   addClient() {
     this.ngZone.run(() => {
       void this.router.navigate(['/', 'add-client'], {
-        queryParams: { isEdit: false, titleRecord: this.titleRecord },
+        queryParams: {
+          isEdit: false,
+          titleRecord: this.titleRecord,
+          id: this.expData.$loki,
+        },
       });
     });
   }
@@ -107,13 +111,10 @@ export class RecordComponent implements OnInit, AfterViewInit {
       nif: row.nif,
     };
     this.ipcService.send('cliente:remove', requestData);
-    this.ipcService.on(
-      'cliente:removereply',
-      (event: any, arg: PeriodicElement) => {
-        // this.dataSource.data = arg.pdfs;
-        this.cdRef.detectChanges();
-      }
-    );
+    this.ipcService.on('cliente:removereply', (event: any, arg: Client[]) => {
+      this.dataSource.data = arg;
+      this.cdRef.detectChanges();
+    });
   }
   edit(isEdit = false, client: Client) {
     const stringClient = JSON.stringify(client);
@@ -122,6 +123,15 @@ export class RecordComponent implements OnInit, AfterViewInit {
         queryParams: { isEdit, stringClient, titleRecord: this.titleRecord },
       });
     });
+  }
 
+  doc() {
+    this.ipcService.send('doc:new', {
+      ...this.dataSource.data[0],
+      ref: this.titleRecord,
+    });
+    this.ipcService.on('doc:newreply', (event: any, arg: any) => {
+      console.log(arg);
+    });
   }
 }

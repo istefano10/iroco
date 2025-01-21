@@ -43,7 +43,7 @@
     "e2e:show-trace": "playwright show-trace e2e/tracing/trace.zip",
     "version": "conventional-changelog -i CHANGELOG.md -s -r 0 && git add CHANGELOG.md",
     "lint": "ng lint",
-    "pack": "electron-packager ./ pacientes-app --platform=win32 --overwrite"
+    "pack": "electron-packager ./ iroco-app --platform=win32 --overwrite"
   },
   "dependencies": {
     "@angular/animations": "16.1.3",
@@ -60,6 +60,7 @@
     "electron-packager": "17.1.2",
     "electron-pdf-window": "1.0.12",
     "fs": "0.0.1-security",
+    "js-excel-template": "3.0.2",
     "lokijs": "1.5.12",
     "rxjs": "7.8.1",
     "scanner": "0.0.7",

@@ -17,6 +17,17 @@ mat-form-field {
   display: flex;
   gap: 1rem;
 }
+.btnstyle2{
+  height: 36px;
+  width: 36px;
+  text-align: center;
+  background-color: rgb(252, 188, 188);
+
+}
+.mat-mdc-raised-button>.mat-icon {
+  margin-left: 0px;
+  margin-right: 0px;
+}
 .mat-column-seqNo {
   word-wrap: break-word !important;
   white-space: unset !important;

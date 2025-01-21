@@ -21,7 +21,6 @@ export class AddBudgetComponent implements OnInit {
   IsWait = false;
   addBudgetForm = new FormGroup({
     ref: new FormControl('', Validators.required),
-    idGrupo: new FormControl(''),
   });
 
   userData = {};
@@ -46,14 +45,12 @@ export class AddBudgetComponent implements OnInit {
       this.addBudgetForm.reset();
       this.addBudgetForm.patchValue({
         ref: '',
-        idGrupo: '',
       });
     }
   }
 
   onSubmit() {
     if (this.crear) {
-      this.addBudgetForm.value['fecha'] = new Date();
       this.ipcService.send('presupuesto:new', this.addBudgetForm.value);
       this.ipcService.on('newPresupuesto:reply', (event: any, arg: any) => {
         if (!arg) {
