@@ -133,7 +133,7 @@ export class AddClientComponent implements OnInit {
     const client = JSON.stringify({
       ...this.recordForm.value,
       ref: this.titleRecord,
-      $loki: this.expId,
+      $loki: this.recordForm.value.expId || this.expId,
     });
     this.ngZone.run(() => {
       void this.router.navigate(['/', 'records'], {

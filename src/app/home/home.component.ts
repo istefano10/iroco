@@ -75,7 +75,6 @@ export class HomeComponent implements OnInit, AfterViewInit {
     this.ipcService.on('presupuestos:listreply', (event: any, arg: Budget[]) => {
 
       this.dataSourceBudget.data = arg;
-      console.log(this.dataSourceBudget.data)
       this.dataSourceBudget.paginator = this.paginator;
       this.cdRef.detectChanges();
     });  }
