@@ -43,14 +43,14 @@ export class AddClientComponent implements OnInit {
   crear = false;
   IsWait = false;
   private titleRecord = '';
-  recordForm = new FormGroup({
+  addClientForm = new FormGroup({
     nif: new FormControl('', Validators.required),
     nombre: new FormControl('', Validators.required),
     apellidos: new FormControl('', Validators.required),
     fechaNac: new FormControl(new Date(), Validators.required),
     pasaporte: new FormControl('', Validators.required),
     direccion: new FormControl(''),
-    email: new FormControl(''),
+    email: new FormControl('',Validators.required),
     telefono: new FormControl(''),
     firma: new FormControl(''),
     ciudad: new FormControl(''),
@@ -77,18 +77,18 @@ export class AddClientComponent implements OnInit {
     this.titleRecord = this.route.snapshot.queryParams.titleRecord;
     // if (this.route.snapshot.queryParams.row) {
     if (this.isEdit === 'true') {
-      this.recordForm.controls.nif.disable();
+      this.addClientForm.controls.nif.disable();
 
       const data = JSON.parse(
         this.route.snapshot.queryParams.stringClient
       ) as Client;
       this.userData = data;
-      this.recordForm.patchValue(data);
+      this.addClientForm.patchValue(data);
       this.crear = false;
     } else {
       this.crear = true;
-      this.recordForm.reset();
-      this.recordForm.patchValue({
+      this.addClientForm.reset();
+      this.addClientForm.patchValue({
         nombre: '',
         direccion: '',
         email: '',
@@ -100,15 +100,20 @@ export class AddClientComponent implements OnInit {
   }
 
   onSubmit() {
-    const client = JSON.stringify({
-      ...this.recordForm.value,
+    if(!this.addClientForm.valid){
+      this.addClientForm.markAllAsTouched()
+      return
+
+    }
+      const client = JSON.stringify({
+      ...this.addClientForm.value,
       ref: this.titleRecord,
-      $loki: this.recordForm.value.expId || this.expId,
+      $loki: this.addClientForm.value.expId || this.expId,
     });
     if (this.crear) {
-      this.recordForm.value['expId'] = this.expId;
-      this.recordForm.value['fecha'] = new Date();
-      this.ipcService.send('cliente:new', this.recordForm.value);
+      this.addClientForm.value['expId'] = this.expId;
+      this.addClientForm.value['fecha'] = new Date();
+      this.ipcService.send('cliente:new', this.addClientForm.value);
       this.ipcService.on('newCliente:reply', (event: any, arg: any) => {
         if (!arg.error) {
           this.ngZone.run(() => {
@@ -119,8 +124,8 @@ export class AddClientComponent implements OnInit {
         }
       });
     } else {
-      this.recordForm.value['nif'] = this.userData['nif'];
-      this.ipcService.send('cliente:update', this.recordForm.value);
+      this.addClientForm.value['nif'] = this.userData['nif'];
+      this.ipcService.send('cliente:update', this.addClientForm.value);
       this.ngZone.run(() => {
         void this.router.navigate(['/', 'records'], {
           queryParams: { row: client },
@@ -131,9 +136,9 @@ export class AddClientComponent implements OnInit {
 
   onCancel() {
     const client = JSON.stringify({
-      ...this.recordForm.value,
+      ...this.addClientForm.value,
       ref: this.titleRecord,
-      $loki: this.recordForm.value.expId || this.expId,
+      $loki: this.addClientForm.value.expId || this.expId,
     });
     this.ngZone.run(() => {
       void this.router.navigate(['/', 'records'], {

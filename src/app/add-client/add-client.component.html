@@ -10,7 +10,7 @@
     </h2>
   </div>
   <!-- Formulario -->
-  <form [formGroup]="recordForm">
+  <form [formGroup]="addClientForm">
     <div class="container1">
       <mat-form-field>
         <mat-label for="nombre" appearance="standard">Nombre</mat-label>
@@ -37,6 +37,7 @@
           >Fecha de nacimiento</mat-label
         >
         <input
+          [readonly]="true"
           matInput
           [matDatepicker]="picker"
           id="fechaNac"

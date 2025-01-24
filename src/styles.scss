@@ -22,6 +22,11 @@ html, body {
   background-size: cover; /* version standardisée */
 
 
+  .mat-mdc-form-field-has-icon-suffix .mat-mdc-text-field-wrapper {
+    padding-right: 0;
+    width: 14.7rem;
+}
+
   .mdc-text-field {
     border-bottom-right-radius: var(--mdc-shape-small, 4px);
     border-bottom-left-radius: var(--mdc-shape-small, 4px);

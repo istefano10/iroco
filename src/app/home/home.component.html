@@ -64,6 +64,13 @@
           </td>
         </ng-container>
 
+        <ng-container matColumnDef="fechaSalida">
+          <th mat-header-cell *matHeaderCellDef>Fecha de salida</th>
+          <td mat-cell *matCellDef="let element">
+            {{ element.fechaSalida | date : "dd-MM-yyyy" }}
+          </td>
+        </ng-container>
+
         <!-- idGrupo Column -->
         <ng-container matColumnDef="idGrupo">
           <th mat-header-cell *matHeaderCellDef>Id del grupo</th>
@@ -71,8 +78,8 @@
         </ng-container>
 
         <ng-container matColumnDef="edit">
-          <mat-header-cell *matHeaderCellDef></mat-header-cell>
-          <mat-cell class="duration-cell" *matCellDef="let fichero">
+          <th *matHeaderCellDef></th>
+          <td class="duration-cell" *matCellDef="let fichero">
             <button
               mat-icon-button
               aria-label="Editar expediente"
@@ -80,7 +87,7 @@
             >
               <mat-icon>edit</mat-icon>
             </button>
-          </mat-cell>
+          </td>
         </ng-container>
 
 
@@ -158,9 +165,11 @@
           </td>
         </ng-container>
 
+
+
         <ng-container matColumnDef="edit">
-          <mat-header-cell *matHeaderCellDef></mat-header-cell>
-          <mat-cell class="duration-cell" *matCellDef="let fichero">
+          <th *matHeaderCellDef></th>
+          <td class="duration-cell" *matCellDef="let fichero">
             <button
               mat-icon-button
               aria-label="Editar Presupuesto"
@@ -168,7 +177,7 @@
             >
               <mat-icon>edit</mat-icon>
             </button>
-          </mat-cell>
+          </td>
         </ng-container>
 
 

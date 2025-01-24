@@ -19,7 +19,7 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {MatTabsModule} from '@angular/material/tabs';
 import {MatDatepickerModule} from '@angular/material/datepicker';
-import {MatNativeDateModule} from '@angular/material/core';
+import {MAT_DATE_LOCALE, MatNativeDateModule} from '@angular/material/core';
 
 
 
@@ -63,6 +63,9 @@ import {MatNativeDateModule} from '@angular/material/core';
     MatTabsModule,
     MatDatepickerModule,
     MatNativeDateModule
+  ],
+  providers: [
+    { provide: MAT_DATE_LOCALE, useValue: 'es-ES' },  // Configuramos el formato español
   ],
 })
 export class SharedModule {}

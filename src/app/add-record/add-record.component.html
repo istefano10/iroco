@@ -7,40 +7,66 @@
 
   <div>
     <h2>
-      {{isEdit==='true'?'Editar expediente':'Crear expediente'}}
+      {{ isEdit === "true" ? "Editar expediente" : "Crear expediente" }}
     </h2>
   </div>
   <!-- Formulario -->
   <form [formGroup]="addRecordForm">
-
     <div class="container1">
       <mat-form-field>
         <mat-label for="ref">Referencia</mat-label>
-        <input id="ref" placeholder="Referencia" type="text" formControlName="ref" matInput>
+        <input
+          id="ref"
+          placeholder="Referencia"
+          type="text"
+          formControlName="ref"
+          matInput
+        />
       </mat-form-field>
     </div>
 
     <div class="container2">
       <mat-form-field>
         <mat-label for="idGrupo">Id del grupo</mat-label>
-        <input id="idGrupo" placeholder="Id del grupo" type="text" formControlName="idGrupo" matInput>
+        <input
+          id="idGrupo"
+          placeholder="Id del grupo"
+          type="text"
+          formControlName="idGrupo"
+          matInput
+        />
       </mat-form-field>
     </div>
 
+    <div class="container1">
+      <mat-form-field>
+        <input
+          [readonly]="true"
+          matInput
+          [matDatepicker]="picker"
+          id="FechaSalida"
+          placeholder="Fecha de Salida"
+          formControlName="fechaSalida"
+          type="text"
+        />
+        <mat-datepicker-toggle
+          matIconSuffix
+          [for]="picker"
+        ></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
+    </div>
   </form>
   <mat-toolbar>
-    <button (click)="onSubmit()" style="margin-right: 1rem;" mat-raised-button>
+    <button (click)="onSubmit()" style="margin-right: 1rem" mat-raised-button>
       Guardar<mat-icon>save</mat-icon>
-
     </button>
-    <button (click)="onCancel()" mat-raised-button style="margin-left: 1rem;">
+    <button (click)="onCancel()" mat-raised-button style="margin-left: 1rem">
       Cancelar<mat-icon>cancel</mat-icon>
     </button>
-
   </mat-toolbar>
   <!-- <button [disabled]="!detailForm.valid" (click)="scan()" mat-raised-button>
     Escanear<mat-icon>add_to_queue</mat-icon>
   </button> -->
-  <br>
-
+  <br />
 </div>

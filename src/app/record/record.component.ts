@@ -23,6 +23,7 @@ import { Record } from '../interfaces/record.interface';
 })
 export class RecordComponent implements OnInit, AfterViewInit {
   displayedColumns = [
+    'idCliente',
     'nombre',
     'apellidos',
     'fecha de nacimiento',
@@ -45,19 +46,6 @@ export class RecordComponent implements OnInit, AfterViewInit {
 
   crear = false;
   IsWait = false;
-  recordForm = new FormGroup({
-    nif: new FormControl('', Validators.required),
-    nombre: new FormControl('', Validators.required),
-    apellidos: new FormControl('', Validators.required),
-    fechaNac: new FormControl('', Validators.required),
-    pasaporte: new FormControl('', Validators.required),
-    direccion: new FormControl(''),
-    email: new FormControl(''),
-    telefono: new FormControl(''),
-    firma: new FormControl(''),
-    ciudad: new FormControl(''),
-    codPostal: new FormControl(''),
-  });
   public titleRecord = '';
   userData = {};
   expData;

@@ -1,30 +1,48 @@
+.header-title {
+  font-size: 32px;
+  font-weight: bold;
+}
+.toolbar {
+  justify-content: space-between;
+}
+.buttons-template {
+  width: 250px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+}
+.mat-mdc-form-field-has-icon-suffix .mat-mdc-text-field-wrapper {
+  padding-right: 0;
+  width: 14.7rem;
+}
 table {
   width: 100%;
 }
 mat-form-field {
   margin: 1rem;
 }
-.container1, .container2, .container3{
+.container1,
+.container2,
+.container3 {
   display: flex;
   flex-wrap: wrap;
   gap: 1rem;
 }
-.mdc-data-table__table{
-  margin:1rem;
+.mdc-data-table__table {
+  margin: 1rem;
   min-width: 97%;
 }
-.buttons-add-client{
+.buttons-add-client {
   display: flex;
   gap: 1rem;
 }
-.btnstyle2{
+.btnstyle2 {
   height: 36px;
   width: 36px;
   text-align: center;
   background-color: rgb(252, 188, 188);
-
 }
-.mat-mdc-raised-button>.mat-icon {
+.mat-mdc-raised-button > .mat-icon {
   margin-left: 0px;
   margin-right: 0px;
 }

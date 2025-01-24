@@ -25,8 +25,9 @@ export class AddRecordComponent implements OnInit {
   IsWait = false;
   addRecordForm = new FormGroup({
     $loki :new FormControl(''),
-    ref: new FormControl('', Validators.required),
+    ref: new FormControl('', [Validators.required,Validators.email]),
     idGrupo: new FormControl(''),
+    fechaSalida: new FormControl('')
   });
 
   userData = {};
@@ -56,6 +57,11 @@ export class AddRecordComponent implements OnInit {
   }
 
   onSubmit() {
+    if(!this.addRecordForm.valid){
+      this.addRecordForm.markAllAsTouched()
+      return
+
+    }
     if (this.crear) {
       this.addRecordForm.value['fecha'] = new Date();
       delete this.addRecordForm.value.$loki

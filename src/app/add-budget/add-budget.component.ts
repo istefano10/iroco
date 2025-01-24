@@ -51,6 +51,7 @@ export class AddBudgetComponent implements OnInit {
 
   onSubmit() {
     if (this.crear) {
+      this.addBudgetForm.value['fecha'] = new Date();
       this.ipcService.send('presupuesto:new', this.addBudgetForm.value);
       this.ipcService.on('newPresupuesto:reply', (event: any, arg: any) => {
         if (!arg) {

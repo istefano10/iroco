@@ -4,16 +4,7 @@
       <mat-spinner></mat-spinner>
     </div>
   </ng-container>
-  <mat-toolbar>
-    <span class="example-spacer">Expediente: {{ titleRecord }}</span>
-
-    <div class="buttons">
-      <button class="btnstyle2" (click)="doc()" mat-mini-fab aria-label="Example icon button with a menu icon">
-        <mat-icon><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="26px" fill="#5f6368"><path d="M446.67-240h66.66v-40h53.34q14.16 0 23.75-9.58 9.58-9.59 9.58-23.75V-440q0-14.17-9.58-23.75-9.59-9.58-23.75-9.58h-140v-60H600V-600h-86.67v-40h-66.66v40h-53.34q-14.16 0-23.75 9.58-9.58 9.59-9.58 23.75V-440q0 14.17 9.58 23.75 9.59 9.58 23.75 9.58h140v60H360V-280h86.67v40Zm-220 160q-27 0-46.84-19.83Q160-119.67 160-146.67v-666.66q0-27 19.83-46.84Q199.67-880 226.67-880h334L800-640.67v494q0 27-19.83 46.84Q760.33-80 733.33-80H226.67Zm0-66.67h506.66v-464.66l-202-202H226.67v666.66Zm0 0v-666.66 666.66Z"/></svg></mat-icon>
-      </button>
-
-    </div>
-
+  <mat-toolbar class="toolbar">
     <div class="buttons-add-client">
       <button (click)="addClient()" mat-raised-button>
         Añadir cliente<mat-icon>add</mat-icon>
@@ -22,122 +13,284 @@
         Volver<mat-icon>arrow_back</mat-icon>
       </button>
     </div>
+    <div class="title-record">
+      <span class="header-title">Expediente: {{ titleRecord }}</span>
+    </div>
+    <div class="buttons-template">
+      <button
+        class="btnstyle2"
+        (click)="doc()"
+        mat-mini-fab
+        aria-label="Example icon button with a menu icon"
+      >
+        <mat-icon>
+          <img
+            src="./assets/icons/buttonsMicrosoft/bombilla.png"
+            width="24px"
+            alt="Idea"
+          />
+        </mat-icon>
+      </button>
+      <button
+        class="btnstyle2"
+        mat-mini-fab
+        aria-label="Example icon button with a menu icon"
+      >
+        <mat-icon class="mat-18">
+          <img
+            src="./assets/icons/buttonsMicrosoft/mapa.png"
+            width="24px"
+            alt="mapa"
+          />
+        </mat-icon>
+      </button>
+      <button
+        class="btnstyle2"
+        (click)="doc()"
+        mat-mini-fab
+        aria-label="Example icon button with a menu icon"
+      >
+        <mat-icon>
+          <img
+            src="./assets/icons/buttonsMicrosoft/negocio.png"
+            width="24px"
+            alt="negocio"
+          />
+        </mat-icon>
+      </button>
+      <button
+        class="btnstyle2"
+        (click)="doc()"
+        mat-mini-fab
+        aria-label="Example icon button with a menu icon"
+      >
+        <mat-icon>
+          <img
+            src="./assets/icons/buttonsMicrosoft/pasaporte.png"
+            width="24px"
+            alt="pasaporte"
+          />
+        </mat-icon>
+      </button>
+      <button
+        class="btnstyle2"
+        mat-mini-fab
+        aria-label="Example icon button with a menu icon"
+      >
+        <mat-icon class="mat-18">
+          <img
+            src="./assets/icons/buttonsMicrosoft/precio.png"
+            width="24px"
+            alt="precio"
+          />
+        </mat-icon>
+      </button>
+      <button
+        class="btnstyle2"
+        (click)="doc()"
+        mat-mini-fab
+        aria-label="Example icon button with a menu icon"
+      >
+        <mat-icon>
+          <img
+            src="./assets/icons/buttonsMicrosoft/seguro.png"
+            width="24px"
+            alt="seguro"
+          />
+        </mat-icon>
+      </button>
+      <button
+        class="btnstyle2"
+        (click)="doc()"
+        mat-mini-fab
+        aria-label="Example icon button with a menu icon"
+      >
+        <mat-icon>
+          <img
+            src="./assets/icons/buttonsMicrosoft/ubicacion.png"
+            width="24px"
+            alt="ubicación"
+          />
+        </mat-icon>
+      </button>
+      <button
+        class="btnstyle2"
+        (click)="doc()"
+        mat-mini-fab
+        aria-label="Example icon button with a menu icon"
+      >
+        <mat-icon>
+          <img
+            src="./assets/icons/buttonsMicrosoft/viaje.png"
+            width="24px"
+            alt="viaje"
+          />
+        </mat-icon>
+      </button>
+    </div>
   </mat-toolbar>
 
   <br />
-  <mat-table class="lessons-table mat-elevation-z8" [dataSource]="dataSource">
-    <ng-container matColumnDef="nombre">
-      <mat-header-cell *matHeaderCellDef>Nombre</mat-header-cell>
-      <mat-cell *matCellDef="let cliente">{{cliente.nombre}}
-        <!-- <mat-icon>picture_as_pdf</mat-icon> -->
-      </mat-cell>
-    </ng-container>
 
-    <ng-container matColumnDef="apellidos">
-      <mat-header-cell *matHeaderCellDef>Apellidos</mat-header-cell>
-      <mat-cell
-        class="descripcion-cell"
-        *matCellDef="let cliente"
-        >{{ cliente.apellidos }}</mat-cell
-      >
-    </ng-container>
 
-    <ng-container matColumnDef="fecha de nacimiento">
-      <mat-header-cell *matHeaderCellDef>Fecha de nacimiento</mat-header-cell>
-      <mat-cell class="duration-cell" *matCellDef="let cliente">{{
-        cliente.fechaNac | date : "dd-MM-yyyy"
-      }}</mat-cell>
-    </ng-container>
+    <mat-table
+     class="lessons-table mat-elevation-z8" [dataSource]="dataSource">
+      <ng-container matColumnDef="idCliente">
+        <mat-header-cell *matHeaderCellDef>Id del cliente</mat-header-cell>
+        <mat-cell
+          *matCellDef="let cliente; let i = index"
+          [ngStyle]="i === 0 ? { 'background-color': '#FAF3E0' } : {}"
+          >{{ i+1 }}
+          <!-- <mat-icon>picture_as_pdf</mat-icon> -->
+        </mat-cell>
+      </ng-container>
 
-    <ng-container matColumnDef="dni">
-      <mat-header-cell *matHeaderCellDef>Dni</mat-header-cell>
-      <mat-cell class="duration-cell" *matCellDef="let cliente"
-        >{{cliente.nif}}</mat-cell
-      >
-    </ng-container>
-    <ng-container matColumnDef="pasaporte">
-      <mat-header-cell *matHeaderCellDef>Pasaporte</mat-header-cell>
-      <mat-cell class="duration-cell" *matCellDef="let cliente"
-        >{{cliente.pasaporte}}</mat-cell
-      >
-    </ng-container>
-    <!-- <ng-container matColumnDef="ciudad">
-      <mat-header-cell *matHeaderCellDef>Ciudad</mat-header-cell>
-      <mat-cell class="duration-cell" *matCellDef="let cliente"
-        >{{cliente.ciudad}}</mat-cell
-      >
-    </ng-container> -->
-    <ng-container matColumnDef="direccion">
-      <mat-header-cell *matHeaderCellDef>Dirección</mat-header-cell>
-      <mat-cell class="duration-cell" *matCellDef="let cliente"
-        >{{cliente.direccion}}, {{cliente.ciudad}}, {{cliente.codPostal}}</mat-cell
-      >
-    </ng-container>
-    <!-- <ng-container matColumnDef="codPostal">
-      <mat-header-cell *matHeaderCellDef>Código postal</mat-header-cell>
-      <mat-cell class="duration-cell" *matCellDef="let cliente"
-        >{{cliente.codPostal}}</mat-cell
-      >
-    </ng-container> -->
+      <ng-container matColumnDef="nombre">
+        <mat-header-cell *matHeaderCellDef>Nombre</mat-header-cell>
+        <mat-cell
+          *matCellDef="let cliente; let i = index"
+          [ngStyle]="i === 0 ? { 'background-color': '#FAF3E0' } : {}"
+          >{{ cliente.nombre }}
+          <!-- <mat-icon>picture_as_pdf</mat-icon> -->
+        </mat-cell>
+      </ng-container>
 
-    <ng-container matColumnDef="telefono">
-      <mat-header-cell *matHeaderCellDef>Telefono</mat-header-cell>
-      <mat-cell class="duration-cell" *matCellDef="let cliente"
-        >{{cliente.telefono}}</mat-cell
-      >
-    </ng-container>
-    <ng-container matColumnDef="email">
-      <mat-header-cell *matHeaderCellDef>Email</mat-header-cell>
-      <mat-cell class="duration-cell" *matCellDef="let cliente"
-        >{{cliente.email}}</mat-cell
-      >
-    </ng-container>
-
-    <ng-container matColumnDef="action">
-      <mat-header-cell *matHeaderCellDef></mat-header-cell>
-      <mat-cell class="duration-cell" *matCellDef="let cliente">
-        <button
-          mat-icon-button
-          aria-label="Editar cliente"
-          (click)="edit(true,cliente)"
+      <ng-container matColumnDef="apellidos">
+        <mat-header-cell *matHeaderCellDef>Apellidos</mat-header-cell>
+        <mat-cell
+          class="descripcion-cell"
+          *matCellDef="let cliente; let i = index"
+          [ngStyle]="i === 0 ? { 'background-color': '#FAF3E0' } : {}"
+          >{{ cliente.apellidos }}</mat-cell
         >
-          <mat-icon>edit</mat-icon>
-        </button>
-      </mat-cell>
-    </ng-container>
+      </ng-container>
 
-    <ng-container matColumnDef="remove">
-      <mat-header-cell *matHeaderCellDef></mat-header-cell>
-      <mat-cell class="duration-cell" *matCellDef="let cliente">
-        <button
-          mat-icon-button
-        color="warn"
-          aria-label="Delete cliente"
-          (click)="remove(cliente)"
+      <ng-container matColumnDef="fecha de nacimiento">
+        <mat-header-cell *matHeaderCellDef>Fecha de nacimiento</mat-header-cell>
+        <mat-cell
+          class="duration-cell"
+          *matCellDef="let cliente; let i = index"
+          [ngStyle]="i === 0 ? { 'background-color': '#FAF3E0' } : {}"
+          >{{ cliente.fechaNac | date : "dd-MM-yyyy" }}</mat-cell
         >
-          <mat-icon>delete_forever</mat-icon>
-        </button>
-      </mat-cell>
-    </ng-container>
+      </ng-container>
 
-    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+      <ng-container matColumnDef="dni">
+        <mat-header-cell *matHeaderCellDef>Dni</mat-header-cell>
+        <mat-cell
+          class="duration-cell"
+          *matCellDef="let cliente; let i = index"
+          [ngStyle]="i === 0 ? { 'background-color': '#FAF3E0' } : {}"
+          >{{ cliente.nif }}</mat-cell
+        >
+      </ng-container>
+      <ng-container matColumnDef="pasaporte">
+        <mat-header-cell *matHeaderCellDef>Pasaporte</mat-header-cell>
+        <mat-cell
+          class="duration-cell"
+          *matCellDef="let cliente; let i = index"
+          [ngStyle]="i === 0 ? { 'background-color': '#FAF3E0' } : {}"
+          >{{ cliente.pasaporte }}</mat-cell
+        >
+      </ng-container>
+      <!-- <ng-container matColumnDef="ciudad">
+        <mat-header-cell *matHeaderCellDef>Ciudad</mat-header-cell>
+        <mat-cell class="duration-cell" *matCellDef="let cliente; let i = index" [ngStyle]="i === 0 ? {'background-color': '#FAF3E0'} : {}"
+          >{{cliente.ciudad}}</mat-cell
+        >
+      </ng-container> -->
+      <ng-container matColumnDef="direccion">
+        <mat-header-cell *matHeaderCellDef>Dirección</mat-header-cell>
+        <mat-cell
+          class="duration-cell"
+          *matCellDef="let cliente; let i = index"
+          [ngStyle]="i === 0 ? { 'background-color': '#FAF3E0' } : {}"
+          >{{ cliente.direccion }}, {{ cliente.ciudad }},
+          {{ cliente.codPostal }}</mat-cell
+        >
+      </ng-container>
+      <!-- <ng-container matColumnDef="codPostal">
+        <mat-header-cell *matHeaderCellDef>Código postal</mat-header-cell>
+        <mat-cell class="duration-cell" *matCellDef="let cliente; let i = index" [ngStyle]="i === 0 ? {'background-color': '#FAF3E0'} : {}"
+          >{{cliente.codPostal}}</mat-cell
+        >
+      </ng-container> -->
 
-    <mat-row
-      *cdkRowDef="let row; columns: displayedColumns"
-      [ngClass]="{ highlight: selectedRowIndex === row.fecha }"
-    >
-    </mat-row>
+      <ng-container matColumnDef="telefono">
+        <mat-header-cell *matHeaderCellDef>Telefono</mat-header-cell>
+        <mat-cell
+          class="duration-cell"
+          *matCellDef="let cliente; let i = index"
+          [ngStyle]="i === 0 ? { 'background-color': '#FAF3E0' } : {}"
+          >{{ cliente.telefono }}</mat-cell
+        >
+      </ng-container>
+      <ng-container matColumnDef="email">
+        <mat-header-cell *matHeaderCellDef>Email</mat-header-cell>
+        <mat-cell
+          class="duration-cell"
+          *matCellDef="let cliente; let i = index"
+          [ngStyle]="i === 0 ? { 'background-color': '#FAF3E0' } : {}"
+        >
+          <p style=>
+            {{ cliente.email }}
+          </p></mat-cell
+        >
+      </ng-container>
 
-    <!-- <mat-row *matRowDef="let row; columns: displayedColumns;"
+      <ng-container matColumnDef="action">
+        <mat-header-cell *matHeaderCellDef></mat-header-cell>
+        <mat-cell
+          class="duration-cell"
+          *matCellDef="let cliente; let i = index"
+          [ngStyle]="i === 0 ? { 'background-color': '#FAF3E0' } : {}"
+        >
+          <button
+            mat-icon-button
+            aria-label="Editar cliente"
+            (click)="edit(true, cliente)"
+          >
+            <mat-icon>edit</mat-icon>
+          </button>
+        </mat-cell>
+      </ng-container>
 
-            class="element-row"
-            [class.expanded]="expandedElement === row"
-            (click)="expandedElement = row"></mat-row>
-    <mat-row *matRowDef="let row; columns: ['expandedDetail']; when: isExpansionDetailRow"
-            [@detailExpand]="row.element === expandedElement ? 'expanded' : 'collapsed'"
-            style="overflow: hidden">
-    </mat-row>-->
-  </mat-table>
+      <ng-container matColumnDef="remove">
+        <mat-header-cell *matHeaderCellDef></mat-header-cell>
+        <mat-cell
+          class="duration-cell"
+          *matCellDef="let cliente; let i = index"
+          [ngStyle]="i === 0 ? { 'background-color': '#FAF3E0' } : {}"
+        >
+          <button
+            mat-icon-button
+            color="warn"
+            aria-label="Delete cliente"
+            (click)="remove(cliente)"
+          >
+            <mat-icon>delete_forever</mat-icon>
+          </button>
+        </mat-cell>
+      </ng-container>
+
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+
+      <mat-row
+        *cdkRowDef="let row; columns: displayedColumns"
+        [ngClass]="{ highlight: selectedRowIndex === row.fecha }"
+      >
+      </mat-row>
+
+      <!-- <mat-row *matRowDef="let row; columns: displayedColumns;"
+
+              class="element-row"
+              [class.expanded]="expandedElement === row"
+              (click)="expandedElement = row"></mat-row>
+      <mat-row *matRowDef="let row; columns: ['expandedDetail']; when: isExpansionDetailRow"
+              [@detailExpand]="row.element === expandedElement ? 'expanded' : 'collapsed'"
+              style="overflow: hidden">
+      </mat-row>-->
+    </mat-table>
 
   <mat-paginator
     [pageSize]="[10]"

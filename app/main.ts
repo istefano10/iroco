@@ -134,7 +134,8 @@ ipcMain.on('expediente:update', (e, newExpediente) => {
 
   doc.ref = newExpediente.ref;
   doc.idGrupo = newExpediente.idGrupo;
-
+  doc.fechaSalida=newExpediente.fechaSalida
+  console.log(doc)
   expedientes.update(doc);
   e.reply('expediente:updatereply', doc);
 });
