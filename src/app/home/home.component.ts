@@ -100,7 +100,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
   clientsList(row:any){
     const client=JSON.stringify(row)
     this.ngZone.run(() => {
-      void this.router.navigate(['/', 'records'],{queryParams:{row:client}});
+      void this.router.navigate(['/', 'records'],{queryParams:{record:client}});
     });
   }
   applyFilter(event: Event) {

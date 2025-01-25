@@ -20,6 +20,7 @@ import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {MatTabsModule} from '@angular/material/tabs';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MAT_DATE_LOCALE, MatNativeDateModule} from '@angular/material/core';
+import {  MatTooltipModule } from '@angular/material/tooltip';
 
 
 
@@ -41,7 +42,8 @@ import {MAT_DATE_LOCALE, MatNativeDateModule} from '@angular/material/core';
     MatProgressSpinnerModule,
     MatInputModule,
     MatDatepickerModule,
-    MatNativeDateModule
+    MatNativeDateModule,
+    MatTooltipModule
 
 
   ],
@@ -62,7 +64,8 @@ import {MAT_DATE_LOCALE, MatNativeDateModule} from '@angular/material/core';
     MatProgressSpinnerModule,
     MatTabsModule,
     MatDatepickerModule,
-    MatNativeDateModule
+    MatNativeDateModule,
+    MatTooltipModule
   ],
   providers: [
     { provide: MAT_DATE_LOCALE, useValue: 'es-ES' },  // Configuramos el formato español

@@ -135,7 +135,12 @@ ipcMain.on('expediente:update', (e, newExpediente) => {
   doc.ref = newExpediente.ref;
   doc.idGrupo = newExpediente.idGrupo;
   doc.fechaSalida=newExpediente.fechaSalida
-  console.log(doc)
+  doc.aerolinea=newExpediente.aerolinea
+  doc.visado=newExpediente.visado
+  doc.seguro=newExpediente.seguro
+  doc.contratCancel=newExpediente.contratCancel
+  doc.contratViaje=newExpediente.contratViaje
+  doc.proforma=newExpediente.proforma
   expedientes.update(doc);
   e.reply('expediente:updatereply', doc);
 });
@@ -223,7 +228,6 @@ ipcMain.on('cliente:update', (e, newClient) => {
 
 // borrar clientes
 ipcMain.on('cliente:remove', (e, data) => {
-  console.log(data);
   dialog
     .showMessageBox(win, {
       type: 'question',
