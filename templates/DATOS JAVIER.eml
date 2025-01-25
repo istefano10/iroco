@@ -1,0 +1,155 @@
+Delivered-To: irocotravel@gmail.com
+Received: by 2002:ab0:621a:0:b0:85b:f677:3a49 with SMTP id m26csp1762792uao;
+        Mon, 16 Dec 2024 04:23:41 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGBq61V2NO5wFmw+sNJ6d3U/PZqs0OZK6Q8mhc6gjeZ/qSzOmnt3EC4oqZY0UlawuvBetqO
+X-Received: by 2002:a05:620a:4301:b0:7b6:6e7c:8efd with SMTP id af79cd13be357-7b6fbf7caf8mr2149315385a.58.1734351820822;
+        Mon, 16 Dec 2024 04:23:40 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1734351820; cv=none;
+        d=google.com; s=arc-20240605;
+        b=LSoEb+NAh0GGCI0D+5P8nvov//hWiys5HjxEFDhrQIUN0yhExWt8yEcATGDO4l/mkT
+         5Aoe8ROrxqKrewTWpypj4KdSd28ozyQBMCoUQ0mRgJFcdAfcBayJoI1sQ5jJybRWMg8u
+         m8wRStd85StiwCOD0DA4UUSo9Wmn7c4+GygDoLS+eDIf2KM51a6ZlDa4mnJGT7Ga+Ljn
+         SHtszyAS0duWV5J98pUe+Z2dLqMD4BT3bdQ1kgDSaAmGeirTOPky+ljZOEbeoYErF18R
+         B+aXrYh/LhrWA75X6j9y2NyDatjwCUB8dKJVy0SnnS3poqQ7y8CeN9+01xduFegIuzGB
+         HK1g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=to:reply-to:subject:message-id:mime-version:from:date
+         :dkim-signature:dkim-signature;
+        bh=ryqOmDT35ePFRoEGNurhW5bucSiJ7TS0S70BpE1tnb4=;
+        fh=N36Z+hybcz1TYXRrzRhtVoVVravDJBX1wJ87OmFzjx0=;
+        b=eCvLCf/vLDkg0aFtNUZvVIyW9e3rwMSB6C40rW8j838RP36sHp9NWptcn10495Fkrh
+         /CM6r58rAT/rs2tr81PmNz9fcRfqGduEhVuboBZVibKRYKLuuS3qwY2ilgbf2+mEQaRy
+         /VdhvOrg3j52+LZFujnP+Vglc7liF2aVnrlP0I5jSaKc5WU2P3EBjB/nqabvmrMlGjpX
+         Fnu1VdyE4CpO2jZS+AEX8FazmI+jQGFv/rZbqNjlZaczAJZU1DY+wFl+9IupZjQTxWaf
+         4faXRaMd6dTNrvf4Yj0pT3zng9D/yp8npTsKyV5KgXmie8s1h+evMCURvuRT5J2NVbvV
+         Jajw==;
+        dara=google.com
+ARC-Authentication-Results: i=1; mx.google.com;
+       dkim=pass header.i=@tally.so header.s=s1 header.b="1QUs/e/P";
+       dkim=pass header.i=@sendgrid.info header.s=smtpapi header.b=bh8l+dpo;
+       spf=pass (google.com: domain of bounces+17587771-2826-irocotravel=gmail.com@em5195.tally.so designates 149.72.58.187 as permitted sender) smtp.mailfrom="bounces+17587771-2826-irocotravel=gmail.com@em5195.tally.so";
+       dmarc=pass (p=REJECT sp=REJECT dis=NONE) header.from=tally.so
+Return-Path: <bounces+17587771-2826-irocotravel=gmail.com@em5195.tally.so>
+Received: from o1.ptr2178.tally.so (o1.ptr2178.tally.so. [149.72.58.187])
+        by mx.google.com with ESMTPS id d75a77b69052e-467b2cbaca6si81827321cf.155.2024.12.16.04.23.40
+        for <irocotravel@gmail.com>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 16 Dec 2024 04:23:40 -0800 (PST)
+Received-SPF: pass (google.com: domain of bounces+17587771-2826-irocotravel=gmail.com@em5195.tally.so designates 149.72.58.187 as permitted sender) client-ip=149.72.58.187;
+Authentication-Results: mx.google.com;
+       dkim=pass header.i=@tally.so header.s=s1 header.b="1QUs/e/P";
+       dkim=pass header.i=@sendgrid.info header.s=smtpapi header.b=bh8l+dpo;
+       spf=pass (google.com: domain of bounces+17587771-2826-irocotravel=gmail.com@em5195.tally.so designates 149.72.58.187 as permitted sender) smtp.mailfrom="bounces+17587771-2826-irocotravel=gmail.com@em5195.tally.so";
+       dmarc=pass (p=REJECT sp=REJECT dis=NONE) header.from=tally.so
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tally.so;
+	h=content-type:from:mime-version:subject:reply-to:x-feedback-id:to:cc:
+	content-type:from:subject:to;
+	s=s1; bh=ryqOmDT35ePFRoEGNurhW5bucSiJ7TS0S70BpE1tnb4=;
+	b=1QUs/e/P9onqk7oA4Yk6vFmSCuzrQ6qJlU8UaJgtDo7RCv7nA/5O/EzLvlt7ftpcnvtD
+	Xpfy4krvjhwuc9lFYmivg3hN4tAZ6nIVRtjBKl41YlkqdJTXIbgKMdZkgUucRUc+oQCi+I
+	bdWhdFz09FmJRmspA5pSgEVAkEBO0TFkL439UyCdaYY2U8FLnIxUJ9f1PkYOEhimXbs8/u
+	wFmf6uQnNE3xPVqj17yg8A1tEKjpBoB3liDNlz9ftEmTNYwMtMBOJjvZaEjL2c8J9NY8WU
+	cNo68btO/oXcrj9RgvWDNB6NMRwFiDZlBQDxfqpqcp7nr691mHR9uvs+nZLtJzWQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sendgrid.info;
+	h=content-type:from:mime-version:subject:reply-to:x-feedback-id:to:cc:
+	content-type:from:subject:to;
+	s=smtpapi; bh=ryqOmDT35ePFRoEGNurhW5bucSiJ7TS0S70BpE1tnb4=;
+	b=bh8l+dpowpyYa661KaC+mmz6JuWRaQdBkTgkb+ZzcPIHQUst0xQsCrHShN8HG4HSMlsN
+	FeVxEnVsYlZ/eYwSWGADjqtaVoIDqUBnEzhgK2VAHffU4Gzb2YAfvBSlRsoEj+5XpI2tNS
+	wjDOUQJLVu1x7FltqyOh1w/J1OVJHNVOI=
+Received: by recvd-7b8797bf44-fqksj with SMTP id recvd-7b8797bf44-fqksj-1-67601BCB-9
+	2024-12-16 12:23:39.215617556 +0000 UTC m=+2732382.158955106
+Received: from MTc1ODc3NzE (unknown)
+	by geopod-ismtpd-4 (SG) with HTTP
+	id JbJ0CcDvT8iWgWG2o9IEhA
+	Mon, 16 Dec 2024 12:23:39.167 +0000 (UTC)
+Content-Type: multipart/alternative; boundary=9f048534c60cb623ca775e6695554427839385ae4aa6836cdf1c216caa39
+Date: Mon, 16 Dec 2024 12:23:39 +0000 (UTC)
+From: Tally Forms <notifications@tally.so>
+Mime-Version: 1.0
+Message-ID: <JbJ0CcDvT8iWgWG2o9IEhA@geopod-ismtpd-4>
+Subject: New Tally Form Submission for =?UTF-8?B?UHJvdGVjY2nDs24=?= de datos
+Reply-To: No Reply <noreply@tally.so>
+X-Feedback-ID: 17587771:SG
+X-SG-EID: 
+ =?us-ascii?Q?u001=2EbrHtMhQvArXQQ2RXclKBvx3mxmLDiZTiojFzUz4tgUmq1BF+r2FQ6ybNy?=
+ =?us-ascii?Q?BSwZLSG10aAecTTTzMYUhG3=2F3h=2FEw9hsNvAMmr3?=
+ =?us-ascii?Q?brWVNZhi7I+CPxvKhlRMsCtXoPYV34b2xIMj5BE?=
+ =?us-ascii?Q?Xj2k0RIbkPdKqleTt3No8oXl0mnHDLuV0266b+I?=
+ =?us-ascii?Q?Kc8so3ZDKAomsPV3RSsJVbVfJwJPnqNuZTWYWCz?=
+ =?us-ascii?Q?lMueJtAsxP5vR9BRyGantI8oedit0VGZ5wgdNY8?= =?us-ascii?Q?rBCr?=
+X-SG-ID: 
+ =?us-ascii?Q?u001=2ESdBcvi+Evd=2FbQef8eZF3BsEbYcm6FfGVtDhZmL87bBdwTZjZ2EiczRMs1?=
+ =?us-ascii?Q?PG2GpK+SnhSbmixXMFKY8mYwUrqbSq9z=2Fh3gJnj?=
+ =?us-ascii?Q?ltVXvnM6le4qU3CqCn3kkuC0z2b73+m=2F0PKLrab?=
+ =?us-ascii?Q?hk1dOa5qXLfI7X0TFXw=2FhVuuOhUhfM7IisOY=3D?=
+To: IROCO Travel <irocotravel@gmail.com>
+X-Entity-ID: u001.Mqy0U0u3W6IOPfCrysG5Kw==
+
+--9f048534c60cb623ca775e6695554427839385ae4aa6836cdf1c216caa39
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=iso-8859-1
+Mime-Version: 1.0
+
+Autorizaci&#xF3;n de manipulaci&#xF3;n de datos de car&#xE1;cter personal p=
+ara uso exclusivo para esta actividad de viajes a la empresa IROCO TRAVEL &=
+#x2013; KAMEAWORLD con NIF 26020342M.
+Francisco Javier
+
+Apellidos
+Oficial Molina
+
+Fecha de nacimiento
+13 nov 1976
+
+DNI
+52736075L
+
+Pasaporte
+PAM052731
+
+Calle y n&#xFA;mero
+Calle maestro Miguel Buend=EDa n 2 p. 7
+
+Ciudad o poblaci&#xF3;n
+Moncada
+
+C&#xF3;digo postal
+46113
+
+Tel&#xE9;fono
++34626768562
+
+Email
+javieroficial7@gmail.com
+
+Signatura
+https://storage.tally.so/private/0f7ce9d7-d851-41b3-97bf-9ae92166ed47.png?i=
+d=3DgMa8PK&accessToken=3DeyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImdNY=
+ThQSyIsImZvcm1JZCI6IjNFeG80byIsImlhdCI6MTczNDM1MTgxOX0.JKce_bC_4xCYJFmyXFxp=
+JwakX3lAAW7nDC1sHkye48E&signature=3Dcace7b6c411e23c1d75ff1ec4014d42e28a36db=
+9a5c20319b4e0637134d871f6
+
+
+--9f048534c60cb623ca775e6695554427839385ae4aa6836cdf1c216caa39
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/html; charset=iso-8859-1
+Mime-Version: 1.0
+
+<div><b>Autorizaci&#xF3;n de manipulaci&#xF3;n de datos de car&#xE1;cter pe=
+rsonal para uso exclusivo para esta actividad de viajes a la empresa IROCO =
+TRAVEL &#x2013; KAMEAWORLD con NIF 26020342M.</b></div><div>Francisco Javie=
+r </div><br/><div><b>Apellidos</b></div><div>Oficial Molina </div><br/><div=
+><b>Fecha de nacimiento</b></div><div>13 nov 1976</div><br/><div><b>DNI</b>=
+</div><div>52736075L</div><br/><div><b>Pasaporte</b></div><div>PAM052731</d=
+iv><br/><div><b>Calle y n&#xFA;mero</b></div><div>Calle maestro Miguel Buen=
+d=EDa n 2 p. 7</div><br/><div><b>Ciudad o poblaci&#xF3;n</b></div><div>Monc=
+ada</div><br/><div><b>C&#xF3;digo postal</b></div><div>46113</div><br/><div=
+><b>Tel&#xE9;fono</b></div><div>+34626768562</div><br/><div><b>Email</b></d=
+iv><div>javieroficial7@gmail.com</div><br/><div><b>Signatura</b></div><div>=
+https://storage.tally.so/private/0f7ce9d7-d851-41b3-97bf-9ae92166ed47.png?i=
+d=3DgMa8PK&accessToken=3DeyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImdNY=
+ThQSyIsImZvcm1JZCI6IjNFeG80byIsImlhdCI6MTczNDM1MTgxOX0.JKce_bC_4xCYJFmyXFxp=
+JwakX3lAAW7nDC1sHkye48E&signature=3Dcace7b6c411e23c1d75ff1ec4014d42e28a36db=
+9a5c20319b4e0637134d871f6</div><br/>
+--9f048534c60cb623ca775e6695554427839385ae4aa6836cdf1c216caa39--
