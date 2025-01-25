@@ -17,37 +17,14 @@
       <span class="header-title">Expediente: {{ titleRecord }}</span>
     </div>
     <div class="buttons-template">
+
+
       <button
-        class="btnstyle2"
-        (click)="doc()"
+        [ngClass]="this.expData.contratViaje?'download':'no-download'"
+        (click)="contratViaje()"
         mat-mini-fab
-        aria-label="Example icon button with a menu icon"
-      >
-        <mat-icon>
-          <img
-            src="./assets/icons/buttonsMicrosoft/bombilla.png"
-            width="24px"
-            alt="Idea"
-          />
-        </mat-icon>
-      </button>
-      <button
-        class="btnstyle2"
-        mat-mini-fab
-        aria-label="Example icon button with a menu icon"
-      >
-        <mat-icon class="mat-18">
-          <img
-            src="./assets/icons/buttonsMicrosoft/mapa.png"
-            width="24px"
-            alt="mapa"
-          />
-        </mat-icon>
-      </button>
-      <button
-        class="btnstyle2"
-        (click)="doc()"
-        mat-mini-fab
+        matTooltip="Contrato de viaje"
+
         aria-label="Example icon button with a menu icon"
       >
         <mat-icon>
@@ -59,9 +36,10 @@
         </mat-icon>
       </button>
       <button
-        class="btnstyle2"
-        (click)="doc()"
+      [ngClass]="this.expData.visado?'download':'no-download'"
+        (click)="visado()"
         mat-mini-fab
+        matTooltip="Bono visado"
         aria-label="Example icon button with a menu icon"
       >
         <mat-icon>
@@ -73,9 +51,11 @@
         </mat-icon>
       </button>
       <button
-        class="btnstyle2"
-        mat-mini-fab
+      [ngClass]="this.expData.contratCancel?'download':'no-download'"
+      mat-mini-fab
+        matTooltip="Contratación y cancelación"
         aria-label="Example icon button with a menu icon"
+        (click)="contratCancel()"
       >
         <mat-icon class="mat-18">
           <img
@@ -86,9 +66,10 @@
         </mat-icon>
       </button>
       <button
-        class="btnstyle2"
-        (click)="doc()"
+      [ngClass]="this.expData.seguro?'download':'no-download'"
+      (click)="seguro()"
         mat-mini-fab
+        matTooltip="Seguro de viaje"
         aria-label="Example icon button with a menu icon"
       >
         <mat-icon>
@@ -99,32 +80,32 @@
           />
         </mat-icon>
       </button>
+
       <button
-        class="btnstyle2"
-        (click)="doc()"
+      [ngClass]="this.expData.aerolinea?'download':'no-download'"
+      (click)="aerolinea()"
         mat-mini-fab
+        matTooltip="Bono aerolinea"
         aria-label="Example icon button with a menu icon"
       >
         <mat-icon>
           <img
-            src="./assets/icons/buttonsMicrosoft/ubicacion.png"
+            src="./assets/icons/buttonsMicrosoft/avion.png"
             width="24px"
-            alt="ubicación"
+            alt="viaje"
           />
         </mat-icon>
       </button>
       <button
-        class="btnstyle2"
-        (click)="doc()"
+        color="#5f6368"
+        [ngClass]="this.expData.proforma?'download':'no-download'"
+        (click)="proforma()"
         mat-mini-fab
+        matTooltip="Proforma"
         aria-label="Example icon button with a menu icon"
       >
-        <mat-icon>
-          <img
-            src="./assets/icons/buttonsMicrosoft/viaje.png"
-            width="24px"
-            alt="viaje"
-          />
+        <mat-icon color="#5f6368">
+          paid
         </mat-icon>
       </button>
     </div>

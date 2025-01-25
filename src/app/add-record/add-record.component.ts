@@ -25,7 +25,7 @@ export class AddRecordComponent implements OnInit {
   IsWait = false;
   addRecordForm = new FormGroup({
     $loki :new FormControl(''),
-    ref: new FormControl('', [Validators.required,Validators.email]),
+    ref: new FormControl('', [Validators.required]),
     idGrupo: new FormControl(''),
     fechaSalida: new FormControl('')
   });
@@ -64,6 +64,12 @@ export class AddRecordComponent implements OnInit {
     }
     if (this.crear) {
       this.addRecordForm.value['fecha'] = new Date();
+      this.addRecordForm.value['contratCancel'] = false;
+      this.addRecordForm.value['visado'] = false;
+      this.addRecordForm.value['seguro'] = false;
+      this.addRecordForm.value['aerolinea'] = false;
+      this.addRecordForm.value['proforma'] = false;
+      this.addRecordForm.value['contratViaje'] = false;
       delete this.addRecordForm.value.$loki
       this.ipcService.send('expediente:new', this.addRecordForm.value);
       this.ipcService.on('newExpediente:reply', (event: any, arg: any) => {

@@ -8,7 +8,6 @@ import {
   OnInit,
   ViewChild,
 } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute, Router } from '@angular/router';
 import { IpcService } from '../core/services';
@@ -49,6 +48,7 @@ export class RecordComponent implements OnInit, AfterViewInit {
   public titleRecord = '';
   userData = {};
   expData;
+  clientData;
   constructor(
     private route: ActivatedRoute,
     private ipcService: IpcService,
@@ -58,31 +58,37 @@ export class RecordComponent implements OnInit, AfterViewInit {
   ) {}
 
   ngOnInit(): void {
-    if (this.route.snapshot.queryParams.titleRecord) {
-      this.titleRecord = this.route.snapshot.queryParams.titleRecord;
-    }
-    if (this.route.snapshot.queryParams.row) {
-      this.expData = JSON.parse(this.route.snapshot.queryParams.row) as Record;
+    if (this.route.snapshot.queryParams.record) {
+      this.expData = JSON.parse(
+        this.route.snapshot.queryParams.record
+      ) as Record;
       this.titleRecord = this.expData.ref;
     }
-    this.ipcService.send('clientes:list', {expId: this.expData.$loki});
+    if (this.route.snapshot.queryParams.row) {
+      this.clientData = JSON.parse(
+        this.route.snapshot.queryParams.row
+      ) as Client;
+    }
+    console.log(this.expData);
+    this.ipcService.send('clientes:list', { expId: this.expData.$loki });
   }
 
   ngAfterViewInit() {
     this.ipcService.on('clientes:listreply', (event: any, arg: Client[]) => {
       this.dataSource.data = arg;
+
       this.dataSource.paginator = this.paginator;
       this.cdRef.detectChanges();
     });
   }
 
   addClient() {
+    console.log(this.expData);
     this.ngZone.run(() => {
       void this.router.navigate(['/', 'add-client'], {
         queryParams: {
           isEdit: false,
-          titleRecord: this.titleRecord,
-          id: this.expData.$loki,
+          record: JSON.stringify(this.expData),
         },
       });
     });
@@ -108,12 +114,117 @@ export class RecordComponent implements OnInit, AfterViewInit {
     const stringClient = JSON.stringify(client);
     this.ngZone.run(() => {
       void this.router.navigate(['/', 'add-client'], {
-        queryParams: { isEdit, stringClient, titleRecord: this.titleRecord },
+        queryParams: {
+          isEdit,
+          stringClient,
+          record: JSON.stringify(this.expData),
+        },
       });
     });
   }
 
-  doc() {
+  visado() {
+    if (this.dataSource.data.length > 0) {
+      this.expData.visado = true;
+    } else {
+      return;
+    }
+
+    console.log(this.expData);
+    this.ipcService.send('expediente:update', this.expData);
+
+    this.ipcService.send('doc:new', {
+      ...this.dataSource.data[0],
+      ref: this.titleRecord,
+    });
+    this.ipcService.on('doc:newreply', (event: any, arg: any) => {
+      console.log(arg);
+    });
+  }
+  contratCancel() {
+    if (this.dataSource.data.length > 0) {
+      this.expData.contratCancel = true;
+    } else {
+      return;
+    }
+
+    console.log(this.expData);
+    this.ipcService.send('expediente:update', this.expData);
+
+    this.ipcService.send('doc:new', {
+      ...this.dataSource.data[0],
+      ref: this.titleRecord,
+    });
+    this.ipcService.on('doc:newreply', (event: any, arg: any) => {
+      console.log(arg);
+    });
+  }
+  contratViaje() {
+    if (this.dataSource.data.length > 0) {
+      this.expData.contratViaje = true;
+    } else {
+      return;
+    }
+
+    console.log(this.expData);
+    this.ipcService.send('expediente:update', this.expData);
+
+    this.ipcService.send('doc:new', {
+      ...this.dataSource.data[0],
+      ref: this.titleRecord,
+    });
+    this.ipcService.on('doc:newreply', (event: any, arg: any) => {
+      console.log(arg);
+    });
+  }
+
+  seguro() {
+    if (this.dataSource.data.length > 0) {
+      this.expData.seguro = true;
+    } else {
+      return;
+    }
+
+    console.log(this.expData);
+    this.ipcService.send('expediente:update', this.expData);
+
+    console.log(this.expData);
+    this.ipcService.send('expediente:update', this.expData);
+
+    this.ipcService.send('doc:new', {
+      ...this.dataSource.data[0],
+      ref: this.titleRecord,
+    });
+    this.ipcService.on('doc:newreply', (event: any, arg: any) => {
+      console.log(arg);
+    });
+  }
+  aerolinea() {
+    if (this.dataSource.data.length > 0) {
+      this.expData.aerolinea = true;
+    } else {
+      return;
+    }
+
+    console.log(this.expData);
+    this.ipcService.send('expediente:update', this.expData);
+    this.ipcService.send('doc:new', {
+      ...this.dataSource.data[0],
+      ref: this.titleRecord,
+    });
+    this.ipcService.on('doc:newreply', (event: any, arg: any) => {
+      console.log(arg);
+    });
+  }
+
+  proforma() {
+    if (this.dataSource.data.length > 0) {
+      this.expData.proforma = true;
+    } else {
+      return;
+    }
+    console.log(this.expData);
+    this.ipcService.send('expediente:update', this.expData);
     this.ipcService.send('doc:new', {
       ...this.dataSource.data[0],
       ref: this.titleRecord,

@@ -36,7 +36,13 @@ mat-form-field {
   display: flex;
   gap: 1rem;
 }
-.btnstyle2 {
+.download{
+  height: 36px;
+  width: 36px;
+  text-align: center;
+  background-color: rgb(4, 255, 88);
+}
+.no-download {
   height: 36px;
   width: 36px;
   text-align: center;
