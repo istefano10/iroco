@@ -141,6 +141,10 @@ ipcMain.on('expediente:update', (e, newExpediente) => {
   doc.contratCancel=newExpediente.contratCancel
   doc.contratViaje=newExpediente.contratViaje
   doc.proforma=newExpediente.proforma
+<<<<<<< HEAD
+=======
+  console.log(doc)
+>>>>>>> 11ee07c6a611f37d27de86e7fe0971dfcef839f5
   expedientes.update(doc);
   e.reply('expediente:updatereply', doc);
 });

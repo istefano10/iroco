@@ -82,6 +82,7 @@ export class RecordComponent implements OnInit, AfterViewInit {
   }
 
   addClient() {
+    console.log(this.expData);
     this.ngZone.run(() => {
       void this.router.navigate(['/', 'add-client'], {
         queryParams: {
