@@ -1,10 +1,14 @@
 import { app, BrowserWindow, ipcMain, screen, dialog } from 'electron';
 import JsExcelTemplate from 'js-excel-template';
+const Docxtemplater = require('docxtemplater');
+// Load PizZip library to load the docx/pptx/xlsx file in memory
+const PizZip = require('pizzip');
 
 const PDFWindow = require('electron-pdf-window');
 import * as path from 'path';
 const os = require('os');
 const desktopDir = path.join(os.homedir(), 'Desktop');
+const fecha = new Date().toLocaleDateString('en-US');
 
 import * as fs from 'fs';
 const loki = require('lokijs');
@@ -134,17 +138,13 @@ ipcMain.on('expediente:update', (e, newExpediente) => {
 
   doc.ref = newExpediente.ref;
   doc.idGrupo = newExpediente.idGrupo;
-  doc.fechaSalida=newExpediente.fechaSalida
-  doc.aerolinea=newExpediente.aerolinea
-  doc.visado=newExpediente.visado
-  doc.seguro=newExpediente.seguro
-  doc.contratCancel=newExpediente.contratCancel
-  doc.contratViaje=newExpediente.contratViaje
-  doc.proforma=newExpediente.proforma
-<<<<<<< HEAD
-=======
-  console.log(doc)
->>>>>>> 11ee07c6a611f37d27de86e7fe0971dfcef839f5
+  doc.fechaSalida = newExpediente.fechaSalida;
+  doc.aerolinea = newExpediente.aerolinea;
+  doc.visado = newExpediente.visado;
+  doc.seguro = newExpediente.seguro;
+  doc.contratCancel = newExpediente.contratCancel;
+  doc.contratViaje = newExpediente.contratViaje;
+  doc.proforma = newExpediente.proforma;
   expedientes.update(doc);
   e.reply('expediente:updatereply', doc);
 });
@@ -342,6 +342,153 @@ ipcMain.on('doc:new', async (e, doc) => {
   excelTemplate.set('age', doc.fechaNac);
   await excelTemplate.saveAs(dir);
   e.reply('doc:newreply', {});
+});
+
+// gestion de documentos
+
+// Contratación y cancaelación
+ipcMain.on('conycan:new', async (e, doc) => {
+  const dir =
+    desktopDir + `\\Expedientes\\${doc.ref}\\CONTRATO_Y_CANCELACION.docx`;
+  const content = fs.readFileSync(
+    path.resolve('templates/CON_Y_CAN.docx'),
+    'binary'
+  );
+  const zip = new PizZip(content);
+
+  const docT = new Docxtemplater(zip, {
+    paragraphLoop: true,
+    linebreaks: true,
+  });
+
+  docT.render({
+    nombre: doc.nombre + ' ' + doc.apellidos,
+    fecha,
+  });
+
+  const buf = docT.getZip().generate({
+    type: 'nodebuffer',
+  });
+
+  fs.writeFileSync(path.resolve(dir), buf);
+  e.reply('conycan:reply', {});
+});
+
+// Contrato de viaje
+ipcMain.on('conviaje:new', async (e, doc) => {
+  const dir = desktopDir + `\\Expedientes\\${doc.ref}\\CONTRATO_DE_VIAJE.docx`;
+  const content = fs.readFileSync(
+    path.resolve('templates/CON_VIAJE.docx'),
+    'binary'
+  );
+  const zip = new PizZip(content);
+
+  const docT = new Docxtemplater(zip, {
+    paragraphLoop: true,
+    linebreaks: true,
+  });
+
+  docT.render({
+    nombre: doc.nombre + ' ' + doc.apellidos,
+    nif: doc.nif,
+    domicilio: doc.direccion + ', ' + doc.codPostal + ', ' + doc.ciudad,
+    telefono: doc.telefono,
+    totalcli: doc.totalcli,
+    fecha,
+  });
+
+  const buf = docT.getZip().generate({
+    type: 'nodebuffer',
+  });
+
+  fs.writeFileSync(path.resolve(dir), buf);
+  e.reply('conviaje:reply', {});
+});
+
+// bono aerolinea
+ipcMain.on('bonoaero:new', async (e, doc) => {
+  const dir = desktopDir + `\\Expedientes\\${doc.ref}\\BONO_AEROLINEA.xlsx`;
+  const excelTemplate = await JsExcelTemplate.fromFile(
+    'templates/BONO_AERO.xlsx'
+  );
+  fs.createWriteStream(dir);
+  excelTemplate.set('id', doc.idExp);
+  excelTemplate.set('nombre', doc.nombre + ' ' + doc.apellidos);
+  excelTemplate.set('age', doc.fechaNac);
+  excelTemplate.set('telefono', doc.telefono);
+  excelTemplate.set('pasaporte', doc.pasaporte);
+  excelTemplate.set('direccion', doc.direccion + ', ' + doc.ciudad);
+  excelTemplate.set('cp', doc.codPostal);
+  excelTemplate.set('fecha', fecha);
+
+  await excelTemplate.saveAs(dir);
+  e.reply('bonoaero:reply', {});
+});
+
+// bono visados
+ipcMain.on('bonovisa:new', async (e, doc) => {
+  const dir = desktopDir + `\\Expedientes\\${doc.ref}\\BONO_VISADOS.xlsx`;
+  const excelTemplate = await JsExcelTemplate.fromFile(
+    'templates/BONO_VISA.xlsx'
+  );
+  fs.createWriteStream(dir);
+  excelTemplate.set('id', doc.idExp);
+  excelTemplate.set('nombre', doc.nombre + ' ' + doc.apellidos);
+  excelTemplate.set('age', doc.fechaNac);
+  excelTemplate.set('telefono', doc.telefono);
+  excelTemplate.set('pasaporte', doc.pasaporte);
+  excelTemplate.set('direccion', doc.direccion + ', ' + doc.ciudad);
+  excelTemplate.set('cp', doc.codPostal);
+  excelTemplate.set('fecha', fecha);
+
+  await excelTemplate.saveAs(dir);
+  e.reply('bonovisa:reply', {});
+});
+
+// bono proforma
+ipcMain.on('proforma:new', async (e, doc) => {
+  const dir = desktopDir + `\\Expedientes\\${doc.ref}\\PROFORMA.xlsx`;
+  const excelTemplate = await JsExcelTemplate.fromFile(
+    'templates/PROFORMA.xlsx'
+  );
+  fs.createWriteStream(dir);
+  excelTemplate.set('id', doc.idExp);
+  excelTemplate.set('nombre', doc.nombre + ' ' + doc.apellidos);
+  excelTemplate.set('age', doc.fechaNac);
+  excelTemplate.set('telefono', doc.telefono);
+  excelTemplate.set('pasaporte', doc.pasaporte);
+  excelTemplate.set('direccion', doc.direccion + ', ' + doc.ciudad);
+  excelTemplate.set('cp', doc.codPostal);
+  excelTemplate.set('fecha', fecha);
+
+  await excelTemplate.saveAs(dir);
+  e.reply('proforma:reply', {});
+});
+
+// asegurados
+ipcMain.on('asegurados:new', async (e, doc) => {
+  const dir = desktopDir + `\\Expedientes\\${doc.ref}\\ASEGURADOS.xlsx`;
+  const excelTemplate = await JsExcelTemplate.fromFile(
+    'templates/ASEGURADOS.xlsx'
+  );
+  fs.createWriteStream(dir);
+
+  // Convert the object to an array of objects
+  const dataArray = Object.keys(doc)
+    .filter((key) => key !== 'ref') // Exclude the 'ref' property if needed
+    .map((key) => doc[key]);
+
+  for (let i = 1; i <= dataArray.length; i++) {
+    excelTemplate.set(`nombre${i}`, dataArray[i - 1].nombre);
+    excelTemplate.set(`apellidos${i}`, dataArray[i - 1].apellidos);
+    excelTemplate.set(`tipo${i}`, 'NIF');
+    excelTemplate.set(`nif${i}`, dataArray[i - 1].nif);
+    excelTemplate.set(`fecha${i}`, dataArray[i - 1].fecha);
+    excelTemplate.set(`email${i}`, dataArray[i - 1].email);
+  }
+
+  await excelTemplate.saveAs(dir);
+  e.reply('asegurados:reply', {});
 });
 
 try {

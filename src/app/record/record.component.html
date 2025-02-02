@@ -18,7 +18,21 @@
     </div>
     <div class="buttons-template">
 
-
+      <button
+      [ngClass]="this.expData.contratCancel?'download':'no-download'"
+      mat-mini-fab
+        matTooltip="Contratación y cancelación"
+        aria-label="Example icon button with a menu icon"
+        (click)="contratCancel()"
+      >
+        <mat-icon class="mat-18">
+          <img
+            src="./assets/icons/buttonsMicrosoft/precio.png"
+            width="24px"
+            alt="precio"
+          />
+        </mat-icon>
+      </button>
       <button
         [ngClass]="this.expData.contratViaje?'download':'no-download'"
         (click)="contratViaje()"
@@ -47,21 +61,6 @@
             src="./assets/icons/buttonsMicrosoft/pasaporte.png"
             width="24px"
             alt="pasaporte"
-          />
-        </mat-icon>
-      </button>
-      <button
-      [ngClass]="this.expData.contratCancel?'download':'no-download'"
-      mat-mini-fab
-        matTooltip="Contratación y cancelación"
-        aria-label="Example icon button with a menu icon"
-        (click)="contratCancel()"
-      >
-        <mat-icon class="mat-18">
-          <img
-            src="./assets/icons/buttonsMicrosoft/precio.png"
-            width="24px"
-            alt="precio"
           />
         </mat-icon>
       </button>

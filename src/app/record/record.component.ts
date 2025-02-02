@@ -122,23 +122,6 @@ export class RecordComponent implements OnInit, AfterViewInit {
     });
   }
 
-  visado() {
-    if (this.dataSource.data.length > 0) {
-      this.expData.visado = true;
-    } else {
-      return;
-    }
-
-    this.ipcService.send('expediente:update', this.expData);
-
-    this.ipcService.send('doc:new', {
-      ...this.dataSource.data[0],
-      ref: this.titleRecord,
-    });
-    this.ipcService.on('doc:newreply', (event: any, arg: any) => {
-      console.log(arg);
-    });
-  }
   contratCancel() {
     if (this.dataSource.data.length > 0) {
       this.expData.contratCancel = true;
@@ -148,11 +131,11 @@ export class RecordComponent implements OnInit, AfterViewInit {
 
     this.ipcService.send('expediente:update', this.expData);
 
-    this.ipcService.send('doc:new', {
+    this.ipcService.send('conycan:new', {
       ...this.dataSource.data[0],
       ref: this.titleRecord,
     });
-    this.ipcService.on('doc:newreply', (event: any, arg: any) => {
+    this.ipcService.on('conycan:reply', (event: any, arg: any) => {
       console.log(arg);
     });
   }
@@ -165,11 +148,66 @@ export class RecordComponent implements OnInit, AfterViewInit {
 
     this.ipcService.send('expediente:update', this.expData);
 
-    this.ipcService.send('doc:new', {
+    this.ipcService.send('conviaje:new', {
       ...this.dataSource.data[0],
       ref: this.titleRecord,
+      totalcli: this.dataSource.data.length,
     });
-    this.ipcService.on('doc:newreply', (event: any, arg: any) => {
+    this.ipcService.on('conviaje:reply', (event: any, arg: any) => {
+      console.log(arg);
+    });
+  }
+
+  aerolinea() {
+    if (this.dataSource.data.length > 0) {
+      this.expData.aerolinea = true;
+    } else {
+      return;
+    }
+
+    this.ipcService.send('expediente:update', this.expData);
+    this.ipcService.send('bonoaero:new', {
+      ...this.dataSource.data[0],
+      ref: this.titleRecord,
+      idExp: this.expData.$loki
+    });
+    this.ipcService.on('bonoaero:reply', (event: any, arg: any) => {
+      console.log(arg);
+    });
+  }
+
+  visado() {
+    if (this.dataSource.data.length > 0) {
+      this.expData.visado = true;
+    } else {
+      return;
+    }
+
+    this.ipcService.send('expediente:update', this.expData);
+
+    this.ipcService.send('bonovisa:new', {
+      ...this.dataSource.data[0],
+      ref: this.titleRecord,
+      idExp: this.expData.$loki
+    });
+    this.ipcService.on('bonovisa:reply', (event: any, arg: any) => {
+      console.log(arg);
+    });
+  }
+
+  proforma() {
+    if (this.dataSource.data.length > 0) {
+      this.expData.proforma = true;
+    } else {
+      return;
+    }
+    this.ipcService.send('expediente:update', this.expData);
+    this.ipcService.send('proforma:new', {
+      ...this.dataSource.data[0],
+      ref: this.titleRecord,
+      idExp: this.expData.$loki
+    });
+    this.ipcService.on('proforma:reply', (event: any, arg: any) => {
       console.log(arg);
     });
   }
@@ -183,45 +221,11 @@ export class RecordComponent implements OnInit, AfterViewInit {
 
     this.ipcService.send('expediente:update', this.expData);
 
-    this.ipcService.send('expediente:update', this.expData);
-
-    this.ipcService.send('doc:new', {
-      ...this.dataSource.data[0],
+    this.ipcService.send('asegurados:new', {
+      ...this.dataSource.data,
       ref: this.titleRecord,
     });
-    this.ipcService.on('doc:newreply', (event: any, arg: any) => {
-    });
-  }
-  aerolinea() {
-    if (this.dataSource.data.length > 0) {
-      this.expData.aerolinea = true;
-    } else {
-      return;
-    }
-
-    this.ipcService.send('expediente:update', this.expData);
-    this.ipcService.send('doc:new', {
-      ...this.dataSource.data[0],
-      ref: this.titleRecord,
-    });
-    this.ipcService.on('doc:newreply', (event: any, arg: any) => {
-      console.log(arg);
-    });
-  }
-
-  proforma() {
-    if (this.dataSource.data.length > 0) {
-      this.expData.proforma = true;
-    } else {
-      return;
-    }
-    this.ipcService.send('expediente:update', this.expData);
-    this.ipcService.send('doc:new', {
-      ...this.dataSource.data[0],
-      ref: this.titleRecord,
-    });
-    this.ipcService.on('doc:newreply', (event: any, arg: any) => {
-      console.log(arg);
+    this.ipcService.on('asegurados:reply', (event: any, arg: any) => {
     });
   }
 }
