@@ -1,13 +1,17 @@
 .container{
   justify-content: center;
+  padding: 1rem;
+}
+.add-client__form{
+  display: flex;
+    flex-wrap: wrap;
+    /* align-items: center; */
+    justify-content: inherit;
 }
 table {
   width: 100%;
 }
-.container1, .container2, .container3{
-  display: flex;
-  flex-wrap: wrap;
-}
+
 .buttons__add__client{
   display: flex;
   gap: 2rem;

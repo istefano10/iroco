@@ -4,7 +4,7 @@
       <mat-spinner></mat-spinner>
     </div>
   </ng-container>
-  <mat-toolbar class="toolbar">
+  <!-- <mat-toolbar class="toolbar">
     <div class="buttons-add-client">
       <button (click)="addClient()" mat-raised-button>
         Añadir cliente<mat-icon>add</mat-icon>
@@ -108,7 +108,112 @@
         </mat-icon>
       </button>
     </div>
-  </mat-toolbar>
+  </mat-toolbar> -->
+  <div class="toolbar">
+    <div class="buttons-add-client">
+      <button (click)="addClient()" mat-raised-button>
+        Añadir cliente<mat-icon>add</mat-icon>
+      </button>
+      <button (click)="onCancel()" mat-raised-button>
+        Volver<mat-icon>arrow_back</mat-icon>
+      </button>
+    </div>
+    <div class="title-record" [matTooltip]="titleRecord">
+      <span class="header-title" >Expediente: {{ titleRecord }}</span>
+    </div>
+    <div class="buttons-template">
+
+      <button
+      [ngClass]="this.expData.contratCancel?'download':'no-download'"
+      mat-mini-fab
+        matTooltip="Contratación y cancelación"
+        aria-label="Example icon button with a menu icon"
+        (click)="contratCancel()"
+      >
+        <mat-icon class="mat-18">
+          <img
+            src="./assets/icons/buttonsMicrosoft/precio.png"
+            width="24px"
+            alt="precio"
+          />
+        </mat-icon>
+      </button>
+      <button
+        [ngClass]="this.expData.contratViaje?'download':'no-download'"
+        (click)="contratViaje()"
+        mat-mini-fab
+        matTooltip="Contrato de viaje"
+
+        aria-label="Example icon button with a menu icon"
+      >
+        <mat-icon>
+          <img
+            src="./assets/icons/buttonsMicrosoft/negocio.png"
+            width="24px"
+            alt="negocio"
+          />
+        </mat-icon>
+      </button>
+      <button
+      [ngClass]="this.expData.visado?'download':'no-download'"
+        (click)="visado()"
+        mat-mini-fab
+        matTooltip="Bono visado"
+        aria-label="Example icon button with a menu icon"
+      >
+        <mat-icon>
+          <img
+            src="./assets/icons/buttonsMicrosoft/pasaporte.png"
+            width="24px"
+            alt="pasaporte"
+          />
+        </mat-icon>
+      </button>
+      <button
+      [ngClass]="this.expData.seguro?'download':'no-download'"
+      (click)="seguro()"
+        mat-mini-fab
+        matTooltip="Seguro de viaje"
+        aria-label="Example icon button with a menu icon"
+      >
+        <mat-icon>
+          <img
+            src="./assets/icons/buttonsMicrosoft/seguro.png"
+            width="24px"
+            alt="seguro"
+          />
+        </mat-icon>
+      </button>
+
+      <button
+      [ngClass]="this.expData.aerolinea?'download':'no-download'"
+      (click)="aerolinea()"
+        mat-mini-fab
+        matTooltip="Bono aerolinea"
+        aria-label="Example icon button with a menu icon"
+      >
+        <mat-icon>
+          <img
+            src="./assets/icons/buttonsMicrosoft/avion.png"
+            width="24px"
+            alt="viaje"
+          />
+        </mat-icon>
+      </button>
+      <button
+        color="#5f6368"
+        [ngClass]="this.expData.proforma?'download':'no-download'"
+        (click)="proforma()"
+        mat-mini-fab
+        matTooltip="Proforma"
+        aria-label="Example icon button with a menu icon"
+      >
+        <mat-icon color="#5f6368">
+          paid
+        </mat-icon>
+      </button>
+    </div>
+  </div>
 
   <br />
 
@@ -179,11 +284,15 @@
           >{{cliente.ciudad}}</mat-cell
         >
       </ng-container> -->
-      <ng-container matColumnDef="direccion">
-        <mat-header-cell *matHeaderCellDef>Dirección</mat-header-cell>
+      <ng-container matColumnDef="direccion" >
+        <mat-header-cell *matHeaderCellDef >Dirección</mat-header-cell>
         <mat-cell
-          class="duration-cell"
+          class="duration-cell direccion"
+
           *matCellDef="let cliente; let i = index"
+             [title]="cliente.direccion + ', ' + cliente.ciudad+', '+ cliente.codPostal "
+
+
           [ngStyle]="i === 0 ? { 'background-color': '#FAF3E0' } : {}"
           >{{ cliente.direccion }}, {{ cliente.ciudad }},
           {{ cliente.codPostal }}</mat-cell
