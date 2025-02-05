@@ -1,7 +1,6 @@
 .header-title {
-  font-size: 32px;
+  font-size: 24px;
   font-weight: bold;
-  width: 1rem;
 }
 .toolbar {
   align-items: center;
@@ -11,6 +10,7 @@
   justify-content: space-between;
   min-height: 4rem;
   padding: 1rem;
+  width: 98%;
   @media(max-width:'850px'){
     flex-wrap: wrap;
 
@@ -58,6 +58,10 @@ mat-form-field {
 .buttons-add-client {
   display: flex;
   gap: 1rem;
+
+}
+.buttons-add-client>button{
+  min-width: 10rem;
 }
 .download {
   height: 36px;
